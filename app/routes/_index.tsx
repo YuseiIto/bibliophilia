@@ -3,8 +3,8 @@ import { Button, Flex, Text } from "@radix-ui/themes";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "Bibliophilia" },
+    { name: "description", content: "Yet another information resource manager and more." },
   ];
 };
 
