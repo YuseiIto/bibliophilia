@@ -1,4 +1,15 @@
-# Welcome to Remix + Cloudflare!
+# Bibliophilia
+
+![Bibliophilia](https://raw.githubusercontent.com/yuseiito/bibliophilia/master/logo.png)
+
+## Requirements
+
+- Node.js (Version is controlled by `.node-version`)
+- npm
+
+## Techinical Stack
+
+This project uses the following technologies:
 
 - 📖 [Remix docs](https://remix.run/docs)
 - 📖 [Remix Cloudflare docs](https://remix.run/guides/vite#cloudflare)
@@ -16,6 +27,12 @@ To run Wrangler:
 ```sh
 npm run build
 npm run start
+```
+
+## DB migration
+
+```sh
+npx prisma migrate dev --name xxxx
 ```
 
 ## Typegen
