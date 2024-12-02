@@ -1,6 +1,8 @@
 import type { MetaFunction } from "@remix-run/cloudflare";
 import logo from "~/assets/logo.png";
-import { Button } from "~/components/ui/button";
+import { Card } from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
+import { Skeleton } from "~/components/ui/skeleton";
 
 export const meta: MetaFunction = () => {
   return [
@@ -13,31 +15,21 @@ export const meta: MetaFunction = () => {
 export default function Index() {
 
   return (
-    <Button className="m-8"> Hello </Button>
-    /*
-    <Container size="4">
-      <Flex direction="row" justify="center">
+    <div className="container mx-auto">
+      <div className="flex justify-center">
         <img src={logo} alt="Bibliophilia" width="400" />
-      </Flex>
-      <Box pb="6">
-        <Card>
-          <TextField.Root placeholder="Search the docs…" size="3" variant="surface">
-            <TextField.Slot>
-              <MagnifyingGlassIcon height="16" width="16" />
-            </TextField.Slot>
-            <TextField.Slot >
-              <IconButton size="2" variant="ghost"><RocketIcon /> </IconButton>
-            </TextField.Slot>
-          </TextField.Root>
+      </div>
+      <div className="pb-6">
+        <Card className="p-3">
+          <Input placeholder="Type something..." />
         </Card>
-      </Box>
-      <Grid columns="8" gap="3">
+      </div>
+      <div className="grid grid-cols-8 gap-4">
         {Array.from({ length: 10 }).map((_, i) => (
-          <Skeleton key={i} height="200px" width="130px" />
+          <Skeleton key={i} className="w-[130px] h-[200px]" />
         ))}
-      </Grid>
-    </Container>
-    */
+      </div>
+    </div>
   );
 }
 
