@@ -8,19 +8,20 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarRail
+  SidebarRail,
+  SidebarTrigger
 } from "~/components/ui/sidebar"
 
 import { Search } from "@mynaui/icons-react"
 import LogoIcon from "~/assets/icon.png";
 import { LogoType } from "~/components/logo-type";
 
-export function AppSidebar() {
+export function AppSidebar({ noLogo }: { noLogo?: boolean }) {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader >
         <SidebarMenu>
-          <SidebarMenuItem>
+          <SidebarMenuItem>{noLogo ? <SidebarTrigger/> :
             <SidebarMenuButton size="lg" asChild>
               <a href="/">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-none">
@@ -29,6 +30,7 @@ export function AppSidebar() {
                 <LogoType />
               </a>
             </SidebarMenuButton>
+          }
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -38,9 +40,11 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Find items">
-                  <Search />
-                  <span>Search</span>
+                <SidebarMenuButton tooltip="Find items" asChild>
+                  <a href="/search">
+                    <Search />
+                    <span>Search</span>
+                  </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
