@@ -13,16 +13,24 @@ import {
 
 import { Search } from "@mynaui/icons-react"
 import LogoIcon from "~/assets/icon.png";
-
+import { LogoType } from "~/components/logo-type";
 
 export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader >
-        <div className="flex flex-row gap-2 items-center">
-          <img src={LogoIcon} className="max-w-10"/>
-          <span className="text-xl"> Bibliophilia </span>
-        </div>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <a href="/">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-none">
+                  <img src={LogoIcon} className="w-[100%] max-w-9" />
+                </div>
+                <LogoType />
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup >

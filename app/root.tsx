@@ -10,7 +10,10 @@ import {
 import stylesheet from "~/tailwind.css?url";
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesheet }
+  { rel: "stylesheet", href: stylesheet },
+  { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+  { rel: "preconnect", href: "https://fonts.googleapis.com" },
+  { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
