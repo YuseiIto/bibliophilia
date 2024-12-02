@@ -1,7 +1,6 @@
 import type { MetaFunction } from "@remix-run/cloudflare";
-import { Flex, Box, Card, TextField, Container, Grid, Skeleton, IconButton } from "@radix-ui/themes";
-import { MagnifyingGlassIcon, RocketIcon } from "@radix-ui/react-icons";
 import logo from "~/assets/logo.png";
+import { Button } from "~/components/ui/button";
 
 export const meta: MetaFunction = () => {
   return [
@@ -14,6 +13,8 @@ export const meta: MetaFunction = () => {
 export default function Index() {
 
   return (
+    <Button className="m-8"> Hello </Button>
+    /*
     <Container size="4">
       <Flex direction="row" justify="center">
         <img src={logo} alt="Bibliophilia" width="400" />
@@ -36,6 +37,7 @@ export default function Index() {
         ))}
       </Grid>
     </Container>
+    */
   );
 }
 

@@ -1,8 +1,6 @@
 import type { MetaFunction } from "@remix-run/cloudflare";
-import { Button, Flex, Text, Table, Box, Section, Heading, Tabs, TextField, Checkbox } from "@radix-ui/themes";
 import { Form } from "@remix-run/react";
 import { ManualRegisterForm } from "~/components/manual_register_form";
-import { FilePlusIcon } from "@radix-ui/react-icons";
 
 export const meta: MetaFunction = () => {
   return [
@@ -13,6 +11,8 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
+    <p>Hello</p>
+    /*
     <Flex m="5" direction="column">
       <Heading size="8"> Register </Heading>
       <Section>
@@ -71,6 +71,7 @@ export default function Index() {
         </Tabs.Root>
       </Section>
     </Flex>
+     */
   );
 }
 

@@ -61,4 +61,5 @@ npm run deploy
 
 ## Styling
 
-This application uses Radix UI for styling. You can find the documentation [here](https://www.radix-ui.com/docs/primitives/overview/introduction).
+This application uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+Also it uses [shadcn/ui](https://ui.shadcn.com/) as a base of the design system.
