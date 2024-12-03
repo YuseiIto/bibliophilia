@@ -10,8 +10,7 @@ import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from "~
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { FilePlus } from "@mynaui/icons-react";
-
-import { parseStringPromise } from "xml2js";
+import { lookupByIsbn } from "~/model/ndl-search";
 
 export const meta: MetaFunction = () => {
   return [
@@ -27,20 +26,6 @@ function isCandidateItem(item: any): item is CandidateItem {
   return "isbn" in item && "title" in item && "author" in item && "pubDate" in item;
 }
 
-const lookupByIsbn = async (isbn) => {
-  const NDL_OPENSEARCH_API = "https://ndlsearch.ndl.go.jp/api/opensearch";
-  const url = `${NDL_OPENSEARCH_API}?isbn=${isbn}`;
-  const res = await fetch(url);
-  const xml = await res.text().catch(console.error);
-  const data = await parseStringPromise(xml!).catch(console.error);
-  const item = data.rss.channel[0].item[0]; // FIXME: 無闇に0を取るべきではない気がする. 仕様要確認.
-
-  const title = item.title[0];
-  const author = item.author[0];
-  const pubDate = item.pubDate[0];
-
-  return { isbn, title, author, pubDate };
-};
 
 export async function action({ request }: ActionFunctionArgs) {
   const req = await request.formData();
@@ -71,7 +56,7 @@ export default function Index() {
 
 
   useEffect(() => {
-    if(!fetcher.data) return;
+    if (!fetcher.data) return;
     setCandidates([fetcher.data as CandidateItem, ...candidates]);
   }, [fetcher.data])
 
