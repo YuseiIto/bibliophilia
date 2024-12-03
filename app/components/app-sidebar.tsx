@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { NavLink } from "@remix-run/react";
 import {
   Sidebar,
   SidebarContent,
@@ -20,12 +20,12 @@ import { LogoType } from "~/components/logo-type";
 
 const SidebarLogoButton = () => {
   return (<SidebarMenuButton size="lg" asChild>
-    <a href="/">
+    <NavLink to="/">
       <div className="flex aspect-square size-8 items-center justify-center rounded-none">
         <img src={LogoIcon} className="w-[100%] max-w-9" />
       </div>
       <LogoType />
-    </a>
+    </NavLink>
   </SidebarMenuButton>);
 };
 
@@ -45,10 +45,10 @@ const SidebarSearchGroup = () => {
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton tooltip="書誌レコードを検索" asChild>
-            <Link to="/search">
+            <NavLink to="/search">
               <Search />
               <span>Search</span>
-            </Link>
+            </NavLink>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
@@ -63,10 +63,10 @@ const SidebarCreateGroup = () => {
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton tooltip="書誌レコードを追加" asChild>
-            <Link to="/new">
+            <NavLink to="/new">
               <Plus />
               <span>Create New</span>
-            </Link>
+            </NavLink>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
