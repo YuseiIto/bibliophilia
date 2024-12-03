@@ -1,3 +1,4 @@
+import { Link } from "@remix-run/react";
 import {
   Sidebar,
   SidebarContent,
@@ -12,45 +13,76 @@ import {
   SidebarTrigger
 } from "~/components/ui/sidebar"
 
-import { Search } from "@mynaui/icons-react"
+import { Search, Plus } from "@mynaui/icons-react"
 import LogoIcon from "~/assets/icon.png";
 import { LogoType } from "~/components/logo-type";
+
+
+const SidebarLogoButton = () => {
+  return (<SidebarMenuButton size="lg" asChild>
+    <a href="/">
+      <div className="flex aspect-square size-8 items-center justify-center rounded-none">
+        <img src={LogoIcon} className="w-[100%] max-w-9" />
+      </div>
+      <LogoType />
+    </a>
+  </SidebarMenuButton>);
+};
+
+
+const SidebarHeaderContent = ({ noLogo }: { noLogo?: boolean }) => {
+
+  return (<SidebarMenu>
+    <SidebarMenuItem>{noLogo ? <SidebarTrigger /> : <SidebarLogoButton />}
+    </SidebarMenuItem>
+  </SidebarMenu>);
+};
+
+const SidebarSearchGroup = () => {
+  return (<SidebarGroup>
+    <SidebarGroupLabel> Search </SidebarGroupLabel>
+    <SidebarGroupContent>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton tooltip="書誌レコードを検索" asChild>
+            <Link to="/search">
+              <Search />
+              <span>Search</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarGroupContent>
+  </SidebarGroup>);
+}
+
+const SidebarCreateGroup = () => {
+  return (<SidebarGroup>
+    <SidebarGroupLabel> Create </SidebarGroupLabel>
+    <SidebarGroupContent>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton tooltip="書誌レコードを追加" asChild>
+            <Link to="/new">
+              <Plus />
+              <span>Create New</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarGroupContent>
+  </SidebarGroup>);
+}
 
 export function AppSidebar({ noLogo }: { noLogo?: boolean }) {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader >
-        <SidebarMenu>
-          <SidebarMenuItem>{noLogo ? <SidebarTrigger/> :
-            <SidebarMenuButton size="lg" asChild>
-              <a href="/">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-none">
-                  <img src={LogoIcon} className="w-[100%] max-w-9" />
-                </div>
-                <LogoType />
-              </a>
-            </SidebarMenuButton>
-          }
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <SidebarHeaderContent noLogo={noLogo} />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup >
-          <SidebarGroupLabel> Search </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Find items" asChild>
-                  <a href="/search">
-                    <Search />
-                    <span>Search</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarGroup />
+        <SidebarSearchGroup />
+        <SidebarCreateGroup />
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
