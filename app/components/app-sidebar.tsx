@@ -1,4 +1,5 @@
 import { NavLink } from "@remix-run/react";
+import { useRef, useState, useEffect } from 'react';
 import {
   Sidebar,
   SidebarContent,
@@ -57,17 +58,27 @@ const SidebarSearchGroup = () => {
 }
 
 const SidebarCreateGroup = () => {
+  const ref = useRef(null);
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    if(!ref.current) return;
+    const isActive = ref.current.classList.contains("active");
+    setIsActive(isActive);
+  }, [ref.current]);
+
   return (<SidebarGroup>
     <SidebarGroupLabel> Create </SidebarGroupLabel>
     <SidebarGroupContent>
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton tooltip="書誌レコードを追加" asChild>
-            <NavLink to="/new">
+
+          <NavLink to="/new" ref={ref}>
+            <SidebarMenuButton tooltip="書誌レコードを追加" isActive={isActive}>
               <Plus />
               <span>Create New</span>
-            </NavLink>
-          </SidebarMenuButton>
+            </SidebarMenuButton>
+          </NavLink>
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroupContent>
