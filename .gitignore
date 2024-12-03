@@ -9,3 +9,6 @@ node_modules
 
 prisma/dev.db
 prisma/dev.db-journal
+
+*storybook.log
+storybook-static
