@@ -12,7 +12,8 @@
     "typecheck": "tsc",
     "typegen": "wrangler types",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "vitest run"
   },
   "dependencies": {
     "@mynaui/icons-react": "^0.3.3",
@@ -67,6 +68,7 @@
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1",
+    "vitest": "^2.1.8",
     "wrangler": "3.57.1"
   },
   "engines": {
