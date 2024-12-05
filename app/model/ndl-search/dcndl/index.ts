@@ -8,21 +8,21 @@ import { mapRdfDatatype, mapRdfDescription, mapFoafAgent, isRdfDescription, mapR
 
 export class DcNdlParser {
 
-  xml: string;
-  obj: any;
+  private _xml: string;
+  private _obj: any;
 
-  constructor() {
-    this.xml = "";
-    this.obj = {};
+  public constructor() {
+    this._xml = "";
+    this._obj = {};
   }
 
   async parseXml(xml: string) {
-    this.xml = xml;
-    this.obj = await parseStringPromise(xml);
+    this._xml = xml;
+    this._obj = await parseStringPromise(xml);
   }
 
   get rdf() {
-    return this.obj["rdf:RDF"];
+    return this._obj["rdf:RDF"];
   }
 
   get bibResource() {

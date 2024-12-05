@@ -1,4 +1,3 @@
-import type { AllowMultiple } from './util';
 import { MediaType } from './media-type';
 
 const NDL_OPENSEARCH_BASEURL = "https://ndlsearch.ndl.go.jp/api/opensearch";
@@ -9,6 +8,7 @@ const NDL_OPENSEARCH_BASEURL = "https://ndlsearch.ndl.go.jp/api/opensearch";
  * https://ndlsearch.ndl.go.jp/file/help/api/specifications/ndlsearch_api_20240712.pdf
  */
 
+export type AllowMultiple<T> = T | T[];
 export interface OpenSearchParameters {
   dpid? :AllowMultiple<string>; // データプロバイダID, データグループID, コレクションコード, AccessRights
   dpgroupid?: string; // データプロバイダグループID

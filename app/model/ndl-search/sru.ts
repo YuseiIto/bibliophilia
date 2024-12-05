@@ -1,7 +1,7 @@
-import { CqlQuery, And, serializeCql } from "./cql";
+import { CqlQuery, serializeCql } from "./cql";
 import { parseStringPromise } from "xml2js";
 const NDL_SRU_BASEURL = "https://ndlsearch.ndl.go.jp/api/sru";
-import fs from "fs";
+
 /*
  * NDL Search の SRU APIで使えるパラメータ
  * 以下のURLにある仕様書を参考に実装
@@ -20,9 +20,7 @@ export function composeSearchUrl(params: SruSearchParameters) {
   const url = new URL(NDL_SRU_BASEURL);
   url.searchParams.append("operation", "searchRetrieve");
   url.searchParams.append("recordSchema", "dcndl");
-  url.searchParams.append("recordPacking", "xml");
   const query = serializeCql(params.query);
-  console.log(`"${query}"`);
   url.searchParams.append("query", encodeURI(query));
   if (params.startRecord) url.searchParams.append("startRecord", params.startRecord.toString());
   if (params.maximumRecords) url.searchParams.append("maximumRecords", params.maximumRecords.toString());
@@ -41,14 +39,5 @@ export async function search(params: SruSearchParameters) {
 
   const parsed = await parseStringPromise(xml);
   const record = parsed["searchRetrieveResponse"]["records"][0]["record"][0]["recordData"][0];
-  const x= record["rdf:RDF"][0];
-  fs.writeFileSync("test.json", JSON.stringify(x, null, 2));
-  console.log(x)
-}
-
-export async function findByIsbn(isbn: string) {
-  const params = {
-    query: And({ isbn }),
-  };
-  await search(params);
+  return record;
 }
