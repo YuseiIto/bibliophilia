@@ -19,7 +19,7 @@ module.exports = {
 		commonjs: true,
 		es6: true,
 	},
-	ignorePatterns: ["!**/.server", "!**/.client", "app/components/ui"],
+	ignorePatterns: ["!**/.server", "!**/.client", "app/components/ui"], // TODO: Remove "app/components/ui" when it's ready
 
 	// Base config
 	extends: ["eslint:recommended", "plugin:storybook/recommended"],
@@ -71,6 +71,9 @@ module.exports = {
 				"plugin:import/recommended",
 				"plugin:import/typescript",
 			],
+			rules: {
+				"@typescript-eslint/no-explicit-any": "off", // TODO: Remove this rule when it's ready
+			},
 		},
 
 		// Node

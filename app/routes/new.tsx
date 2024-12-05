@@ -42,7 +42,7 @@ interface CandidateItem {
 	pubDate: string;
 }
 
-const isCandidateItem = (item): item is CandidateItem => {
+const isCandidateItem = (item: any): item is CandidateItem => {
 	return (
 		"isbn" in item && "title" in item && "author" in item && "pubDate" in item
 	);
@@ -56,7 +56,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	switch (action_type) {
 		case "lookup_by_isbn": {
 			const isbn = req.get("isbn")!;
-			return await lookupByIsbn(isbn);
+			return await lookupByIsbn(isbn.toString());
 		}
 		default:
 			return new Response("Invalid action_type", { status: 400 });

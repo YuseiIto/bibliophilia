@@ -16,7 +16,7 @@ import {
 export class DcNdlParser {
 	private _xml: string;
 	private _parser: XMLParser;
-	private _obj;
+	private _obj: any;
 
 	public constructor() {
 		this._xml = "";

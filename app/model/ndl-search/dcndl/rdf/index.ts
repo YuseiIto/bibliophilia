@@ -17,7 +17,7 @@ export interface RdfDescription {
 	};
 }
 
-export const isRdfDescription = (x): x is RdfDescription => {
+export const isRdfDescription = (x: any): x is RdfDescription => {
 	return x["rdf:Description"] !== undefined;
 };
 
