@@ -11,8 +11,16 @@
 
 This project uses the following technologies:
 
-- 📖 [Remix docs](https://remix.run/docs)
-- 📖 [Remix Cloudflare docs](https://remix.run/guides/vite#cloudflare)
+- [Remix](https://remix.run/)
+- [Cloudflare Workers](https://workers.cloudflare.com/)
+    - 📖 [Remix Cloudflare docs](https://remix.run/guides/vite#cloudflare)
+- [Prisma](https://www.prisma.io/)
+- [Storybook](https://storybook.js.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vite.dev/)
+- [Biome](https://biomejs.dev/)
+- [Mend Renovate](https://mend.io/renovate)
 
 ## Development
 
