@@ -3,7 +3,7 @@
  * 仕様書 (https://ndlsearch.ndl.go.jp/file/renkei/dcndl/dcndl_rdf_format_ver.2.11_20240401.pdf) を参考に実装。
  */
 import { parseStringPromise } from "xml2js";
-import { mapRdfDatatype, mapRdfDescription, mapFoafAgent } from "./rdf"
+import { mapRdfDatatype, mapRdfDescription, mapFoafAgent, isRdfDescription, mapRdfResource, RdfDescription, RdfResource } from "./rdf"
 
 
 export class DcNdlParser {
@@ -131,7 +131,7 @@ export class DcNdlParser {
   }
 
   get dcndlPartInformation() {
-    return (this.bibResource["dcndl:partInformation"] ?? []).map(mapRdfDescription) // TODO: ここがemptyでないテストも必要
+    return (this.bibResource["dcndl:partInformation"] ?? []).map(mapRdfDescription)
   }
 
   get dctermsAbstract() {
@@ -139,7 +139,7 @@ export class DcNdlParser {
   }
 
   get dctermsSubject() {
-    return (this.bibResource["dcterms:subject"] ?? []).map(mapRdfDescription)
+    return (this.bibResource["dcterms:subject"] ?? []).map((x: RdfDescription | RdfResource) => { return isRdfDescription(x) ? mapRdfDescription(x) : mapRdfResource(x) })
   }
 
   get dcSubject() {

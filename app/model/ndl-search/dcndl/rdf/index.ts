@@ -16,6 +16,10 @@ export interface RdfDescription {
   ]
 }
 
+export const isRdfDescription = (x: any): x is RdfDescription => {
+  return x["rdf:Description"] !== undefined;
+}
+
 export const mapRdfDescription = (x: RdfDescription) => {
 
   const transcription = x["rdf:Description"][0]["dcndl:transcription"];
@@ -55,4 +59,14 @@ export const mapFoafAgent = (x: FoafAgent) => {
     description: description ? description[0] : undefined,
     location: location ? location[0] : undefined
   }
+}
+
+export interface RdfResource {
+  $: {
+    "rdf:resource": string;
+  }
+}
+
+export const mapRdfResource = (x: RdfResource) => {
+  return { resource: x.$["rdf:resource"] };
 }
