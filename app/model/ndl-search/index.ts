@@ -7,8 +7,6 @@ export async function lookupByIsbn(isbn: string) {
   const parser = new DcNdlParser();
   await parser.parseXml(xml);
 
-  console.log(parser.dctermsIssued);
-
   const data = {
     isbn,
     title: parser.dctermsTitle,
