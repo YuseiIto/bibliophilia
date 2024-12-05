@@ -5,7 +5,6 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	useRouteError,
 } from "@remix-run/react";
 import { ErrorPage } from "~/components/error-page";
 
@@ -26,7 +25,6 @@ export const links: LinksFunction = () => [
 ];
 
 export function ErrorBoundary() {
-	const error = useRouteError();
 	return (
 		<html lang="en">
 			<head>
@@ -37,7 +35,7 @@ export function ErrorBoundary() {
 				<Links />
 			</head>
 			<body>
-				<ErrorPage error={error} />
+				<ErrorPage />
 				<Scripts />
 			</body>
 		</html>
