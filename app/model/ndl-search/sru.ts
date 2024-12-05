@@ -1,5 +1,5 @@
 import { CqlQuery, serializeCql } from "./cql";
-import { parseStringPromise } from "xml2js";
+import { XMLValidator, XMLParser } from "fast-xml-parser";
 const NDL_SRU_BASEURL = "https://ndlsearch.ndl.go.jp/api/sru";
 
 /*
@@ -36,8 +36,15 @@ export async function search(params: SruSearchParameters) {
   const xml = await res.text().catch(console.error);
   if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
   if (!xml) throw new Error("Empty response");
+  if (!XMLValidator.validate(xml)) throw new Error("Invalid XML");
 
-  const parsed = await parseStringPromise(xml);
-  const record = parsed["searchRetrieveResponse"]["records"][0]["record"][0]["recordData"][0];
-  return record;
+  const options = {
+    isArray: (name: string) => ["records"].includes(name),
+  }
+
+  const parser = new XMLParser(options);
+  const json = await parser.parse(xml);
+  const dcNdlDocument= json.searchRetrieveResponse.records[0].record.recordData;
+
+  return dcNdlDocument;
 }

@@ -224,7 +224,7 @@ describe("プログラミングTypeScript (test-fixtures/programming-typescript.
   test("dcterms:publisher", () => {
     expect(parser.dctermsPublisher).toMatchObject([
       { name: "オライリー・ジャパン", transcription: "オライリージャパン" },
-      { name: "オーム社 ", transcription: "オームシャ", location: "東京" }
+      { name: "オーム社", transcription: "オームシャ", location: "東京" }
     ]);
   });
 

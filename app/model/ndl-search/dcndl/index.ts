@@ -2,23 +2,51 @@
  * DC-NDL (国立国会図書館ダブリンコアメタデータ記述) に対応するための型定義。
  * 仕様書 (https://ndlsearch.ndl.go.jp/file/renkei/dcndl/dcndl_rdf_format_ver.2.11_20240401.pdf) を参考に実装。
  */
-import { parseStringPromise } from "xml2js";
+import { XMLParser, XMLValidator } from "fast-xml-parser";
 import { mapRdfDatatype, mapRdfDescription, mapFoafAgent, isRdfDescription, mapRdfResource, RdfDescription, RdfResource } from "./rdf"
 
 
 export class DcNdlParser {
 
   private _xml: string;
+  private _parser: XMLParser;
   private _obj: any;
 
   public constructor() {
     this._xml = "";
+
+    const alwaysArray = [
+      "dcndl:edition",
+      "dcterms:extent",
+      "dcndl:price",
+      "dcterms:date",
+      "dcndl:alternative",
+      "dcterms:description",
+      "dc:title",
+      "dcndl:volume",
+      "dcndl:seriesTitle",
+      "dcndl:publicationPlace",
+      "dcterms:publisher",
+      "dcterms:issued",
+      "dcterms:language",
+      "dcndl:originalLanguage"
+    ];
+
+    const options = {
+      ignoreAttributes: false,
+      isArray: (name: string, jpath: string, isLeafNode: boolean, isAttribute: boolean) => { return alwaysArray.includes(name) },
+      parseTagValue: false,
+    }
+
+    this._parser = new XMLParser(options);
     this._obj = {};
   }
 
   async parseXml(xml: string) {
     this._xml = xml;
-    this._obj = await parseStringPromise(xml);
+
+    if (!XMLValidator.validate(xml)) throw new Error("Invalid XML");
+    this._obj = await this._parser.parse(xml);
   }
 
   get rdf() {
@@ -30,15 +58,15 @@ export class DcNdlParser {
   }
 
   get bibAdminResource() {
-    return this.rdf["dcndl:BibAdminResource"][0];
+    return this.rdf["dcndl:BibAdminResource"];
   }
 
   get catalogingStatus() {
-    return this.bibAdminResource["dcndl:catalogingStatus"][0];
+    return this.bibAdminResource["dcndl:catalogingStatus"];
   }
 
   get catalogingRule() {
-    return this.bibAdminResource["dcndl:catalogingRule"][0];
+    return this.bibAdminResource["dcndl:catalogingRule"];
   }
 
   get dctermsDescription() {
@@ -54,7 +82,7 @@ export class DcNdlParser {
   }
 
   get dctermsTitle() {
-    return this.bibResource["dcterms:title"][0];
+    return this.bibResource["dcterms:title"];
   }
 
   get dcTitle() {

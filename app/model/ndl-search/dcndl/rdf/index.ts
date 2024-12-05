@@ -1,19 +1,19 @@
-export interface RdfDatatype { _: string, $: { "rdf:datatype": string } }
+export interface RdfDatatype { "#text": string, "@_rdf:datatype": string }
 
 export const mapRdfDatatype = (x: RdfDatatype) => {
-  return { datatype: x.$["rdf:datatype"], value: x._ }
+  return { datatype: x["@_rdf:datatype"], value: x["#text"] }
 }
 
 
 export interface RdfDescription {
-  'rdf:Description': [
-    {
-      "rdf:value": [string],
-      "dcndl:transcription"?: [string],
-      "dcterms:title"?: [string],
-      "dc:creator"?: [string],
-    }
-  ]
+  'rdf:Description':
+  {
+    "rdf:value": string,
+    "@_rdf:about"?: string,
+    "dcndl:transcription"?: string,
+    "dcterms:title"?: string,
+    "dc:creator"?: string,
+  }
 }
 
 export const isRdfDescription = (x: any): x is RdfDescription => {
@@ -22,51 +22,40 @@ export const isRdfDescription = (x: any): x is RdfDescription => {
 
 export const mapRdfDescription = (x: RdfDescription) => {
 
-  const transcription = x["rdf:Description"][0]["dcndl:transcription"];
-  const title = x["rdf:Description"][0]["dcterms:title"];
-  const creator = x["rdf:Description"][0]["dc:creator"];
-
   return {
-    value: x["rdf:Description"][0]["rdf:value"][0],
-    transcription: transcription ? transcription[0] : undefined,
-    title: title ? title[0] : undefined,
-    creator: creator ? creator[0] : undefined
+    value: x["rdf:Description"]["rdf:value"],
+    about: x["rdf:Description"]["@_rdf:about"],
+    transcription: x["rdf:Description"]["dcndl:transcription"],
+    title: x["rdf:Description"]["dcterms:title"],
+    creator: x["rdf:Description"]["dc:creator"]
   }
 };
 
 export interface FoafAgent {
-  "foaf:Agent": [
-    {
-      $: { "rdf:about"?: string },
-      "foaf:name": [string],
-      "dcndl:transcription"?: [string],
-      "dcndl:description"?: [string],
-      "dcndl:location"?: [string]
-    }
-  ]
+  "foaf:Agent":
+  {
+    "@_rdf:about"?: string,
+    "foaf:name": string,
+    "dcndl:transcription"?: string,
+    "dcndl:description"?: string,
+    "dcndl:location"?: string
+  }
 }
 
 export const mapFoafAgent = (x: FoafAgent) => {
-  const about = x["foaf:Agent"][0]["$"];
-  const transcription = x["foaf:Agent"][0]["dcndl:transcription"];
-  const description = x["foaf:Agent"][0]["dcndl:description"];
-  const location = x["foaf:Agent"][0]["dcndl:location"];
-
   return {
-    name: x["foaf:Agent"][0]["foaf:name"][0],
-    about: about ? about["rdf:about"] : undefined,
-    transcription: transcription ? transcription[0] : undefined,
-    description: description ? description[0] : undefined,
-    location: location ? location[0] : undefined
+    name: x["foaf:Agent"]["foaf:name"],
+    about: x["foaf:Agent"]["@_rdf:about"],
+    transcription: x["foaf:Agent"]["dcndl:transcription"],
+    description: x["foaf:Agent"]["dcndl:description"],
+    location: x["foaf:Agent"]["dcndl:location"]
   }
 }
 
 export interface RdfResource {
-  $: {
-    "rdf:resource": string;
-  }
+    "@_rdf:resource": string;
 }
 
 export const mapRdfResource = (x: RdfResource) => {
-  return { resource: x.$["rdf:resource"] };
+  return { resource: x["@_rdf:resource"] };
 }
