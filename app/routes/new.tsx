@@ -76,8 +76,8 @@ export default function Index() {
 	useEffect(() => {
 		if (!fetcher.data) return;
 		if (!isCandidateItem(fetcher.data)) return;
-		setCandidates([fetcher.data as CandidateItem, ...candidates]);
-	}, [fetcher.data, candidates]);
+		setCandidates((candidates) => [...candidates, fetcher.data as CandidateItem]);
+	}, [fetcher.data]);
 
 	return (
 		<DefaultLayout>

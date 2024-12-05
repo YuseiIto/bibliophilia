@@ -69,7 +69,7 @@ const SidebarCreateGroup = () => {
 		if (!ref.current) return;
 		const isActive = ref.current.classList.contains("active");
 		setIsActive(isActive);
-	}, [ref.current]);
+	}, []);
 
 	return (
 		<SidebarGroup>
