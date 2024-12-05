@@ -62,7 +62,7 @@ const SidebarSearchGroup = () => {
 };
 
 const SidebarCreateGroup = () => {
-	const ref = useRef(null);
+	const ref = useRef<HTMLAnchorElement>(null);
 	const [isActive, setIsActive] = useState(false);
 
 	useEffect(() => {
