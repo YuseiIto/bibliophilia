@@ -3,14 +3,16 @@ import logo from "~/assets/logo.png";
 
 function RouteError() {
 	const error = useRouteError();
+	if (!isRouteErrorResponse(error)) return;
+	const { status, statusText } = error;
 
 	return (
 		<div className="flex flex-row gap-8 items-center justify-center">
 			<div>
-				<h1 className="font-bold text-9xl">{error.status}</h1>
+				<h1 className="font-bold text-9xl">{status}</h1>
 			</div>
 			<div>
-				<p className="font-bold text-6xl">{error.statusText}</p>
+				<p className="font-bold text-6xl">{statusText}</p>
 			</div>
 		</div>
 	);
