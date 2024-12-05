@@ -1,6 +1,9 @@
-import { SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar";
+import {
+	SidebarProvider,
+	SidebarTrigger,
+	SidebarInset,
+} from "~/components/ui/sidebar";
 import { AppSidebar } from "~/components/app-sidebar";
-import { SidebarInset } from "~/components/ui/sidebar";
 import { Separator } from "~/components/ui/separator";
 
 export function DefaultLayout({ children }: { children: React.ReactNode }) {

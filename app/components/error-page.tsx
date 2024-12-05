@@ -1,7 +1,15 @@
-import { NavLink, isRouteErrorResponse } from "@remix-run/react";
+import {
+	NavLink,
+	RouteErrorResponse,
+	isRouteErrorResponse,
+} from "@remix-run/react";
 import logo from "~/assets/logo.png";
 
-function RouteError({ error }) {
+type RouteErrorProps = {
+	error: RouteErrorResponse;
+};
+
+function RouteError({ error }: RouteErrorProps) {
 	return (
 		<div className="flex flex-row gap-8 items-center justify-center">
 			<div>
@@ -13,7 +21,12 @@ function RouteError({ error }) {
 		</div>
 	);
 }
-export function ErrorPage({ error }) {
+
+type ErrorPageProps = {
+	error: Error | RouteErrorResponse;
+};
+
+export function ErrorPage({ error }: ErrorPageProps) {
 	console.log(error);
 	return (
 		<main className="flex flex-col p-8 h-screen justify-center">

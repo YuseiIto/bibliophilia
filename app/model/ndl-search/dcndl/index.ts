@@ -16,7 +16,7 @@ import {
 export class DcNdlParser {
 	private _xml: string;
 	private _parser: XMLParser;
-	private _obj: any;
+	private _obj;
 
 	public constructor() {
 		this._xml = "";
@@ -40,12 +40,7 @@ export class DcNdlParser {
 
 		const options = {
 			ignoreAttributes: false,
-			isArray: (
-				name: string,
-				jpath: string,
-				isLeafNode: boolean,
-				isAttribute: boolean,
-			) => {
+			isArray: (name: string) => {
 				return alwaysArray.includes(name);
 			},
 			parseTagValue: false,

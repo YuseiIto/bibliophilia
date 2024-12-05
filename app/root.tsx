@@ -5,8 +5,8 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	useRouteError,
 } from "@remix-run/react";
-import { useRouteError } from "@remix-run/react";
 import { ErrorPage } from "~/components/error-page";
 
 import stylesheet from "~/tailwind.css?url";

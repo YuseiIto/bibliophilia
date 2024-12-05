@@ -42,11 +42,11 @@ interface CandidateItem {
 	pubDate: string;
 }
 
-function isCandidateItem(item: any): item is CandidateItem {
+const isCandidateItem = (item): item is CandidateItem => {
 	return (
 		"isbn" in item && "title" in item && "author" in item && "pubDate" in item
 	);
-}
+};
 
 export async function action({ request }: ActionFunctionArgs) {
 	const req = await request.formData();
@@ -54,9 +54,10 @@ export async function action({ request }: ActionFunctionArgs) {
 
 	console.log("action called. action_type: ", action_type);
 	switch (action_type) {
-		case "lookup_by_isbn":
+		case "lookup_by_isbn": {
 			const isbn = req.get("isbn")!;
 			return await lookupByIsbn(isbn);
+		}
 		default:
 			return new Response("Invalid action_type", { status: 400 });
 	}
@@ -74,8 +75,9 @@ export default function Index() {
 
 	useEffect(() => {
 		if (!fetcher.data) return;
+		if (!isCandidateItem(fetcher.data)) return;
 		setCandidates([fetcher.data as CandidateItem, ...candidates]);
-	}, [fetcher.data]);
+	}, [fetcher.data, candidates]);
 
 	return (
 		<DefaultLayout>
