@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from "vitest/config";
 
 /* An workaround for the termination Error described on
  * official document here: https://vitest.dev/guide/common-errors.html#failed-to-terminate-worker.
@@ -6,7 +6,7 @@ import { defineConfig } from 'vitest/config';
  */
 
 export default defineConfig({
-  test: {
-    pool: "forks"
-  }
-})
+	test: {
+		pool: "forks",
+	},
+});

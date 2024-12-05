@@ -4,4 +4,16 @@
  * https://ndlsearch.ndl.go.jp/file/help/api/specifications/ndlsearch_api_ap2_20240401.pdf
  */
 
-export type MediaType = "books" | "periodicals" | "articles" | "newspapers" | "oldmaterials" | "maps" | "electronic" | "video" | "audio" | "online" | "doctoral" | "reports";
+export type MediaType =
+	| "books"
+	| "periodicals"
+	| "articles"
+	| "newspapers"
+	| "oldmaterials"
+	| "maps"
+	| "electronic"
+	| "video"
+	| "audio"
+	| "online"
+	| "doctoral"
+	| "reports";
