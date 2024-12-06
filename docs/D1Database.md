@@ -23,3 +23,31 @@ sh ./scripts/init-db.sh
 ```zsh
 npm run db:generate
 ```
+
+## Migrationを適用
+
+### ローカルで適用
+
+```zsh
+npm run db:apply
+```
+
+### 本番で適用
+
+```zsh
+npm run db:apply:prod
+```
+
+## Drizzle Studio
+
+### ローカルのDBに対して起動
+
+```zsh
+npm run db:studio
+```
+
+### 本番のDBに対して起動
+
+```zsh
+npm run db:studio:prod
+```
