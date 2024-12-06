@@ -1,11 +1,16 @@
 import { drizzle } from 'drizzle-orm/d1';
+import { bibWorksTable } from "./schema";
+import { Work } from "./work";
 
-export interface Env {
-	DB: D1Database;
-}
+export class Repository{
+	private _con;
 
-export default {
-	async fetch(request: Request, env: Env) {
-		const db = drizzle(env.DB);
+	constructor(env: Env){
+		if(!env.DB) throw new Error("DB is not defined");
+		this._con = drizzle(env.DB);
+	}
+
+	async insertWork(work: Work){
+		await this._con.insert(bibWorksTable).values(work);
 	}
 }
