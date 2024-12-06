@@ -29,24 +29,28 @@ export const bibWorksTable = sqliteTable("bib_works", {
 	thumbnail_url: text(),
 	preferred_volume: text(),
 	preferred_volume_title: text(),
-	preferred_volume_title_transcription: text()
-})
+	preferred_volume_title_transcription: text(),
+});
 
 export const bibIdentifiersTable = sqliteTable("bib_identifiers", {
 	id: text().primaryKey(),
-	work_id: text().notNull().references(() => bibWorksTable.id),
+	work_id: text()
+		.notNull()
+		.references(() => bibWorksTable.id),
 	identifier: text().notNull(),
 	identifier_type: text().notNull(), // ISBN, ISSN, JPNO, etc.
-})
+});
 
-/* 
+/*
  * Item: 個別資料
  * - LRM E5 (Item) に将来的に対応することを念頭に設計
  */
 export const bibItemsTable = sqliteTable("bib_items", {
 	id: text().primaryKey(),
-	work_id: text().notNull().references(() => bibWorksTable.id),
-})
+	work_id: text()
+		.notNull()
+		.references(() => bibWorksTable.id),
+});
 
 /*
  * Agent: agent
@@ -56,8 +60,8 @@ export const bibAgentTable = sqliteTable("bib_agents", {
 	id: text().primaryKey(), // uuid
 	preferred_name: text().notNull(), // 統一名称
 	preferred_name_transcription: text(),
-	agent_type: text().notNull() // `person` or `collective`
-})
+	agent_type: text().notNull(), // `person` or `collective`
+});
 
 /*
  * Person: 個人
@@ -67,9 +71,11 @@ export const bibAgentTable = sqliteTable("bib_agents", {
  */
 export const bibPersonsTable = sqliteTable("bib_persons", {
 	id: text().primaryKey(),
-	agent_id: text().notNull().references(() => bibAgentTable.id),
+	agent_id: text()
+		.notNull()
+		.references(() => bibAgentTable.id),
 	preferred_name: text().notNull(),
-	preferred_name_transcription: text()
+	preferred_name_transcription: text(),
 });
 
 /*
@@ -80,81 +86,105 @@ export const bibPersonsTable = sqliteTable("bib_persons", {
  */
 export const bibCollectiveAgentsTable = sqliteTable("bib_collective_agents", {
 	id: text().primaryKey(),
-	agent_id: text().notNull().references(() => bibAgentTable.id),
+	agent_id: text()
+		.notNull()
+		.references(() => bibAgentTable.id),
 	preferred_name: text().notNull(),
-	preferred_name_transcription: text()
+	preferred_name_transcription: text(),
 });
 
 export const bibItemsAgentsTable = sqliteTable("bib_items_agencies", {
-	item_id: text().notNull().references(() => bibItemsTable.id),
-	agent_id: text().notNull().references(() => bibAgentTable.id),
+	item_id: text()
+		.notNull()
+		.references(() => bibItemsTable.id),
+	agent_id: text()
+		.notNull()
+		.references(() => bibAgentTable.id),
 	role: text().notNull(), // author,publisher, editor, translator, contributor, supervisor ...
-	raw_role: text().notNull() // roleの根拠となった記述
+	raw_role: text().notNull(), // roleの根拠となった記述
 });
 
 // 並列タイトル, 別タイトル
 export const bibWorkTitlesTable = sqliteTable("bib_alternative_title", {
 	id: text().primaryKey(),
-	work_id: text().notNull().references(() => bibWorksTable.id),
+	work_id: text()
+		.notNull()
+		.references(() => bibWorksTable.id),
 	title: text().notNull(),
 	transcription: text(),
-})
+});
 
 // 件名標目
 export const bibSubjectsTable = sqliteTable("bib_subjects", {
 	id: text().primaryKey(),
 	preferred_label: text().notNull(),
 	preferred_label_transcription: text(),
-})
+});
 
 export const bibWorksSubjectsTable = sqliteTable("bib_works_subjects", {
-	work_id: text().notNull().references(() => bibWorksTable.id),
-	subject_id: text().notNull().references(() => bibSubjectsTable.id),
-})
+	work_id: text()
+		.notNull()
+		.references(() => bibWorksTable.id),
+	subject_id: text()
+		.notNull()
+		.references(() => bibSubjectsTable.id),
+});
 
 export const bibSeriesTitle = sqliteTable("bib_series_title", {
 	id: text().primaryKey(),
-	work_id: text().notNull().references(() => bibWorksTable.id),
+	work_id: text()
+		.notNull()
+		.references(() => bibWorksTable.id),
 	title: text().notNull(),
 	transcription: text(),
-})
+});
 
 export const bibLanguagesTable = sqliteTable("bib_languages", {
 	id: text().primaryKey(),
 	language: text().notNull(),
-})
+});
 
 export const bibOriginalLanguagesTable = sqliteTable("bib_original_languages", {
 	id: text().primaryKey(),
 	language: text().notNull(),
-})
+});
 
 export const bibPriceTable = sqliteTable("bib_price", {
 	id: text().primaryKey(),
-	work_id: text().notNull().references(() => bibWorksTable.id),
+	work_id: text()
+		.notNull()
+		.references(() => bibWorksTable.id),
 	price: text().notNull(),
-})
+});
 
 export const bibExtentTable = sqliteTable("bib_extent", {
 	id: text().primaryKey(),
-	work_id: text().notNull().references(() => bibWorksTable.id),
+	work_id: text()
+		.notNull()
+		.references(() => bibWorksTable.id),
 	extent: text().notNull(),
-})
+});
 
 export const bibAbstractTable = sqliteTable("bib_abstract", {
 	id: text().primaryKey(),
-	work_id: text().notNull().references(() => bibWorksTable.id),
+	work_id: text()
+		.notNull()
+		.references(() => bibWorksTable.id),
 	abstract: text().notNull(),
-})
+});
 
 export const bibDescriptionTable = sqliteTable("bib_description", {
 	id: text().primaryKey(),
-	work_id: text().notNull().references(() => bibWorksTable.id),
+	work_id: text()
+		.notNull()
+		.references(() => bibWorksTable.id),
 	description: text().notNull(),
-})
+});
 
 export const bibDatesTable = sqliteTable("bib_dates", {
 	id: text().primaryKey(),
-	work_id: text().notNull().references(() => bibWorksTable.id),
+	work_id: text()
+		.notNull()
+		.references(() => bibWorksTable.id),
 	date: text().notNull(),
-})
+});

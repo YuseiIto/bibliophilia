@@ -37,7 +37,7 @@ export class DcNdlParser {
 			"dcterms:language",
 			"dcndl:originalLanguage",
 			"dcterms:abstract",
-			"dcterms:creator"
+			"dcterms:creator",
 		];
 
 		const options = {
