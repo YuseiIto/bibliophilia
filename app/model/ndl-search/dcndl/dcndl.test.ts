@@ -152,6 +152,10 @@ describe("エルマーのぼうけん(test-fixtures/my-fathers-dragon.rdf)", asy
 		expect(parser.dcndlPartInformation).toMatchObject([]);
 	});
 
+	test("dcterms:abstract", () => {
+		expect(parser.dctermsAbstract).toMatchObject(["どうぶつ島をたずねた少年の物語。ユーモアとナンセンスと現実味を融合させて描いた米国で評判の童話。(日本図書館協会)"]);
+	});
+
 	test("dcterms:subject", () => {
 		expect(parser.dctermsSubject).toMatchObject([]);
 	});
