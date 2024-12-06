@@ -1,7 +1,13 @@
-export type CatalogSourceType = "NDL";
-export type CatalogingRule = "";
+export type CatalogSourceType = "ndl" | "manual";
+export const isCatalogSourceType = (value: any): value is CatalogSourceType =>
+	["ndl", "manual"].includes(value);
 
-export interface Work {
+export type CatalogingRule = "ncr/2018" | "ncr/1987" | "ncr/1977" | "ndlserial" | "rda" | "aacr";
+export const isCatalogingRule = (value: any): value is CatalogingRule =>
+	["ncr/2018", "ncr/1987", "ncr/1977", "ndlserial", "rda", "aacr"].includes(value);
+
+
+export type Work = {
 	id: string;
 	preferred_title: string;
 	preferred_title_transcription?: string;
