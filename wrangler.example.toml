@@ -1,0 +1,7 @@
+name = "biblophilia"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bibliophilia-db"
+database_id = "<GET YOUR DB ID>" # Get your databse ID by creating a database (scripts/init_db.sh)
+migrations_dir = "drizzle"
