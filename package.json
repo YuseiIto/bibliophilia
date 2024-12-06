@@ -17,7 +17,10 @@
 		"build-storybook": "storybook build",
 		"test": "vitest run",
 		"db:generate": "drizzle-kit generate",
-		"db:migrate": "drizzle-kit migrate"
+		"db:apply": "wrangler d1 migrations apply bibliophilia-db",
+		"db:apply:prod": "wrangler d1 migrations apply bibliophilia-db --remote",
+		"db:studio:prod": "drizzle-kit studio",
+		"db:studio": "LOCAL_DB_URL=$(find .wrangler/state/v3/d1/miniflare-D1DatabaseObject -type f -name '*.sqlite' -print -quit) drizzle-kit studio"
 	},
 	"dependencies": {
 		"@mynaui/icons-react": "^0.3.3",
