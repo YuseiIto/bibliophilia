@@ -37,12 +37,6 @@ npm run build
 npm run start
 ```
 
-## DB migration
-
-```sh
-npx prisma migrate dev --name xxxx
-```
-
 ## Typegen
 
 Generate types for your Cloudflare bindings in `wrangler.toml`:
