@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/d1";
 import { bibWorksTable } from "./schema";
-import { Work } from "./work";
+import { Work } from "~/model/work";
 
 export class Repository {
 	private _con;
