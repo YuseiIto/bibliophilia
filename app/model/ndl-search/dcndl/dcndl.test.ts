@@ -17,8 +17,8 @@ describe("エルマーのぼうけん(test-fixtures/my-fathers-dragon.rdf)", asy
 		expect(parser.catalogingRule).toBe("ncr");
 	});
 
-	test("dcterms:description", () => {
-		expect(parser.dctermsDescription).toMatchObject(["type : book"]);
+	test("dcterms:description (BibAdminResource)", () => {
+		expect(parser.bibAdminDctermsDescription).toMatchObject(["type : book"]);
 	});
 
 	test("dcterms:identifier", () => {
@@ -156,6 +156,10 @@ describe("エルマーのぼうけん(test-fixtures/my-fathers-dragon.rdf)", asy
 		expect(parser.dctermsAbstract).toMatchObject(["どうぶつ島をたずねた少年の物語。ユーモアとナンセンスと現実味を融合させて描いた米国で評判の童話。(日本図書館協会)"]);
 	});
 
+	test("dcterms:description (BibResource)", () => {
+		expect(parser.dctermsDescription).toMatchObject([]);
+	});
+
 	test("dcterms:subject", () => {
 		expect(parser.dctermsSubject).toMatchObject([]);
 	});
@@ -202,8 +206,8 @@ describe("プログラミングTypeScript (test-fixtures/programming-typescript.
 		expect(parser.catalogingRule).toBe("ncr/1987");
 	});
 
-	test("dcterms:description", () => {
-		expect(parser.dctermsDescription).toMatchObject(["type : book"]);
+	test("dcterms:description (BibAdmin)", () => {
+		expect(parser.bibAdminDctermsDescription).toMatchObject(["type : book"]);
 	});
 
 	test("dcterms:identifier", () => {
@@ -296,6 +300,13 @@ describe("プログラミングTypeScript (test-fixtures/programming-typescript.
 	test("dcterms:issued", () => {
 		expect(parser.dctermsIssued).toMatchObject([
 			{ datatype: "http://purl.org/dc/terms/W3CDTF", value: "2020" },
+		]);
+	});
+
+	test("dcterms:description (BibResource)", () => {
+		expect(parser.dctermsDescription).toMatchObject([
+			"原タイトル: Programming TypeScript",
+			"索引あり",
 		]);
 	});
 

@@ -36,6 +36,7 @@ export class DcNdlParser {
 			"dcterms:issued",
 			"dcterms:language",
 			"dcndl:originalLanguage",
+			"dcterms:abstract"
 		];
 
 		const options = {
@@ -77,7 +78,7 @@ export class DcNdlParser {
 		return this.bibAdminResource["dcndl:catalogingRule"];
 	}
 
-	get dctermsDescription() {
+	get bibAdminDctermsDescription() {
 		return this.bibAdminResource["dcterms:description"];
 	}
 
@@ -177,6 +178,10 @@ export class DcNdlParser {
 		return (this.bibResource["dcndl:partInformation"] ?? []).map(
 			mapRdfDescription,
 		);
+	}
+
+	get dctermsDescription() {
+		return this.bibResource["dcterms:description"] ?? [];
 	}
 
 	get dctermsAbstract() {
