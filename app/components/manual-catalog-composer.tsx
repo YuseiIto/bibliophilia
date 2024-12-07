@@ -3,6 +3,7 @@ import { Input } from "./ui/input";
 
 import { PreferredTitleInput } from "~/components/preferred-title-input";
 import { CatalogingRuleInput } from "~/components/cataloging-rule-input";
+import { CatalogSourceInput } from "~/components/catalog-source-input";
 
 export function ManualCatalogComposer() {
 	return (
@@ -13,14 +14,7 @@ export function ManualCatalogComposer() {
 					placeholder="優先タイトルの読み"
 					name="prefered_title_transcription"
 				></Input>
-				<Input
-					placeholder="目録情報の出典区分"
-					name="catalog_source_type"
-				></Input>
-				<Input
-					placeholder="目録情報の出典（URL等）"
-					name="catalog_source"
-				></Input>
+				<CatalogSourceInput />
 				preferred_volume: text(), preferred_volume_title: text(),
 				preferred_volume_title_transcription: text(),
 				<CatalogingRuleInput />
