@@ -23,11 +23,7 @@ export function ComboboxWithTooltip({
 	return (
 		<TooltipProvider>
 			<div className="flex flex-row gap-2 items-center">
-				<Combobox
-					label={label}
-					name={name}
-					options={options}
-				/>
+				<Combobox label={label} name={name} options={options} />
 
 				<Tooltip>
 					<TooltipTrigger tabIndex={-1}>

@@ -32,5 +32,11 @@ export function CatalogingRuleInput() {
 		},
 	];
 
-	return <Combobox options={catalogingRules} label="目録規則を選択" />;
+	return (
+		<Combobox
+			options={catalogingRules}
+			name="cataloging_rule"
+			label="目録規則を選択"
+		/>
+	);
 }
