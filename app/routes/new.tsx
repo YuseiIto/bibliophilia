@@ -30,6 +30,14 @@ import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { FilePlus, Trash, Edit } from "@mynaui/icons-react";
 import { lookupByIsbn } from "~/model/ndl-search";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "~/components/ui/dialog";
 
 import type { Work } from "~/model/work";
 
@@ -41,19 +49,6 @@ export const meta: MetaFunction = () => {
 			content: "Yet another information resource manager and more.",
 		},
 	];
-};
-
-interface CandidateItem {
-	isbn: string;
-	title: string;
-	author: string;
-	pubDate: string;
-}
-
-const isCandidateItem = (item: any): item is CandidateItem => {
-	return (
-		"isbn" in item && "title" in item && "author" in item && "pubDate" in item
-	);
 };
 
 	const req = await request.formData();
@@ -73,31 +68,24 @@ const isCandidateItem = (item: any): item is CandidateItem => {
 export default function Index() {
 	const fetcher = useFetcher();
 
-	const [candidates, setCandidates] = useState<CandidateItem[]>([]);
+	const [candidates, setCandidates] = useState<Partial<Work>[]>([]);
 
 	const onIsbnKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key != "Enter") return; // Ignore if not Enter key
 		fetcher.submit(e.currentTarget.form, { method: "post" });
 	};
 
-	const onManualInputSubmit = async (data: Partial<Work>) => {
-		setCandidates((candidates) => [
-			...candidates,
-			{
-				isbn: "",
-				title: data.preferred_title ?? "",
-				author: "",
-				pubDate: "",
-			},
-		]);
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+	const onManualInputSubmit = (data: Partial<Work>) => {
+		setCandidates((candidates) => [...candidates, data]);
 	};
 
 	useEffect(() => {
 		if (!fetcher.data) return;
-		if (!isCandidateItem(fetcher.data)) return;
 		setCandidates((candidates) => [
 			...candidates,
-			fetcher.data as CandidateItem,
+			fetcher.data as Partial<Work>,
 		]);
 	}, [fetcher.data]);
 
@@ -105,6 +93,15 @@ export default function Index() {
 		setCandidates((candidates) => {
 			const newCandidates = [...candidates];
 			newCandidates.splice(index, 1);
+			return newCandidates;
+		});
+	};
+
+	const onRowSubmit = (index: number, work: Partial<Work>) => {
+		setCandidates((candidates) => {
+			const newCandidates = [...candidates];
+			newCandidates[index] = work;
+			setIsDialogOpen(false);
 			return newCandidates;
 		});
 	};
@@ -179,27 +176,53 @@ export default function Index() {
 							<TableBody>
 								{candidates.map(function (item, i) {
 									return (
-										<ContextMenu key={i}>
-											<ContextMenuTrigger key={i} asChild>
-												<TableRow>
-													<TableCell max-width="1">
-														<Checkbox />
-													</TableCell>
-													<TableCell>{item.isbn}</TableCell>
-													<TableCell>{item.title}</TableCell>
-													<TableCell>{item.author}</TableCell>
-													<TableCell>{item.pubDate}</TableCell>
-												</TableRow>
-											</ContextMenuTrigger>
-											<ContextMenuContent>
-												<ContextMenuItem onClick={() => deleteRow(i)}>
-													<span className="flex flex-row items-center gap-3 text-destructive">
-														<Trash size={15} />
-														削除
-													</span>
-												</ContextMenuItem>
-											</ContextMenuContent>
-										</ContextMenu>
+										<Dialog
+											key={i}
+											open={isDialogOpen}
+											onOpenChange={setIsDialogOpen}
+										>
+											<ContextMenu>
+												<ContextMenuTrigger key={i} asChild>
+													<TableRow>
+														<TableCell max-width="1">
+															<Checkbox />
+														</TableCell>
+														<TableCell>ここにISBNが入る</TableCell>
+														<TableCell>{item.preferred_title}</TableCell>
+														<TableCell>ここに著者が入る</TableCell>
+														<TableCell>ここに日付が入る</TableCell>
+													</TableRow>
+												</ContextMenuTrigger>
+												<ContextMenuContent>
+													<DialogTrigger asChild>
+														<ContextMenuItem>
+															<span className="flex flex-row items-center gap-3">
+																<Edit size={15} />
+																編集
+															</span>
+														</ContextMenuItem>
+													</DialogTrigger>
+													<ContextMenuItem onClick={() => deleteRow(i)}>
+														<span className="flex flex-row items-center gap-3 text-destructive">
+															<Trash size={15} />
+															削除
+														</span>
+													</ContextMenuItem>
+												</ContextMenuContent>
+											</ContextMenu>
+
+											<DialogContent>
+												<DialogHeader>
+													<DialogTitle>目録情報の編集</DialogTitle>
+												</DialogHeader>
+												<div className="p-3">
+													<ManualCatalogComposer
+														value={item}
+														onSubmit={(work) => onRowSubmit(i, work)}
+													/>
+												</div>
+											</DialogContent>
+										</Dialog>
 									);
 								})}
 							</TableBody>
