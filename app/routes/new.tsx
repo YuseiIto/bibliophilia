@@ -25,6 +25,7 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { FilePlus } from "@mynaui/icons-react";
 import { lookupByIsbn } from "~/model/ndl-search";
 
+import type { Work } from "~/model/work";
 export const meta: MetaFunction = () => {
 	return [
 		{ title: "Bibliophilia" },
@@ -71,6 +72,18 @@ export default function Index() {
 	const onIsbnKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key != "Enter") return; // Ignore if not Enter key
 		fetcher.submit(e.currentTarget.form, { method: "post" });
+	};
+
+	const onManualInputSubmit = async (data: Partial<Work>) => {
+		setCandidates((candidates) => [
+			...candidates,
+			{
+				isbn: "",
+				title: data.preferred_title ?? "",
+				author: "",
+				pubDate: "",
+			},
+		]);
 	};
 
 	useEffect(() => {
@@ -125,12 +138,11 @@ export default function Index() {
 									<CardHeader>
 										<CardTitle>直接入力して登録</CardTitle>
 										<CardDescription>
-											{" "}
 											書誌事項を直接入力して資料を登録します。
 										</CardDescription>
 									</CardHeader>
 									<CardContent className="space-y-2">
-										<ManualCatalogComposer />
+										<ManualCatalogComposer onSubmit={onManualInputSubmit} />
 									</CardContent>
 								</Card>
 							</TabsContent>
