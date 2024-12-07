@@ -57,6 +57,7 @@ export function ManualCatalogComposer({
 		useState("");
 	const [sourceType, setSourceType] = useState("");
 	const [source, setSource] = useState("");
+	const [preferredVolume, setPreferredVolume] = useState("");
 
 	return (
 		<Form onSubmit={onSubmitWrapper}>
@@ -79,7 +80,11 @@ export function ManualCatalogComposer({
 					onSourceChange={setSource}
 				/>
 
-				<PreferredVolumeInput />
+				<PreferredVolumeInput
+					value={preferredVolume}
+					onChange={setPreferredVolume}
+				/>
+
 				<Input
 					placeholder="優先巻号タイトルの読み"
 					name="preferred_volume_title_transcription"
