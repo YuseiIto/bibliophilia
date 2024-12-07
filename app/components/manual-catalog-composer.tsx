@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Form } from "@remix-run/react";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -51,10 +52,15 @@ export function ManualCatalogComposer({
 		if (onSubmit) onSubmit(data);
 	};
 
+	const [preferredTitle, setPreferredTitle] = useState("");
+
 	return (
 		<Form onSubmit={onSubmitWrapper}>
 			<div className="flex flex-col gap-3">
-				<PreferredTitleInput />
+				<PreferredTitleInput
+					value={preferredTitle}
+					onChange={setPreferredTitle}
+				/>
 				<Input
 					placeholder="優先タイトルの読み"
 					name="preferred_title_transcription"
