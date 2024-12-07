@@ -11,8 +11,7 @@ export function LogoType() {
 
 	return (
 		<span className="logo-type text-xl ml-3 font-[]" style={logoTypeStyle}>
-			{" "}
-			Bibliophilia{" "}
+			Bibliophilia
 		</span>
 	);
 }
