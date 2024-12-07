@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "~/lib/utils";
@@ -31,6 +31,8 @@ interface ComboboxParams {
 	label?: string;
 	notFoundMessage?: string;
 	name?: string;
+	value?: string;
+	onChange?: (value: string) => void;
 }
 
 export function Combobox({
@@ -38,15 +40,21 @@ export function Combobox({
 	label,
 	notFoundMessage,
 	name,
+	value,
+	onChange,
 }: ComboboxParams) {
 	if (!options) throw new Error("Options are required.");
 
-	const [open, setOpen] = React.useState(false);
-	const [value, setValue] = React.useState("");
+	const [open, setOpen] = useState(false);
+	const [selectedValue, setSelectedValue] = useState(value ?? "");
+
+	useEffect(() => {
+		if (onChange) onChange(selectedValue);
+	}, [selectedValue]);
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
-			<input type="hidden" name={name} value={value} />
+			<input type="hidden" name={name} value={selectedValue} />
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
@@ -54,8 +62,8 @@ export function Combobox({
 					aria-expanded={open}
 					className="justify-between w-full"
 				>
-					{value
-						? options.find((option) => option.value === value)?.label
+					{selectedValue
+						? options.find((option) => option.value === selectedValue)?.label
 						: (label ?? "Select options...")}
 					<ChevronsUpDown className="opacity-50" />
 				</Button>
@@ -71,7 +79,9 @@ export function Combobox({
 									key={option.value}
 									value={option.value}
 									onSelect={(currentValue) => {
-										setValue(currentValue === value ? "" : currentValue);
+										setSelectedValue(
+											currentValue === selectedValue ? "" : currentValue,
+										);
 										setOpen(false);
 									}}
 								>
@@ -79,7 +89,9 @@ export function Combobox({
 									<Check
 										className={cn(
 											"ml-auto",
-											value === option.value ? "opacity-100" : "opacity-0",
+											selectedValue === option.value
+												? "opacity-100"
+												: "opacity-0",
 										)}
 									/>
 								</CommandItem>
