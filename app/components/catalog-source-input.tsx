@@ -19,7 +19,6 @@ export function CatalogSourceInput({
 	source,
 	onSourceTypeChange,
 	onSourceChange,
-	onChange,
 }: CatalogSourceInputProps) {
 	const catalogSourceTypes = [
 		{
