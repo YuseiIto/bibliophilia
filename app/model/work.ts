@@ -4,7 +4,7 @@ export type CatalogSourceType =
 	| "manual:other"; // その他
 
 export const isCatalogSourceType = (value: any): value is CatalogSourceType =>
-	["auto:ndl", "manual:original","manual:other"].includes(value);
+	["auto:ndl", "manual:original", "manual:other"].includes(value);
 
 export type CatalogingRule =
 	| "ncr/2018"
@@ -24,7 +24,7 @@ export type Work = {
 	preferred_title: string;
 	preferred_title_transcription?: string;
 	catalog_source: string;
-	catalog_source_type: CatalogSourceType;
+	catalog_source_type: CatalogSourceType | "";
 	cataloging_rule?: string;
 	thumbnail_url?: string;
 	preferred_volume?: string;

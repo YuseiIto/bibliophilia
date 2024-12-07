@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form } from "@remix-run/react";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -15,11 +15,13 @@ import type { Work } from "~/model/work";
 import { isCatalogSourceType } from "~/model/work";
 
 interface ManualCatalogComposerProps {
+	value?: Partial<Work>;
 	onSubmit?: (data: Partial<Work>) => void;
 }
 
 export function ManualCatalogComposer({
 	onSubmit,
+	value,
 }: ManualCatalogComposerProps) {
 	const onSubmitWrapper = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -52,18 +54,79 @@ export function ManualCatalogComposer({
 		if (onSubmit) onSubmit(data);
 	};
 
-	const [preferredTitle, setPreferredTitle] = useState("");
+	const [values, setValues] = useState<Partial<Work>>(
+		value ?? {
+			preferred_title: "",
+			preferred_title_transcription: "",
+			catalog_source: "",
+			catalog_source_type: "",
+			cataloging_rule: "",
+			preferred_volume: "",
+			preferred_volume_title: "",
+			preferred_volume_title_transcription: "",
+		},
+	);
+
+	const [preferredTitle, setPreferredTitle] = useState(
+		values.preferred_title ?? "",
+	);
 	const [preferredTitleTranscription, setPreferredTitleTranscription] =
-		useState("");
-	const [sourceType, setSourceType] = useState("");
-	const [source, setSource] = useState("");
-	const [preferredVolume, setPreferredVolume] = useState("");
-	const [preferredVolumeTitle, setPreferredVolumeTitle] = useState("");
+		useState(values.preferred_title_transcription ?? "");
+	const [sourceType, setSourceType] = useState(
+		values.catalog_source_type ?? "",
+	);
+	const [source, setSource] = useState(values.catalog_source ?? "");
+	const [preferredVolume, setPreferredVolume] = useState(
+		values.preferred_volume ?? "",
+	);
+	const [preferredVolumeTitle, setPreferredVolumeTitle] = useState(
+		values.preferred_volume_title ?? "",
+	);
 	const [
 		preferredVolumeTitleTranscription,
 		setPreferredVolumeTitleTranscription,
-	] = useState("");
-	const [catalogingRule, setCatalogingRule] = useState("");
+	] = useState(values.preferred_title_transcription ?? "");
+	const [catalogingRule, setCatalogingRule] = useState(
+		values.cataloging_rule ?? "",
+	);
+
+	useEffect(() => {
+		setValues({ preferred_title: preferredTitle, ...values });
+	}, [preferredTitle]);
+
+	useEffect(() => {
+		setValues({
+			preferred_title_transcription: preferredTitleTranscription,
+			...values,
+		});
+	});
+
+	useEffect(() => {
+		setValues({ catalog_source_type: sourceType, ...values });
+	}, [sourceType]);
+
+	useEffect(() => {
+		setValues({ catalog_source: source, ...values });
+	}, [source]);
+
+	useEffect(() => {
+		setValues({ preferred_volume: preferredVolume, ...values });
+	}, [preferredVolume]);
+
+	useEffect(() => {
+		setValues({ preferred_volume_title: preferredVolumeTitle, ...values });
+	}, [preferredVolumeTitle]);
+
+	useEffect(() => {
+		setValues({
+			preferred_volume_title_transcription: preferredVolumeTitleTranscription,
+			...values,
+		});
+	}, [preferredVolumeTitleTranscription]);
+
+	useEffect(() => {
+		setValues({ cataloging_rule: catalogingRule, ...values });
+	}, [catalogingRule]);
 
 	return (
 		<Form onSubmit={onSubmitWrapper}>
