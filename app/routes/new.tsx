@@ -1,7 +1,7 @@
 import type { MetaFunction, ActionFunctionArgs } from "@remix-run/cloudflare";
 import { useFetcher, Link } from "@remix-run/react";
 import { useState, useEffect } from "react";
-import { ManualRegisterForm } from "~/components/manual_register_form";
+import { ManualCatalogComposer } from "~/components/manual-catalog-composer";
 import { DefaultLayout } from "~/layouts/default";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import {
@@ -76,7 +76,10 @@ export default function Index() {
 	useEffect(() => {
 		if (!fetcher.data) return;
 		if (!isCandidateItem(fetcher.data)) return;
-		setCandidates((candidates) => [...candidates, fetcher.data as CandidateItem]);
+		setCandidates((candidates) => [
+			...candidates,
+			fetcher.data as CandidateItem,
+		]);
 	}, [fetcher.data]);
 
 	return (
@@ -95,10 +98,9 @@ export default function Index() {
 									<CardHeader>
 										<CardTitle>ISBNから登録 </CardTitle>
 										<CardDescription>
-											{" "}
 											ISBNコードを入力して資料を登録します。目録情報の照会には、
 											<Link to="https://ndlsearch.ndl.go.jp/"> NDLサーチ</Link>
-											APIが利用されます。{" "}
+											APIが利用されます。
 										</CardDescription>
 									</CardHeader>
 									<CardContent className="space-y-2">
@@ -128,7 +130,7 @@ export default function Index() {
 										</CardDescription>
 									</CardHeader>
 									<CardContent className="space-y-2">
-										<ManualRegisterForm />
+										<ManualCatalogComposer />
 									</CardContent>
 								</Card>
 							</TabsContent>
