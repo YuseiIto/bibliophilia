@@ -12,6 +12,8 @@ interface ComboboxWithTooltipProps {
 	label: string;
 	options: ComboboxOption[];
 	children?: ReactNode;
+	value?: string;
+	onChange?: (value: string) => void;
 }
 
 export function ComboboxWithTooltip({
@@ -19,11 +21,19 @@ export function ComboboxWithTooltip({
 	label,
 	options,
 	children,
+	value,
+	onChange,
 }: ComboboxWithTooltipProps) {
 	return (
 		<TooltipProvider>
 			<div className="flex flex-row gap-2 items-center">
-				<Combobox label={label} name={name} options={options} />
+				<Combobox
+					label={label}
+					name={name}
+					options={options}
+					value={value}
+					onChange={onChange}
+				/>
 
 				<Tooltip>
 					<TooltipTrigger tabIndex={-1}>
