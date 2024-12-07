@@ -4,6 +4,8 @@ import { Input } from "./ui/input";
 import { PreferredTitleInput } from "~/components/preferred-title-input";
 import { CatalogingRuleInput } from "~/components/cataloging-rule-input";
 import { CatalogSourceInput } from "~/components/catalog-source-input";
+import {PreferredVolumeInput} from "~/components/preferred-volume-input";
+import {PreferredVolumeTitleInput} from "~/components/preferred-volume-title-input";
 
 export function ManualCatalogComposer() {
 	return (
@@ -15,8 +17,12 @@ export function ManualCatalogComposer() {
 					name="prefered_title_transcription"
 				></Input>
 				<CatalogSourceInput />
-				preferred_volume: text(), preferred_volume_title: text(),
-				preferred_volume_title_transcription: text(),
+				<PreferredVolumeInput />
+				<Input
+					placeholder="優先巻号タイトルの読み"
+					name="prefered_volume_title_transcription"
+				></Input>
+				<PreferredVolumeTitleInput />
 				<CatalogingRuleInput />
 			</div>
 		</Form>
