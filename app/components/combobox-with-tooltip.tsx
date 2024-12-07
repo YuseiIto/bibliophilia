@@ -36,7 +36,7 @@ export function ComboboxWithTooltip({
 				/>
 
 				<Tooltip>
-					<TooltipTrigger tabIndex={-1}>
+					<TooltipTrigger tabIndex={-1} asChild>
 						<InfoCircle size={18} />
 					</TooltipTrigger>
 					<TooltipContent>{children}</TooltipContent>
