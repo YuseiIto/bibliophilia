@@ -7,7 +7,20 @@ import {
 
 import { ComboboxWithTooltip } from "~/components/combobox-with-tooltip";
 
-export function CatalogSourceInput() {
+interface CatalogSourceInputProps {
+	sourceType?: string;
+	source?: string;
+	onSourceTypeChange?: (value: string) => void;
+	onSourceChange?: (value: string) => void;
+}
+
+export function CatalogSourceInput({
+	sourceType,
+	source,
+	onSourceTypeChange,
+	onSourceChange,
+	onChange,
+}: CatalogSourceInputProps) {
 	const catalogSourceTypes = [
 		{
 			label: "新規作成",
@@ -25,6 +38,8 @@ export function CatalogSourceInput() {
 				label="目録情報の出典区分を選択"
 				options={catalogSourceTypes}
 				name="catalog_source_type"
+				value={sourceType}
+				onChange={onSourceTypeChange}
 			>
 				<VocabularyTooltipContent>
 					<HeadWord> 目録情報の出典区分 </HeadWord>
@@ -40,6 +55,8 @@ export function CatalogSourceInput() {
 			<InputWithTooltip
 				placeholder="目録情報の出典（URL等）"
 				name="catalog_source"
+				value={source}
+				onChange={onSourceChange}
 			>
 				<VocabularyTooltipContent>
 					<HeadWord> 目録情報の出典 </HeadWord>
