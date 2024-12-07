@@ -63,6 +63,7 @@ export function ManualCatalogComposer({
 		preferredVolumeTitleTranscription,
 		setPreferredVolumeTitleTranscription,
 	] = useState("");
+	const [catalogingRule, setCatalogingRule] = useState("");
 
 	return (
 		<Form onSubmit={onSubmitWrapper}>
@@ -102,7 +103,11 @@ export function ManualCatalogComposer({
 					onChange={(e) => setPreferredVolumeTitleTranscription(e.target.value)}
 				></Input>
 
-				<CatalogingRuleInput />
+				<CatalogingRuleInput
+					value={catalogingRule}
+					onChange={setCatalogingRule}
+				/>
+
 				<Button className="p-2" type="submit">
 					<Save /> 保存
 				</Button>
