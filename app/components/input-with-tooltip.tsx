@@ -11,17 +11,30 @@ interface InputWithTooltipProps {
 	name?: string;
 	placeholder?: string;
 	children?: ReactNode;
+	onChange?: (value: string) => void;
+	value?: string;
 }
 
 export function InputWithTooltip({
 	name,
 	placeholder,
 	children,
+	onChange,
+	value,
 }: InputWithTooltipProps) {
+	const onChangeWrapper = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (onChange) onChange(e.target.value);
+	};
+
 	return (
 		<TooltipProvider>
 			<div className="flex flex-row gap-2 items-center">
-				<Input placeholder={placeholder} name={name}></Input>
+				<Input
+					placeholder={placeholder}
+					name={name}
+					value={value}
+					onChange={onChangeWrapper}
+				></Input>
 
 				<Tooltip>
 					<TooltipTrigger tabIndex={-1}>
