@@ -37,21 +37,22 @@ export function ManualCatalogComposer() {
 	];
 
 	return (
-		<Form method="post" action="/register_manually">
+		<Form method="post">
 			<div className="flex flex-col gap-3">
 				<PrefferedTitleInput />
 				<Input
-					placeholder="主に使用するタイトルの読み"
+					placeholder="優先タイトルの読み"
 					name="prefered_title_transcription"
 				></Input>
-				<Combobox options={catalogingRules} label="目録規則を選択"/>
-
+				<Combobox options={catalogingRules} label="目録規則を選択" />
 				<Input
 					placeholder="目録情報の出典区分"
 					name="catalog_source_type"
 				></Input>
-				<Input placeholder="目録情報の出典（URL等）" name="catalog_source"></Input>
-
+				<Input
+					placeholder="目録情報の出典（URL等）"
+					name="catalog_source"
+				></Input>
 				/* Selectにする */
 				<Input placeholder="目録情報の出典区分" name="cataloging_rule"></Input>
 				<Input placeholder="サムネイルURL" name="thumbnail_url"></Input>
