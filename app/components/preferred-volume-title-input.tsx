@@ -4,11 +4,21 @@ import {
 	HeadWord,
 } from "~/components/vocabulary-tooltip-content";
 
-export function PreferredVolumeTitleInput() {
+interface PreferredVolumeTitleInputProps {
+	value?: string;
+	onChange?: (value: string) => void;
+}
+
+export function PreferredVolumeTitleInput({
+	value,
+	onChange,
+}: PreferredVolumeTitleInputProps) {
 	return (
 		<InputWithTooltip
 			placeholder="優先巻号タイトル"
 			name="preferred_volume_title"
+			value={value}
+			onChange={onChange}
 		>
 			<VocabularyTooltipContent>
 				<HeadWord>優先巻号タイトル</HeadWord>
