@@ -26,11 +26,11 @@ export interface ComboboxOption {
 	label: string;
 }
 
-export type ComboboxParams = {
+interface ComboboxParams {
 	options: ComboboxOption[];
 	label?: string;
 	notFoundMessage?: string;
-};
+}
 
 export function Combobox({ options, label, notFoundMessage }: ComboboxParams) {
 	if (!options) throw new Error("Options are required.");
@@ -45,7 +45,7 @@ export function Combobox({ options, label, notFoundMessage }: ComboboxParams) {
 					variant="outline"
 					role="combobox"
 					aria-expanded={open}
-					className="justify-between"
+					className="justify-between w-full"
 				>
 					{value
 						? options.find((option) => option.value === value)?.label
