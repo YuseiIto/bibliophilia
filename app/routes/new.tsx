@@ -20,12 +20,19 @@ import {
 	TableHead,
 	TableRow,
 } from "~/components/ui/table";
+import {
+	ContextMenu,
+	ContextMenuContent,
+	ContextMenuTrigger,
+	ContextMenuItem,
+} from "~/components/ui/context-menu";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
-import { FilePlus } from "@mynaui/icons-react";
+import { FilePlus, Trash, Edit } from "@mynaui/icons-react";
 import { lookupByIsbn } from "~/model/ndl-search";
 
 import type { Work } from "~/model/work";
+
 export const meta: MetaFunction = () => {
 	return [
 		{ title: "Bibliophilia" },
@@ -94,6 +101,14 @@ export default function Index() {
 			fetcher.data as CandidateItem,
 		]);
 	}, [fetcher.data]);
+
+	const deleteRow = (index: number) => {
+		setCandidates((candidates) => {
+			const newCandidates = [...candidates];
+			newCandidates.splice(index, 1);
+			return newCandidates;
+		});
+	};
 
 	return (
 		<DefaultLayout>
@@ -165,15 +180,27 @@ export default function Index() {
 							<TableBody>
 								{candidates.map(function (item, i) {
 									return (
-										<TableRow key={i}>
-											<TableCell max-width="1">
-												<Checkbox />
-											</TableCell>
-											<TableCell>{item.isbn}</TableCell>
-											<TableCell>{item.title}</TableCell>
-											<TableCell>{item.author}</TableCell>
-											<TableCell>{item.pubDate}</TableCell>
-										</TableRow>
+										<ContextMenu key={i}>
+											<ContextMenuTrigger key={i} asChild>
+												<TableRow>
+													<TableCell max-width="1">
+														<Checkbox />
+													</TableCell>
+													<TableCell>{item.isbn}</TableCell>
+													<TableCell>{item.title}</TableCell>
+													<TableCell>{item.author}</TableCell>
+													<TableCell>{item.pubDate}</TableCell>
+												</TableRow>
+											</ContextMenuTrigger>
+											<ContextMenuContent>
+												<ContextMenuItem onClick={() => deleteRow(i)}>
+													<span className="flex flex-row items-center gap-3 text-destructive">
+														<Trash size={15} />
+														削除
+													</span>
+												</ContextMenuItem>
+											</ContextMenuContent>
+										</ContextMenu>
 									);
 								})}
 							</TableBody>
@@ -181,7 +208,6 @@ export default function Index() {
 
 						<div className="flex flex-row justify-center">
 							<Button>
-								{" "}
 								<FilePlus /> 選択中の資料を登録
 							</Button>
 						</div>
