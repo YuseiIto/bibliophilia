@@ -24,7 +24,6 @@ export function ComboboxWithTooltip({
 		<TooltipProvider>
 			<div className="flex flex-row gap-2 items-center">
 				<Combobox
-					className="w-full"
 					label={label}
 					name={name}
 					options={options}
