@@ -30,9 +30,15 @@ interface ComboboxParams {
 	options: ComboboxOption[];
 	label?: string;
 	notFoundMessage?: string;
+	name?: string;
 }
 
-export function Combobox({ options, label, notFoundMessage }: ComboboxParams) {
+export function Combobox({
+	options,
+	label,
+	notFoundMessage,
+	name,
+}: ComboboxParams) {
 	if (!options) throw new Error("Options are required.");
 
 	const [open, setOpen] = React.useState(false);
@@ -40,6 +46,7 @@ export function Combobox({ options, label, notFoundMessage }: ComboboxParams) {
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
+			<input type="hidden" name={name} value={value} />
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
