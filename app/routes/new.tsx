@@ -163,7 +163,7 @@ export default function Index() {
 						</Tabs>
 					</div>
 
-					<div>
+					<div className="basis-2/3">
 						<Table>
 							<TableHeader>
 								<TableRow>
