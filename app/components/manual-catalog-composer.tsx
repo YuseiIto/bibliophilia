@@ -2,7 +2,7 @@ import { Form } from "@remix-run/react";
 import { Input } from "./ui/input";
 
 import { Combobox } from "~/components/combobox";
-import { PrefferedTitleInput } from "~/components/preffered_title_input";
+import { PreferredTitleInput } from "~/components/preferred-title-input";
 
 export function ManualCatalogComposer() {
 	const catalogingRules = [
@@ -39,7 +39,7 @@ export function ManualCatalogComposer() {
 	return (
 		<Form method="post">
 			<div className="flex flex-col gap-3">
-				<PrefferedTitleInput />
+				<PreferredTitleInput />
 				<Input
 					placeholder="優先タイトルの読み"
 					name="prefered_title_transcription"

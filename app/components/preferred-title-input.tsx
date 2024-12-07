@@ -7,7 +7,7 @@ import {
 } from "~/components/ui/tooltip";
 import { InfoCircle } from "@mynaui/icons-react";
 
-export function PrefferedTitleInput() {
+export function PreferredTitleInput() {
 	return (
 		<TooltipProvider>
 			<div className="flex flex-row gap-2 items-center">
@@ -19,10 +19,10 @@ export function PrefferedTitleInput() {
 
 				<Tooltip>
 					<TooltipTrigger tabIndex={-1}>
-						<InfoCircle />
+						<InfoCircle size={18} />
 					</TooltipTrigger>
 					<TooltipContent>
-						<div className="flex flex-col gap-1 p-2">
+						<div className="flex flex-col p-2">
 							<h4 className="font-bold text-sm"> 優先タイトル </h4>
 							<p>
 								タイトル（資料の名称）の典拠形であるもの。
