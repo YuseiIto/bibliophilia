@@ -56,7 +56,6 @@ const isCandidateItem = (item: any): item is CandidateItem => {
 	);
 };
 
-export async function action({ request }: ActionFunctionArgs) {
 	const req = await request.formData();
 	const action_type = req.get("action_type");
 
