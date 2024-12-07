@@ -59,6 +59,10 @@ export function ManualCatalogComposer({
 	const [source, setSource] = useState("");
 	const [preferredVolume, setPreferredVolume] = useState("");
 	const [preferredVolumeTitle, setPreferredVolumeTitle] = useState("");
+	const [
+		preferredVolumeTitleTranscription,
+		setPreferredVolumeTitleTranscription,
+	] = useState("");
 
 	return (
 		<Form onSubmit={onSubmitWrapper}>
@@ -94,6 +98,8 @@ export function ManualCatalogComposer({
 				<Input
 					placeholder="優先巻号タイトルの読み"
 					name="preferred_volume_title_transcription"
+					value={preferredVolumeTitleTranscription}
+					onChange={(e) => setPreferredVolumeTitleTranscription(e.target.value)}
 				></Input>
 
 				<CatalogingRuleInput />
