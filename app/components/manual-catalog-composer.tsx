@@ -53,6 +53,8 @@ export function ManualCatalogComposer({
 	};
 
 	const [preferredTitle, setPreferredTitle] = useState("");
+	const [preferredTitleTranscription, setPreferredTitleTranscription] =
+		useState("");
 
 	return (
 		<Form onSubmit={onSubmitWrapper}>
@@ -64,6 +66,8 @@ export function ManualCatalogComposer({
 				<Input
 					placeholder="優先タイトルの読み"
 					name="preferred_title_transcription"
+					value={preferredTitleTranscription}
+					onChange={(e) => setPreferredTitleTranscription(e.target.value)}
 				></Input>
 				<CatalogSourceInput />
 				<PreferredVolumeInput />
