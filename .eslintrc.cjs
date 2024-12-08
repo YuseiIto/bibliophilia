@@ -73,6 +73,7 @@ module.exports = {
 			],
 			rules: {
 				"@typescript-eslint/no-explicit-any": "off", // TODO: Remove this rule when it's ready
+				"no-mixed-spaces-and-tabs": "off",
 			},
 		},
 
