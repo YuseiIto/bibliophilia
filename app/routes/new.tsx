@@ -39,6 +39,7 @@ import {
 	DialogTrigger,
 } from "~/components/ui/dialog";
 
+import { useToast } from "~/hooks/use-toast";
 import type { WorkDraft } from "~/model/work";
 
 export const meta: MetaFunction = () => {
@@ -51,6 +52,7 @@ export const meta: MetaFunction = () => {
 	];
 };
 
+export const action = async ({ request }: ActionFunctionArgs) => {
 	const req = await request.formData();
 	const action_type = req.get("action_type");
 
@@ -63,12 +65,14 @@ export const meta: MetaFunction = () => {
 		default:
 			return new Response("Invalid action_type", { status: 400 });
 	}
-}
+};
 
 export default function Index() {
 	const fetcher = useFetcher();
 
 	const [candidates, setCandidates] = useState<WorkDraft[]>([]);
+
+	const { toast } = useToast();
 
 	const onIsbnKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key != "Enter") return; // Ignore if not Enter key
@@ -79,6 +83,10 @@ export default function Index() {
 
 	const onManualInputSubmit = (data: WorkDraft) => {
 		setCandidates((candidates) => [...candidates, data]);
+		toast({
+			title: "下書きを追加しました",
+			description: "書誌レコードの下書きを追加しました",
+		});
 	};
 
 	useEffect(() => {
