@@ -65,6 +65,7 @@ export function ManualCatalogComposer({
 			preferred_volume_title: preferredVolumeTitle,
 			preferred_volume_title_transcription: preferredVolumeTitleTranscription,
 			cataloging_rule: catalogingRule,
+			thumbnail_url: null,
 		};
 	};
 
