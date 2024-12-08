@@ -41,6 +41,12 @@ import {
 import { useToast } from "~/hooks/use-toast";
 import type { WorkDraft } from "~/model/work";
 
+import {
+	ResizablePanelGroup,
+	ResizablePanel,
+	ResizableHandle,
+} from "~/components/ui/resizable";
+
 export const meta: MetaFunction = () => {
 	return [
 		{ title: "Bibliophilia" },
@@ -112,9 +118,9 @@ export default function Index() {
 
 	return (
 		<DefaultLayout>
-			<div className="container mx-auto p-3">
-				<div className="flex flex-row gap-8">
-					<div className="basis-1/3">
+			<div className="container mx-auto p-3 h-full">
+				<ResizablePanelGroup direction="horizontal" className="h-full">
+					<ResizablePanel className="p-3">
 						<Tabs defaultValue="isbn">
 							<TabsList className="grid w-full grid-cols-2">
 								<TabsTrigger value="isbn">ISBN</TabsTrigger>
@@ -162,9 +168,10 @@ export default function Index() {
 								</Card>
 							</TabsContent>
 						</Tabs>
-					</div>
+					</ResizablePanel>
+					<ResizableHandle />
 
-					<div className="basis-2/3">
+					<ResizablePanel className="p-3">
 						<Table>
 							<TableHeader>
 								<TableRow>
@@ -237,8 +244,8 @@ export default function Index() {
 								<FilePlus /> 選択中の資料を登録
 							</Button>
 						</div>
-					</div>
-				</div>
+					</ResizablePanel>
+				</ResizablePanelGroup>
 			</div>
 		</DefaultLayout>
 	);
