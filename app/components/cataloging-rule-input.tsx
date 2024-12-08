@@ -1,15 +1,16 @@
-import { Combobox } from "~/components/combobox";
+import { Combobox, ComboboxOption } from "~/components/combobox";
+import type { CatalogingRule } from "~/model/work";
 
 interface CatalogingRuleInputProps {
-	value?: string;
-	onChange?: (value: string) => void;
+	value?: CatalogingRule | null;
+	onChange?: (value: CatalogingRule | null) => void;
 }
 
 export function CatalogingRuleInput({
 	onChange,
 	value,
 }: CatalogingRuleInputProps) {
-	const catalogingRules = [
+	const catalogingRules: ComboboxOption<CatalogingRule>[] = [
 		{
 			label: "日本目録規則2018年版 (NCR2018)",
 			value: "ncr/2018",
