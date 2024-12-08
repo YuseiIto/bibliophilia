@@ -1,9 +1,15 @@
-interface VocabularyTooltipContentProps {
-	children: [HeadWord, ReactNode];
+import type { ReactNode, ReactElement } from "react";
+
+interface HeadWordProps {
+	children?: ReactNode;
 }
 
-export function HeadWord({ children }: { children?: ReactNode }) {
+export function HeadWord({ children }: HeadWordProps) {
 	return <h4 className="font-bold text-sm"> {children} </h4>;
+}
+
+interface VocabularyTooltipContentProps {
+	children: [ReactElement<React.ReactElement<HeadWordProps>>, ReactNode];
 }
 
 export function VocabularyTooltipContent({
