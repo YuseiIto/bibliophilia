@@ -89,6 +89,20 @@ export function IdentifierDialog({
 	);
 }
 
+interface IdentifierRowProps {
+	value: Identifier;
+}
+
+function IdentifierRow({ value }: IdentifierRowProps) {
+	const { identifier, identifierType } = value;
+	return (
+		<TableRow>
+			<TableCell> {identifierTypes[identifierType]} </TableCell>
+			<TableCell> {identifier} </TableCell>
+		</TableRow>
+	);
+}
+
 export function IdentifierInput() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [identifiers, setIdentifiers] = useState([]);
@@ -108,10 +122,7 @@ export function IdentifierInput() {
 				</TableHeader>
 				<TableBody>
 					{identifiers.map((identifier, index) => (
-						<TableRow key={index}>
-							<TableCell> {identifierTypes[identifier.identifierType]} </TableCell>
-							<TableCell> {identifier.identifier} </TableCell>
-						</TableRow>
+						<IdentifierRow key={index} value={identifier} />
 					))}
 				</TableBody>
 			</Table>
