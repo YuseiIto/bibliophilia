@@ -51,3 +51,13 @@ export interface WorkDraft {
 	preferred_volume_title: string | null;
 	preferred_volume_title_transcription: string | null;
 }
+
+export const isValidWork = (value: WorkDraft) => {
+	if (!value.preferred_title) return false;
+	if (!value.catalog_source) return false;
+	if (!isCatalogSourceType(value.catalog_source_type)) return false;
+	if (value.catalog_source_type === "manual:original") {
+		if (!isCatalogingRule(value.cataloging_rule)) return false;
+	}
+	return true;
+};
