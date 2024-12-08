@@ -53,7 +53,7 @@ export function Combobox<T extends string>({
 
 	useEffect(() => {
 		if (onChange) onChange(selectedValue);
-	}, [selectedValue]);
+	}, [selectedValue, onChange]);
 
 	useEffect(() => {
 		if (open == false && lastOpen == true) {
@@ -63,7 +63,7 @@ export function Combobox<T extends string>({
 		}
 
 		if (open == false && lastOpen == true && onBlur) onBlur(selectedValue);
-	}, [open]);
+	}, [open, lastOpen, onBlur, selectedValue]);
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
