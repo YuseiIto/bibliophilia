@@ -33,7 +33,6 @@ import { lookupByIsbn } from "~/model/ndl-search";
 import {
 	Dialog,
 	DialogContent,
-	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
