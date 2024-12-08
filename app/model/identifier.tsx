@@ -1,41 +1,44 @@
-export type IdentifierType =
-	| "http://ndl.go.jp/dcndl/terms/JPNO"
-	| "http://ndl.go.jp/dcndl/terms/USMARC"
-	| "http://ndl.go.jp/dcndl/terms/UKMARC"
-	| "http://ndl.go.jp/dcndl/terms/TRCMARC"
-	| "http://ndl.go.jp/dcndl/terms/OCLC"
-	| "http://ndl.go.jp/dcndl/terms/GPOBibNO"
-	| "http://ndl.go.jp/dcndl/terms/BRNO"
-	| "http://ndl.go.jp/dcndl/terms/RLINNO"
-	| "http://ndl.go.jp/dcndl/terms/NSMARCNO"
-	| "http://ndl.go.jp/dcndl/terms/OPLMARCNO"
-	| "http://ndl.go.jp/dcndl/terms/KNMARCNO"
-	| "http://ndl.go.jp/dcndl/terms/NIIBibID"
-	| "http://ndl.go.jp/dcndl/terms/NDLBibID"
-	| "http://ndl.go.jp/dcndl/terms/TOHANMARCNO"
-	| "http://ndl.go.jp/dcndl/terms/ISBN"
-	| "http://ndl.go.jp/dcndl/terms/setISBN"
-	| "http://ndl.go.jp/dcndl/terms/ISSN"
-	| "http://ndl.go.jp/dcndl/terms/CODEN"
-	| "http://ndl.go.jp/dcndl/terms/ISRN"
-	| "http://ndl.go.jp/dcndl/terms/ISMN"
-	| "http://ndl.go.jp/dcndl/terms/PBNO"
-	| "http://ndl.go.jp/dcndl/terms/PLNO"
-	| "http://ndl.go.jp/dcndl/terms/RIS502"
-	| "http://ndl.go.jp/dcndl/terms/GPOCN"
-	| "http://ndl.go.jp/dcndl/terms/SUPTDOC"
-	| "http://ndl.go.jp/dcndl/terms/KAKENHINO"
-	| "http://ndl.go.jp/dcndl/terms/UNDS"
-	| "http://ndl.go.jp/dcndl/terms/UNSN"
-	| "http://ndl.go.jp/dcndl/terms/StandardNO"
-	| "http://ndl.go.jp/dcndl/terms/TRNO"
-	| "http://ndl.go.jp/dcndl/terms/ISSNL"
-	| "http://ndl.go.jp/dcndl/terms/ErrorISBN"
-	| "http://ndl.go.jp/dcndl/terms/ErrorISSN"
-	| "http://ndl.go.jp/dcndl/terms/ErrorISSNL"
-	| "http://ndl.go.jp/dcndl/terms/SICI"
-	| "http://ndl.go.jp/dcndl/terms/DOI"
-	| "http://ndl.go.jp/dcndl/terms/NDLJP";
+export const identifierTypes = {
+	"http://ndl.go.jp/dcndl/terms/JPNO": "JP番号(日本全国書誌番号)",
+	"http://ndl.go.jp/dcndl/terms/USMARC": "USMARC番号",
+	"http://ndl.go.jp/dcndl/terms/UKMARC": "UKMARC番号",
+	"http://ndl.go.jp/dcndl/terms/TRCMARC": "TRCMARC番号",
+	"http://ndl.go.jp/dcndl/terms/OCLC": "OCLC番号",
+	"http://ndl.go.jp/dcndl/terms/GPOBibNO": "GPO番号",
+	"http://ndl.go.jp/dcndl/terms/BRNO": "障害者向け資料総合目録番号",
+	"http://ndl.go.jp/dcndl/terms/RLINNO": "RLIN番号",
+	"http://ndl.go.jp/dcndl/terms/NSMARCNO": "NS-MARC番号",
+	"http://ndl.go.jp/dcndl/terms/OPLMARCNO": "OPL-MARC番号",
+	"http://ndl.go.jp/dcndl/terms/KNMARCNO": "紀伊國屋MARC番号",
+	"http://ndl.go.jp/dcndl/terms/NIIBibID": "NACSIS-CATレコードID",
+	"http://ndl.go.jp/dcndl/terms/NDLBibID": "国立国会図書館書誌ID",
+	"http://ndl.go.jp/dcndl/terms/TOHANMARCNO": "トーハンMARC番号",
+	"http://ndl.go.jp/dcndl/terms/ISBN": "ISBN",
+	"http://ndl.go.jp/dcndl/terms/setISBN": "セットISBN",
+	"http://ndl.go.jp/dcndl/terms/ISSN": "ISSN",
+	"http://ndl.go.jp/dcndl/terms/CODEN": "CODEN",
+	"http://ndl.go.jp/dcndl/terms/ISRN": "ISRN",
+	"http://ndl.go.jp/dcndl/terms/ISMN": "ISMN",
+	"http://ndl.go.jp/dcndl/terms/PBNO": "出版者番号",
+	"http://ndl.go.jp/dcndl/terms/PLNO": "プレート番号（楽譜）",
+	"http://ndl.go.jp/dcndl/terms/RIS502": "発売番号（録音・映像番号）",
+	"http://ndl.go.jp/dcndl/terms/GPOCN": "GPO管理番号",
+	"http://ndl.go.jp/dcndl/terms/SUPTDOC": "SUPTDOC番号",
+	"http://ndl.go.jp/dcndl/terms/KAKENHINO": "科研費課題番号",
+	"http://ndl.go.jp/dcndl/terms/UNDS": "国連ドキュメント番号",
+	"http://ndl.go.jp/dcndl/terms/UNSN": "国連セールス番号",
+	"http://ndl.go.jp/dcndl/terms/StandardNO": "規格番号",
+	"http://ndl.go.jp/dcndl/terms/TRNO": "テクニカルリポート番号",
+	"http://ndl.go.jp/dcndl/terms/ISSNL": "ISSN-L",
+	"http://ndl.go.jp/dcndl/terms/ErrorISBN": "ISBN（エラーコード）",
+	"http://ndl.go.jp/dcndl/terms/ErrorISSN": "ISSN（エラーコード）",
+	"http://ndl.go.jp/dcndl/terms/ErrorISSNL": "ISSN-L（エラーコード）",
+	"http://ndl.go.jp/dcndl/terms/SICI": "SICI",
+	"http://ndl.go.jp/dcndl/terms/DOI": "DOI",
+	"http://ndl.go.jp/dcndl/terms/NDLJP": "国立国会図書館が付与する永続的識別子",
+};
+
+export type IdentifierType = keyof typeof identifierTypes;
 
 export interface WorkIdentifier {
 	id: string;

@@ -20,7 +20,11 @@ import {
 	TableRow,
 } from "~/components/ui/table";
 
-import { Identifier, IdentifierType } from "~/model/identifier";
+import {
+	Identifier,
+	IdentifierType,
+	identifierTypes,
+} from "~/model/identifier";
 
 interface IdentifierDialogProps {
 	onOpenChange?: (isOpen: boolean) => void;
@@ -31,12 +35,8 @@ export function IdentifierDialog({
 	onOpenChange,
 	onSubmit,
 }: IdentifierDialogProps) {
-	const identifierTypeOptions: ComboboxOption<IdentifierType>[] = [
-		{
-			label: "JP番号(日本全国書誌番号)",
-			value: "http://ndl.go.jp/dcndl/terms/JPNO",
-		},
-	];
+	const identifierTypeOptions: ComboboxOption<IdentifierType>[] =
+		Object.entries(identifierTypes).map(([value, label]) => ({ value, label }));
 
 	const [identifierType, setIdentifierType] = useState<IdentifierType | null>(
 		null,
