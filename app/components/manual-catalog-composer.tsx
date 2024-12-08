@@ -11,13 +11,7 @@ import { CatalogSourceInput } from "~/components/catalog-source-input";
 import { PreferredVolumeInput } from "~/components/preferred-volume-input";
 import { PreferredVolumeTitleInput } from "~/components/preferred-volume-title-input";
 
-import {
-	WorkDraft,
-	CatalogSourceType,
-	CatalogingRule,
-	isCatalogSourceType,
-	isCatalogingRule,
-} from "~/model/work";
+import { WorkDraft, isValidWork } from "~/model/work";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -117,7 +111,11 @@ export function ManualCatalogComposer({
 					onChange={setCatalogingRule}
 				/>
 
-				<Button className="p-2" type="submit">
+				<Button
+					className="p-2"
+					type="submit"
+					disabled={!isValidWork(composeValues())}
+				>
 					<Save /> 保存
 				</Button>
 			</div>

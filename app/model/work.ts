@@ -53,11 +53,16 @@ export interface WorkDraft {
 }
 
 export const isValidWork = (value: WorkDraft) => {
+	console.log(value);
 	if (!value.preferred_title) return false;
-	if (!value.catalog_source) return false;
 	if (!isCatalogSourceType(value.catalog_source_type)) return false;
 	if (value.catalog_source_type === "manual:original") {
-		if (!isCatalogingRule(value.cataloging_rule)) return false;
+		if (
+			!isCatalogingRule(value.cataloging_rule) &&
+			value.cataloging_rule != null
+		)
+			return false;
 	}
+
 	return true;
 };
