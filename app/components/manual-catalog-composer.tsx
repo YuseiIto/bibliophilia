@@ -37,14 +37,14 @@ export function ManualCatalogComposer({
 	const [preferredTitleTranscription, setPreferredTitleTranscription] =
 		useState(value?.preferred_title_transcription ?? "");
 	const [sourceType, setSourceType] = useState(
-		value?.catalog_source_type ?? "",
+		value?.catalog_source_type ?? null,
 	);
 	const [source, setSource] = useState(value?.catalog_source ?? "");
 	const [preferredVolume, setPreferredVolume] = useState(
 		value?.preferred_volume ?? "",
 	);
 	const [catalogingRule, setCatalogingRule] = useState(
-		value?.cataloging_rule ?? "",
+		value?.cataloging_rule ?? null,
 	);
 	const [preferredVolumeTitle, setPreferredVolumeTitle] = useState(
 		value?.preferred_volume_title ?? "",
