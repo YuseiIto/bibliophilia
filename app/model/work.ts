@@ -24,8 +24,8 @@ export type Work = {
 	preferred_title: string;
 	preferred_title_transcription?: string;
 	catalog_source: string;
-	catalog_source_type: CatalogSourceType | "";
-	cataloging_rule?: string;
+	catalog_source_type: CatalogSourceType;
+	cataloging_rule?: CatalogingRule;
 	thumbnail_url?: string;
 	preferred_volume?: string;
 	preferred_volume_title?: string;
