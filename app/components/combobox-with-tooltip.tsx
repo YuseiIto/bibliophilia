@@ -9,17 +9,17 @@ import { InfoCircle, DangerTriangle } from "@mynaui/icons-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
-interface ComboboxWithTooltipProps {
+interface ComboboxWithTooltipProps<T extends string> {
 	name?: string;
 	label: string;
-	options: ComboboxOption[];
+	options: ComboboxOption<T>[];
 	children?: ReactNode;
-	value?: string;
-	validator?: (value: string) => string | null;
-	onChange?: (value: string) => void;
+	value?: T | null;
+	validator?: (value: T | null) => string | null;
+	onChange?: (value: T | null) => void;
 }
 
-export function ComboboxWithTooltip({
+export function ComboboxWithTooltip<T extends string>({
 	name,
 	label,
 	options,
@@ -27,10 +27,10 @@ export function ComboboxWithTooltip({
 	value,
 	onChange,
 	validator,
-}: ComboboxWithTooltipProps) {
+}: ComboboxWithTooltipProps<T>) {
 	const [errorMessage, setErrorMessage] = useState<string | null>("");
 
-	const onBlur = (data: string) => {
+	const onBlur = (data: T | null) => {
 		if (validator) {
 			const msg = validator(data);
 			setErrorMessage(msg);
