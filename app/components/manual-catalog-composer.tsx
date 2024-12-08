@@ -1,4 +1,4 @@
-import { useState, useEffect, FormEvent } from "react";
+import { useState, FormEvent } from "react";
 import { Form } from "@remix-run/react";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
