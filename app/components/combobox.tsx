@@ -21,22 +21,22 @@ import {
 	PopoverTrigger,
 } from "~/components/ui/popover";
 
-export interface ComboboxOption {
-	value: string;
+export interface ComboboxOption<T extends string> {
+	value: T;
 	label: string;
 }
 
-interface ComboboxParams {
-	options: ComboboxOption[];
+interface ComboboxParams<T extends string> {
+	options: ComboboxOption<T>[];
 	label?: string;
 	notFoundMessage?: string;
 	name?: string;
-	value?: string;
-	onChange?: (value: string) => void;
-	onBlur?: (value: string) => void;
+	value?: T | null;
+	onChange?: (value: T | null) => void;
+	onBlur?: (value: T | null) => void;
 }
 
-export function Combobox({
+export function Combobox<T extends string>({
 	options,
 	label,
 	notFoundMessage,
@@ -44,12 +44,12 @@ export function Combobox({
 	value,
 	onChange,
 	onBlur,
-}: ComboboxParams) {
+}: ComboboxParams<T>) {
 	if (!options) throw new Error("Options are required.");
 
 	const [open, setOpen] = useState(false);
 	const [lastOpen, setLastOpen] = useState(false);
-	const [selectedValue, setSelectedValue] = useState(value ?? "");
+	const [selectedValue, setSelectedValue] = useState(value ?? null);
 
 	useEffect(() => {
 		if (onChange) onChange(selectedValue);
@@ -67,7 +67,7 @@ export function Combobox({
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
-			<input type="hidden" name={name} value={selectedValue} />
+			<input type="hidden" name={name} value={selectedValue ?? ""} />
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
@@ -93,7 +93,9 @@ export function Combobox({
 									value={option.value}
 									onSelect={(currentValue) => {
 										setSelectedValue(
-											currentValue === selectedValue ? "" : currentValue,
+											currentValue === selectedValue
+												? null
+												: (currentValue as T),
 										);
 										setOpen(false);
 									}}
