@@ -31,6 +31,20 @@ export function CatalogSourceInput({
 		},
 	];
 
+	const sourceTypeValidator = (value: string) => {
+		if (!value) {
+			return "目録情報の出典区分は必須です。";
+		}
+		return null;
+	};
+
+	const sourceValidator = (value: string) => {
+		if (!value && sourceType != "manual:original" && sourceType != "") {
+			return "新規作成以外の目録情報の出典は必須です。";
+		}
+		return null;
+	};
+
 	return (
 		<div className="flex flex-col gap-3">
 			<ComboboxWithTooltip
@@ -39,6 +53,7 @@ export function CatalogSourceInput({
 				name="catalog_source_type"
 				value={sourceType}
 				onChange={onSourceTypeChange}
+				validator={sourceTypeValidator}
 			>
 				<VocabularyTooltipContent>
 					<HeadWord> 目録情報の出典区分 </HeadWord>
@@ -56,6 +71,7 @@ export function CatalogSourceInput({
 				name="catalog_source"
 				value={source}
 				onChange={onSourceChange}
+				validator={sourceValidator}
 			>
 				<VocabularyTooltipContent>
 					<HeadWord> 目録情報の出典 </HeadWord>
