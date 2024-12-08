@@ -7,7 +7,7 @@ import {
 	ScrollRestoration,
 } from "@remix-run/react";
 import { ErrorPage } from "~/components/error-page";
-
+import { Toaster } from "~/components/ui/toaster";
 import stylesheet from "~/tailwind.css?url";
 
 export const links: LinksFunction = () => [
@@ -44,6 +44,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 			</head>
 			<body>
 				{children}
+				<Toaster />
 				<ScrollRestoration />
 				<Scripts />
 			</body>

@@ -32,6 +32,7 @@
 		"@radix-ui/react-separator": "^1.1.0",
 		"@radix-ui/react-slot": "^1.1.0",
 		"@radix-ui/react-tabs": "^1.1.1",
+		"@radix-ui/react-toast": "^1.2.2",
 		"@radix-ui/react-tooltip": "^1.1.4",
 		"@remix-run/cloudflare": "^2.13.1",
 		"@remix-run/cloudflare-pages": "^2.13.1",
