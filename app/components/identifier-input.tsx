@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input } from "~/components/ui/input";
-import { Combobox } from "~/components/combobox";
+import { Combobox, ComboboxOption } from "~/components/combobox";
 import { Button } from "~/components/ui/button";
 import { Plus } from "@mynaui/icons-react";
 import {
@@ -12,21 +12,40 @@ import {
 	DialogTrigger,
 } from "~/components/ui/dialog";
 
+import { Identifier, IdentifierType } from "~/model/identifier";
+
 interface IdentifierDialogProps {
-	onOpenChange: (isOpen: boolean) => void;
+	onOpenChange?: (isOpen: boolean) => void;
+	onSubmit?: (identifier: Identifier) => void;
 }
 
-export function IdentifierDialog({ onOpenChange }: IdentifierDialogProps) {
-	const identifierTypeOptions = [
+export function IdentifierDialog({
+	onOpenChange,
+	onSubmit,
+}: IdentifierDialogProps) {
+	const identifierTypeOptions: ComboboxOption<IdentifierType>[] = [
 		{
 			label: "JP番号(日本全国書誌番号)",
 			value: "http://ndl.go.jp/dcndl/terms/JPNO",
 		},
 	];
 
-	const onSave = (event: React.FormEvent) => {
+	const [identifierType, setIdentifierType] = useState<IdentifierType | null>(
+		null,
+	);
+	const [identifier, setIdentifier] = useState<string>("");
+
+	const onSubmitWrapper = (event: React.FormEvent) => {
 		event.preventDefault();
-		onOpenChange(false);
+		if (identifierType == null) return; // UIでボタンがDisableされているのでこのケースは考えないことにする
+		if (onSubmit) {
+			onSubmit({
+				identifierType,
+				identifier,
+			});
+		}
+
+		if (onOpenChange) onOpenChange(false);
 	};
 
 	return (
@@ -37,14 +56,27 @@ export function IdentifierDialog({ onOpenChange }: IdentifierDialogProps) {
 					ISBNや各種MARC番号など、資料の識別に使用される符号を指定します。
 				</DialogDescription>
 			</DialogHeader>
-				<Combobox label="識別子の種類を選択" options={identifierTypeOptions} />
-				<div className="flex flex-row">
-					<Input />
-				</div>
+			<Combobox
+				label="識別子の種類を選択"
+				options={identifierTypeOptions}
+				value={identifierType}
+				onChange={setIdentifierType}
+			/>
+			<div className="flex flex-row">
+				<Input
+					placeholder="識別子を入力"
+					value={identifier}
+					onChange={(e) => setIdentifier(e.target.value)}
+				/>
+			</div>
 
-				<Button type="button" onClick={onSave}>
-					<Plus /> 識別子を追加
-				</Button>
+			<Button
+				type="button"
+				onClick={onSubmitWrapper}
+				disabled={identifierType === null || !identifier || identifier === ""}
+			>
+				<Plus /> 識別子を追加
+			</Button>
 		</DialogContent>
 	);
 }
