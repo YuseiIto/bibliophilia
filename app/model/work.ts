@@ -19,7 +19,7 @@ export const isCatalogingRule = (value: any): value is CatalogingRule =>
 		value,
 	);
 
-export type Work = {
+export interface Work {
 	id: string;
 	preferred_title: string;
 	preferred_title_transcription?: string;
@@ -30,4 +30,17 @@ export type Work = {
 	preferred_volume?: string;
 	preferred_volume_title?: string;
 	preferred_volume_title_transcription?: string;
-};
+}
+
+export interface WorkDraft {
+	id: string;
+	preferred_title: string | null;
+	preferred_title_transcription: string | null;
+	catalog_source: string | null;
+	catalog_source_type: CatalogSourceType | null;
+	cataloging_rule: CatalogingRule | null;
+	thumbnail_url: string | null;
+	preferred_volume: string | null;
+	preferred_volume_title: string | null;
+	preferred_volume_title_transcription: string | null;
+}

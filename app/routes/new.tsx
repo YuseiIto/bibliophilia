@@ -39,7 +39,7 @@ import {
 	DialogTrigger,
 } from "~/components/ui/dialog";
 
-import type { Work } from "~/model/work";
+import type { WorkDraft } from "~/model/work";
 
 export const meta: MetaFunction = () => {
 	return [
@@ -68,7 +68,7 @@ export const meta: MetaFunction = () => {
 export default function Index() {
 	const fetcher = useFetcher();
 
-	const [candidates, setCandidates] = useState<Partial<Work>[]>([]);
+	const [candidates, setCandidates] = useState<WorkDraft[]>([]);
 
 	const onIsbnKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key != "Enter") return; // Ignore if not Enter key
@@ -77,16 +77,13 @@ export default function Index() {
 
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-	const onManualInputSubmit = (data: Partial<Work>) => {
+	const onManualInputSubmit = (data: WorkDraft) => {
 		setCandidates((candidates) => [...candidates, data]);
 	};
 
 	useEffect(() => {
 		if (!fetcher.data) return;
-		setCandidates((candidates) => [
-			...candidates,
-			fetcher.data as Partial<Work>,
-		]);
+		setCandidates((candidates) => [...candidates, fetcher.data as WorkDraft]);
 	}, [fetcher.data]);
 
 	const deleteRow = (index: number) => {
@@ -97,7 +94,7 @@ export default function Index() {
 		});
 	};
 
-	const onRowSubmit = (index: number, work: Partial<Work>) => {
+	const onRowSubmit = (index: number, work: WorkDraft) => {
 		setCandidates((candidates) => {
 			const newCandidates = [...candidates];
 			newCandidates[index] = work;
