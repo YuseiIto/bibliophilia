@@ -6,11 +6,13 @@ import {
 } from "~/components/vocabulary-tooltip-content";
 
 import { ComboboxWithTooltip } from "~/components/combobox-with-tooltip";
+import type { CatalogSourceType } from "~/model/work";
+import type { ComboboxOption } from "~/components/combobox";
 
 interface CatalogSourceInputProps {
-	sourceType?: string;
+	sourceType?: CatalogSourceType | null;
 	source?: string;
-	onSourceTypeChange?: (value: string) => void;
+	onSourceTypeChange?: (value: CatalogSourceType | null) => void;
 	onSourceChange?: (value: string) => void;
 }
 
@@ -20,7 +22,7 @@ export function CatalogSourceInput({
 	onSourceTypeChange,
 	onSourceChange,
 }: CatalogSourceInputProps) {
-	const catalogSourceTypes = [
+	const catalogSourceTypes: ComboboxOption<CatalogSourceType>[] = [
 		{
 			label: "新規作成",
 			value: "manual:original",
@@ -31,7 +33,7 @@ export function CatalogSourceInput({
 		},
 	];
 
-	const sourceTypeValidator = (value: string) => {
+	const sourceTypeValidator = (value: CatalogSourceType | null) => {
 		if (!value) {
 			return "目録情報の出典区分は必須です。";
 		}
@@ -39,7 +41,7 @@ export function CatalogSourceInput({
 	};
 
 	const sourceValidator = (value: string) => {
-		if (!value && sourceType != "manual:original" && sourceType != "") {
+		if (!value && sourceType != "manual:original") {
 			return "新規作成以外の目録情報の出典は必須です。";
 		}
 		return null;
