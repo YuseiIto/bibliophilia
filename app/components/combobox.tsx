@@ -33,6 +33,7 @@ interface ComboboxParams {
 	name?: string;
 	value?: string;
 	onChange?: (value: string) => void;
+	onBlur?: (value: string) => void;
 }
 
 export function Combobox({
@@ -42,15 +43,27 @@ export function Combobox({
 	name,
 	value,
 	onChange,
+	onBlur,
 }: ComboboxParams) {
 	if (!options) throw new Error("Options are required.");
 
 	const [open, setOpen] = useState(false);
+	const [lastOpen, setLastOpen] = useState(false);
 	const [selectedValue, setSelectedValue] = useState(value ?? "");
 
 	useEffect(() => {
 		if (onChange) onChange(selectedValue);
 	}, [selectedValue]);
+
+	useEffect(() => {
+		if (open == false && lastOpen == true) {
+			setLastOpen(false);
+		} else if (open == true && lastOpen == false) {
+			setLastOpen(true);
+		}
+
+		if (open == false && lastOpen == true && onBlur) onBlur(selectedValue);
+	}, [open]);
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
