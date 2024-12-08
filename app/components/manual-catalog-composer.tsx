@@ -12,6 +12,7 @@ import { PreferredVolumeInput } from "~/components/preferred-volume-input";
 import { PreferredVolumeTitleInput } from "~/components/preferred-volume-title-input";
 
 import { WorkDraft, isValidWork } from "~/model/work";
+import { IdentifierInput } from "~/components/identifier-input";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -111,6 +112,7 @@ export function ManualCatalogComposer({
 					onChange={setCatalogingRule}
 				/>
 
+				<IdentifierInput />
 				<Button
 					className="p-2"
 					type="submit"

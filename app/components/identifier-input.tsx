@@ -11,6 +11,14 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "~/components/ui/dialog";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "~/components/ui/table";
 
 import { Identifier, IdentifierType } from "~/model/identifier";
 
@@ -83,14 +91,36 @@ export function IdentifierDialog({
 
 export function IdentifierInput() {
 	const [isOpen, setIsOpen] = useState(false);
+	const [identifiers, setIdentifiers] = useState([]);
+
+	const onSubmit = ({ identifierType, identifier }) => {
+		setIdentifiers([...identifiers, { identifierType, identifier }]);
+	};
+
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
+			<Table>
+				<TableHeader>
+					<TableRow>
+						<TableHead className="text-xs font-bold">種類</TableHead>
+						<TableHead className="text-xs font-bold">識別子</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					{identifiers.map((identifier, index) => (
+						<TableRow key={index}>
+							<TableCell> {identifier.identifierType} </TableCell>
+							<TableCell> {identifier.identifier} </TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
 			<DialogTrigger asChild>
-				<Button size="sm" variant="ghost">
+				<Button size="sm" variant="outline" className="w-full">
 					<Plus /> 識別子を追加
 				</Button>
 			</DialogTrigger>
-			<IdentifierDialog onOpenChange={setIsOpen} />
+			<IdentifierDialog onOpenChange={setIsOpen} onSubmit={onSubmit} />
 		</Dialog>
 	);
 }
