@@ -60,6 +60,9 @@ export function ManualCatalogComposer({
 	const [preferredVolume, setPreferredVolume] = useState(
 		values.preferred_volume ?? "",
 	);
+	const [catalogingRule, setCatalogingRule] = useState(
+		values.cataloging_rule ?? "",
+	);
 	const [preferredVolumeTitle, setPreferredVolumeTitle] = useState(
 		values.preferred_volume_title ?? "",
 	);
@@ -67,9 +70,6 @@ export function ManualCatalogComposer({
 		preferredVolumeTitleTranscription,
 		setPreferredVolumeTitleTranscription,
 	] = useState(values.preferred_title_transcription ?? "");
-	const [catalogingRule, setCatalogingRule] = useState(
-		values.cataloging_rule ?? "",
-	);
 
 	useEffect(() => {
 		const newValues = structuredClone(values);
@@ -85,7 +85,8 @@ export function ManualCatalogComposer({
 
 	useEffect(() => {
 		const newValues = structuredClone(values);
-		if (isCatalogSourceType(sourceType)) throw new Error("Invalid source type");
+		if (!isCatalogSourceType(sourceType) && sourceType != "")
+			throw new Error("Invalid source type");
 		newValues.catalog_source_type = sourceType as CatalogSourceType;
 		setValues(newValues);
 	}, [sourceType]);
@@ -116,12 +117,17 @@ export function ManualCatalogComposer({
 	}, [preferredVolumeTitleTranscription]);
 
 	useEffect(() => {
-		if (isCatalogingRule(catalogingRule))
-			throw new Error("Invalid cataloging rule");
+		if (!isCatalogingRule(catalogingRule) && catalogingRule !== "") {
+			throw new Error(`Invalid cataloging rule: ${catalogingRule}`);
+		}
 		const newValues = structuredClone(values);
 		newValues.cataloging_rule = catalogingRule as CatalogingRule;
 		setValues(newValues);
 	}, [catalogingRule]);
+
+	const [isValid, setIsValid] = useState(false);
+
+	useEffect(() => {}, [values]);
 
 	return (
 		<Form onSubmit={onSubmitWrapper}>
