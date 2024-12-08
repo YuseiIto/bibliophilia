@@ -109,7 +109,7 @@ export function IdentifierInput() {
 				<TableBody>
 					{identifiers.map((identifier, index) => (
 						<TableRow key={index}>
-							<TableCell> {identifier.identifierType} </TableCell>
+							<TableCell> {identifierTypes[identifier.identifierType]} </TableCell>
 							<TableCell> {identifier.identifier} </TableCell>
 						</TableRow>
 					))}
