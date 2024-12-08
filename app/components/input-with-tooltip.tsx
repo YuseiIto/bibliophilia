@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Input } from "~/components/ui/input";
 import {
 	TooltipProvider,

@@ -6,6 +6,7 @@ import {
 	TooltipContent,
 } from "~/components/ui/tooltip";
 import { InfoCircle } from "@mynaui/icons-react";
+import type { ReactNode } from "react";
 
 interface ComboboxWithTooltipProps {
 	name?: string;
