@@ -128,44 +128,40 @@ export default function Index() {
 							</TabsList>
 
 							<TabsContent value="isbn">
-								<Card>
-									<CardHeader>
-										<CardTitle>ISBNから登録 </CardTitle>
-										<CardDescription>
-											ISBNコードを入力して資料を登録します。目録情報の照会には、
-											<Link to="https://ndlsearch.ndl.go.jp/"> NDLサーチ</Link>
-											APIが利用されます。
-										</CardDescription>
-									</CardHeader>
-									<CardContent className="space-y-2">
-										<fetcher.Form method="post">
-											<input
-												type="hidden"
-												name="action_type"
-												value="lookup_by_isbn"
-											/>
-											<Input
-												placeholder="ISBN-10またはISBN-13 例: 4003107012"
-												name="isbn"
-												onKeyDown={onIsbnKeyDown}
-											></Input>
-										</fetcher.Form>
-									</CardContent>
-								</Card>
+								<CardHeader>
+									<CardTitle>ISBNから登録 </CardTitle>
+									<CardDescription>
+										ISBNコードを入力して資料を登録します。目録情報の照会には、
+										<Link to="https://ndlsearch.ndl.go.jp/"> NDLサーチ</Link>
+										APIが利用されます。
+									</CardDescription>
+								</CardHeader>
+								<CardContent className="space-y-2">
+									<fetcher.Form method="post">
+										<input
+											type="hidden"
+											name="action_type"
+											value="lookup_by_isbn"
+										/>
+										<Input
+											placeholder="ISBN-10またはISBN-13 例: 4003107012"
+											name="isbn"
+											onKeyDown={onIsbnKeyDown}
+										></Input>
+									</fetcher.Form>
+								</CardContent>
 							</TabsContent>
 
 							<TabsContent value="manually">
-								<Card>
-									<CardHeader>
-										<CardTitle>直接入力して登録</CardTitle>
-										<CardDescription>
-											書誌事項を直接入力して資料を登録します。
-										</CardDescription>
-									</CardHeader>
-									<CardContent className="space-y-2">
-										<ManualCatalogComposer onSubmit={onManualInputSubmit} />
-									</CardContent>
-								</Card>
+								<CardHeader>
+									<CardTitle>直接入力して登録</CardTitle>
+									<CardDescription>
+										書誌事項を直接入力して資料を登録します。
+									</CardDescription>
+								</CardHeader>
+								<CardContent className="space-y-2">
+									<ManualCatalogComposer onSubmit={onManualInputSubmit} />
+								</CardContent>
 							</TabsContent>
 						</Tabs>
 					</ResizablePanel>
