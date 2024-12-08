@@ -118,7 +118,7 @@ export default function Index() {
 
 	return (
 		<DefaultLayout>
-			<div className="container mx-auto p-3 h-full">
+			<div className="container mx-auto py-3 h-full">
 				<ResizablePanelGroup direction="horizontal" className="h-full">
 					<ResizablePanel className="p-3">
 						<Tabs defaultValue="isbn">
