@@ -13,12 +13,18 @@ export function PreferredTitleInput({
 	value,
 	onChange,
 }: PreferredTitleInputProps) {
+	const validator = (value: string) => {
+		if (value === "") return "優先タイトルは必須です";
+		return null;
+	};
+
 	return (
 		<InputWithTooltip
 			placeholder="優先タイトル"
 			name="preferred_title"
 			value={value}
 			onChange={onChange}
+			validator={validator}
 		>
 			<VocabularyTooltipContent>
 				<HeadWord>優先タイトル</HeadWord>
