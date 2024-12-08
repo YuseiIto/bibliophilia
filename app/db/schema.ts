@@ -101,7 +101,7 @@ export const bibItemsAgentsTable = sqliteTable("bib_items_agencies", {
 		.notNull()
 		.references(() => bibAgentTable.id),
 	role: text().notNull(), // author,publisher, editor, translator, contributor, supervisor ...
-	raw_role: text().notNull(), // roleの根拠となった記述
+	raw: text().notNull(), // 根拠となった記述
 });
 
 // 並列タイトル, 別タイトル

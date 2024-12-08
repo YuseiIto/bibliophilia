@@ -1,0 +1,1 @@
+ALTER TABLE `bib_items_agencies` RENAME COLUMN "raw_role" TO "raw";
