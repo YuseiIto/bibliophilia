@@ -10,14 +10,21 @@ export type CatalogingRule =
 	| "ncr/2018"
 	| "ncr/1987"
 	| "ncr/1977"
+	| "ncr"
 	| "ndlserial"
 	| "rda"
 	| "aacr";
 
 export const isCatalogingRule = (value: any): value is CatalogingRule =>
-	["ncr/2018", "ncr/1987", "ncr/1977", "ndlserial", "rda", "aacr"].includes(
-		value,
-	);
+	[
+		"ncr/2018",
+		"ncr/1987",
+		"ncr/1977",
+		"ncr",
+		"ndlserial",
+		"rda",
+		"aacr",
+	].includes(value);
 
 export interface Work {
 	id: string;
