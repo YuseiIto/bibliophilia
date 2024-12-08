@@ -24,7 +24,7 @@ export function ManualCatalogComposer({
 	onSubmit,
 	value,
 }: ManualCatalogComposerProps) {
-	const [id, setId] = useState(value?.id ?? uuidv4());
+	const [id] = useState(value?.id ?? uuidv4());
 	const [preferredTitle, setPreferredTitle] = useState(
 		value?.preferred_title ?? "",
 	);
