@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Input } from "~/components/ui/input";
 import { Combobox, ComboboxOption } from "~/components/combobox";
 import { Button } from "~/components/ui/button";
-import { Plus } from "@mynaui/icons-react";
+import { Plus, Edit, Trash } from "@mynaui/icons-react";
 import {
 	Dialog,
 	DialogContent,
@@ -21,12 +21,20 @@ import {
 } from "~/components/ui/table";
 
 import {
+	ContextMenu,
+	ContextMenuContent,
+	ContextMenuTrigger,
+	ContextMenuItem,
+} from "~/components/ui/context-menu";
+
+import {
 	Identifier,
 	IdentifierType,
 	identifierTypes,
 } from "~/model/identifier";
 
 interface IdentifierDialogProps {
+	defaultValue?: Identifier;
 	onOpenChange?: (isOpen: boolean) => void;
 	onSubmit?: (identifier: Identifier) => void;
 }
@@ -34,14 +42,17 @@ interface IdentifierDialogProps {
 export function IdentifierDialog({
 	onOpenChange,
 	onSubmit,
+	defaultValue,
 }: IdentifierDialogProps) {
 	const identifierTypeOptions: ComboboxOption<IdentifierType>[] =
 		Object.entries(identifierTypes).map(([value, label]) => ({ value, label }));
 
 	const [identifierType, setIdentifierType] = useState<IdentifierType | null>(
-		null,
+		defaultValue?.identifierType ?? null,
 	);
-	const [identifier, setIdentifier] = useState<string>("");
+	const [identifier, setIdentifier] = useState<string>(
+		defaultValue?.identifier ?? "",
+	);
 
 	const onSubmitWrapper = (event: React.FormEvent) => {
 		event.preventDefault();
@@ -90,16 +101,48 @@ export function IdentifierDialog({
 }
 
 interface IdentifierRowProps {
+	onUpdate?: (identifier: Identifier) => void;
+	onDelete?: () => void;
 	value: Identifier;
 }
 
-function IdentifierRow({ value }: IdentifierRowProps) {
+function IdentifierRow({ value, onUpdate, onDelete }: IdentifierRowProps) {
 	const { identifier, identifierType } = value;
+	const [isOpen, setIsOpen] = useState(false);
+
+	const onUpdateWrapper = (identifier: Identifier) => {
+		if (onUpdate) onUpdate(identifier);
+		setIsOpen(false);
+	};
+
 	return (
-		<TableRow>
-			<TableCell> {identifierTypes[identifierType]} </TableCell>
-			<TableCell> {identifier} </TableCell>
-		</TableRow>
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
+			<ContextMenu>
+				<ContextMenuTrigger asChild>
+					<TableRow>
+						<TableCell> {identifierTypes[identifierType]} </TableCell>
+						<TableCell> {identifier} </TableCell>
+					</TableRow>
+				</ContextMenuTrigger>
+				<ContextMenuContent>
+					<DialogTrigger asChild>
+						<ContextMenuItem>
+							<span className="flex flex-row items-center gap-3">
+								<Edit size={15} />
+								編集
+							</span>
+						</ContextMenuItem>
+					</DialogTrigger>
+					<ContextMenuItem onClick={onDelete}>
+						<span className="flex flex-row items-center gap-3 text-destructive">
+							<Trash size={15} />
+							削除
+						</span>
+					</ContextMenuItem>
+				</ContextMenuContent>
+			</ContextMenu>
+			<IdentifierDialog defaultValue={value} onSubmit={onUpdateWrapper} />
+		</Dialog>
 	);
 }
 
@@ -109,6 +152,21 @@ export function IdentifierInput() {
 
 	const onSubmit = ({ identifierType, identifier }) => {
 		setIdentifiers([...identifiers, { identifierType, identifier }]);
+	};
+
+	const onUpdateRow = (
+		{ identifier, identifierType }: Identifier,
+		index: number,
+	) => {
+		const newIdentifiers = [...identifiers];
+		newIdentifiers[index] = { identifier, identifierType };
+		setIdentifiers(newIdentifiers);
+	};
+
+	const onDeleteRow = (index: number) => {
+		const newIdentifiers = [...identifiers];
+		newIdentifiers.splice(index, 1);
+		setIdentifiers(newIdentifiers);
 	};
 
 	return (
@@ -122,7 +180,12 @@ export function IdentifierInput() {
 				</TableHeader>
 				<TableBody>
 					{identifiers.map((identifier, index) => (
-						<IdentifierRow key={index} value={identifier} />
+						<IdentifierRow
+							key={index}
+							value={identifier}
+							onUpdate={(x) => onUpdateRow(x, index)}
+							onDelete={() => onDeleteRow(index)}
+						/>
 					))}
 				</TableBody>
 			</Table>
