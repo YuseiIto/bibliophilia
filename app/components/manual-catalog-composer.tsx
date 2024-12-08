@@ -30,104 +30,48 @@ export function ManualCatalogComposer({
 	onSubmit,
 	value,
 }: ManualCatalogComposerProps) {
-	const [values, setValues] = useState<WorkDraft>({
-		id: value?.id ?? uuidv4(),
-		preferred_title: value?.preferred_title ?? null,
-		preferred_title_transcription: null,
-		catalog_source: null,
-		catalog_source_type: null,
-		cataloging_rule: null,
-		thumbnail_url: null,
-		preferred_volume: null,
-		preferred_volume_title: null,
-		preferred_volume_title_transcription: null,
-	});
-
-	const onSubmitWrapper = (e: FormEvent) => {
-		e.preventDefault();
-		if (onSubmit) onSubmit(values);
-	};
-
+	const [id, setId] = useState(value?.id ?? uuidv4());
 	const [preferredTitle, setPreferredTitle] = useState(
-		values.preferred_title ?? "",
+		value?.preferred_title ?? "",
 	);
 	const [preferredTitleTranscription, setPreferredTitleTranscription] =
-		useState(values.preferred_title_transcription ?? "");
+		useState(value?.preferred_title_transcription ?? "");
 	const [sourceType, setSourceType] = useState(
-		values.catalog_source_type ?? "",
+		value?.catalog_source_type ?? "",
 	);
-	const [source, setSource] = useState(values.catalog_source ?? "");
+	const [source, setSource] = useState(value?.catalog_source ?? "");
 	const [preferredVolume, setPreferredVolume] = useState(
-		values.preferred_volume ?? "",
+		value?.preferred_volume ?? "",
 	);
 	const [catalogingRule, setCatalogingRule] = useState(
-		values.cataloging_rule ?? "",
+		value?.cataloging_rule ?? "",
 	);
 	const [preferredVolumeTitle, setPreferredVolumeTitle] = useState(
-		values.preferred_volume_title ?? "",
+		value?.preferred_volume_title ?? "",
 	);
 	const [
 		preferredVolumeTitleTranscription,
 		setPreferredVolumeTitleTranscription,
-	] = useState(values.preferred_title_transcription ?? "");
+	] = useState(value?.preferred_title_transcription ?? "");
 
-	useEffect(() => {
-		const newValues = structuredClone(values);
-		newValues.preferred_title = preferredTitle;
-		setValues(newValues);
-	}, [preferredTitle]);
+	const composeValues = () => {
+		return {
+			id,
+			preferred_title: preferredTitle,
+			preferred_title_transcription: preferredTitleTranscription,
+			catalog_source_type: sourceType,
+			catalog_source: source,
+			preferred_volume: preferredVolume,
+			preferred_volume_title: preferredVolumeTitle,
+			preferred_volume_title_transcription: preferredVolumeTitleTranscription,
+			cataloging_rule: catalogingRule,
+		};
+	};
 
-	useEffect(() => {
-		const newValues = structuredClone(values);
-		newValues.preferred_title_transcription = preferredTitleTranscription;
-		setValues(newValues);
-	}, [preferredTitleTranscription]);
-
-	useEffect(() => {
-		const newValues = structuredClone(values);
-		if (!isCatalogSourceType(sourceType) && sourceType != "")
-			throw new Error("Invalid source type");
-		newValues.catalog_source_type = sourceType as CatalogSourceType;
-		setValues(newValues);
-	}, [sourceType]);
-
-	useEffect(() => {
-		const newValues = structuredClone(values);
-		newValues.catalog_source = source;
-		setValues(newValues);
-	}, [source]);
-
-	useEffect(() => {
-		const newValues = structuredClone(values);
-		newValues.preferred_volume = preferredVolume;
-		setValues(newValues);
-	}, [preferredVolume]);
-
-	useEffect(() => {
-		const newValues = structuredClone(values);
-		newValues.preferred_volume_title = preferredVolumeTitle;
-		setValues(newValues);
-	}, [preferredVolumeTitle]);
-
-	useEffect(() => {
-		const newValues = structuredClone(values);
-		newValues.preferred_volume_title_transcription =
-			preferredVolumeTitleTranscription;
-		setValues(newValues);
-	}, [preferredVolumeTitleTranscription]);
-
-	useEffect(() => {
-		if (!isCatalogingRule(catalogingRule) && catalogingRule !== "") {
-			throw new Error(`Invalid cataloging rule: ${catalogingRule}`);
-		}
-		const newValues = structuredClone(values);
-		newValues.cataloging_rule = catalogingRule as CatalogingRule;
-		setValues(newValues);
-	}, [catalogingRule]);
-
-	const [isValid, setIsValid] = useState(false);
-
-	useEffect(() => {}, [values]);
+	const onSubmitWrapper = (e: FormEvent) => {
+		e.preventDefault();
+		if (onSubmit) onSubmit(composeValues());
+	};
 
 	return (
 		<Form onSubmit={onSubmitWrapper}>
