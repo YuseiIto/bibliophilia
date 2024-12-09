@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Input } from "~/components/ui/input";
 import { Combobox, ComboboxOption } from "~/components/combobox";
 import { Button } from "~/components/ui/button";
-import { Plus, Edit, Trash } from "@mynaui/icons-react";
+import { Plus, Edit, Trash, UsersGroup, User } from "@mynaui/icons-react";
 import {
 	Dialog,
 	DialogContent,
@@ -29,7 +29,6 @@ import {
 
 import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
-import { UsersGroup, User } from "@mynaui/icons-react";
 import type { AgentDraft, AgentKind, AgentRole } from "~/model/agent";
 
 const agentRoleOptions: ComboboxOption<AgentRole>[] = [
