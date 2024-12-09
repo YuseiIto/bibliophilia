@@ -158,6 +158,14 @@ export function ManualCatalogComposer({
 					createNewButtonLabel="注記を追加"
 				/>
 
+				<SimplePluralInput
+					dialogTitle="日付を追加"
+					dialogDescription="刊行日などの日付を表す情報を追加します。原資料の記述に応じて、月や日を省略しても構いません。"
+					placeholder="日付を入力 (例: &quot;2021-01-01&quot;, &quot; 平成14年10月&quot;)"
+					dialogButtonLabel="日付を追加"
+					createNewButtonLabel="日付を追加"
+				/>
+
 				<Button
 					className="p-2"
 					type="submit"
