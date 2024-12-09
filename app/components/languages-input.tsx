@@ -29,7 +29,9 @@ export function LanguageDialog({
 	onSubmit,
 	clearOnSubmit,
 }: LanguageDialogProps) {
-	const [language, setLanguage] = useState<KnownLanguage>(defaultValue ?? "");
+	const [language, setLanguage] = useState<KnownLanguage | string>(
+		defaultValue ?? "",
+	);
 	const [useOptions, setUseOptions] = useState(
 		language in knownLanguages || language == "",
 	);
@@ -67,7 +69,7 @@ export function LanguageDialog({
 					options={languageOptions}
 					label="言語を選択"
 					value={language}
-					onChange={setLanguage}
+					onChange={(x) => setLanguage(x ?? "")}
 				/>
 			) : (
 				<Input
@@ -98,7 +100,7 @@ interface LanguageItemProps {
 
 export function LanguageItem({ language, onRemove }: LanguageItemProps) {
 	const [showX, setShowX] = useState(false);
-	const label = knownLanguages[language] ?? language;
+	const label = knownLanguages[language as KnownLanguage] ?? language;
 	return (
 		<Badge
 			className="flex flex-row gap-1"
@@ -114,7 +116,7 @@ export function LanguageItem({ language, onRemove }: LanguageItemProps) {
 
 export function LanguagesInput() {
 	const [isOpen, setIsOpen] = useState(false);
-	const [languages, setLanguages] = useState([]);
+	const [languages, setLanguages] = useState<(KnownLanguage | string)[]>([]);
 
 	const appendLanguage = (language: KnownLanguage | string) => {
 		setLanguages([...languages, language]);
