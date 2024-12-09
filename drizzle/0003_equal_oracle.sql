@@ -1,0 +1,1 @@
+ALTER TABLE `bib_subjects` ADD `subject_type` text NOT NULL;

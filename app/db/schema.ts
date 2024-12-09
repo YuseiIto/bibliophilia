@@ -117,6 +117,7 @@ export const bibWorkTitlesTable = sqliteTable("bib_alternative_title", {
 // 件名標目
 export const bibSubjectsTable = sqliteTable("bib_subjects", {
 	id: text().primaryKey(),
+	subject_type: text().notNull(),
 	preferred_label: text().notNull(),
 	preferred_label_transcription: text(),
 });
