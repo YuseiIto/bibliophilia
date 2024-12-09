@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { Plus, X } from "@mynaui/icons-react";
+import { Plus, X, InfoTriangle, Undo } from "@mynaui/icons-react";
 import {
 	Dialog,
 	DialogContent,
@@ -30,6 +30,9 @@ export function LanguageDialog({
 	clearOnSubmit,
 }: LanguageDialogProps) {
 	const [language, setLanguage] = useState<KnownLanguage>(defaultValue ?? "");
+	const [useOptions, setUseOptions] = useState(
+		language in knownLanguages || language == "",
+	);
 	const languageOptions = Object.entries(knownLanguages).map(
 		([key, value]) => ({
 			value: key,
@@ -47,6 +50,7 @@ export function LanguageDialog({
 		if (onOpenChange) onOpenChange(false);
 		if (clearOnSubmit) {
 			setLanguage(defaultValue ?? "");
+			setUseOptions(language in knownLanguages || language == "");
 		}
 	};
 
@@ -55,17 +59,31 @@ export function LanguageDialog({
 			<DialogHeader>
 				<DialogTitle>言語を追加</DialogTitle>
 				<DialogDescription>
-					選択肢から選択した言語は、IETF
-					BCP47形式で保存されます。選択肢にない言語を直接入力することもできます。
+					選択肢から選択した言語は、IETF BCP47形式で保存されます。
 				</DialogDescription>
 			</DialogHeader>
+			{useOptions ? (
+				<Combobox
+					options={languageOptions}
+					label="言語を選択"
+					value={language}
+					onChange={setLanguage}
+				/>
+			) : (
+				<Input
+					placeholder="言語を入力 （例: &quot;Newspeak&quot;）"
+					value={language}
+					onChange={(event) => setLanguage(event.target.value)}
+				/>
+			)}
 
-			<Combobox
-				options={languageOptions}
-				label="言語"
-				value={language}
-				onChange={setLanguage}
-			/>
+			<div className="flex flex-row p-0 pr-3 gap-1 justify-end hover:underline">
+				{useOptions ? <InfoTriangle size={14} /> : <Undo size={14} />}
+				<span className="text-xs" onClick={() => setUseOptions(!useOptions)}>
+					{useOptions ? "言語が選択肢にないとき" : "リストに戻る"}
+				</span>
+			</div>
+
 			<Button type="button" onClick={onSubmitWrapper} disabled={language == ""}>
 				<Plus /> 言語を追加
 			</Button>
