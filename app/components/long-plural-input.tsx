@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { Plus, X, Edit, Trash } from "@mynaui/icons-react";
+import { Plus, Edit, Trash } from "@mynaui/icons-react";
 import {
 	Dialog,
 	DialogContent,
@@ -18,19 +17,9 @@ import {
 	ContextMenuItem,
 } from "~/components/ui/context-menu";
 
-import { Badge } from "~/components/ui/badge";
-import { Card, CardContent } from "~/components/ui/card";
-import { Combobox } from "~/components/combobox";
 import { Textarea } from "~/components/ui/textarea";
 
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "~/components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "~/components/ui/table";
 
 interface LongPluralDialogProps {
 	defaultValue?: string;
@@ -102,7 +91,7 @@ export function LongPluralItem({
 	dialogDescription,
 	placeholder,
 	buttonLabel,
-}: SimplePluralItemProps) {
+}: LongPluralItemProps) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const onUpdateWrapper = (value: string) => {
