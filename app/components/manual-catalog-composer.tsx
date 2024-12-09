@@ -18,6 +18,7 @@ import { TitleInput } from "~/components/titles-input";
 import { SubjectInput } from "~/components/subject-input";
 import { SeriesTitleInput } from "~/components/series-title-input";
 import { LanguagesInput } from "~/components/languages-input";
+import { SimplePluralInput } from "~/components/simple-plural-input";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -123,6 +124,22 @@ export function ManualCatalogComposer({
 				<SubjectInput />
 				<SeriesTitleInput />
 				<LanguagesInput />
+
+				<SimplePluralInput
+					dialogTitle="価格を追加"
+					dialogDescription="資料の入手価格を追加します"
+					placeholder="価格を入力"
+					dialogButtonLabel="価格を追加"
+					createNewButtonLabel="価格を追加"
+				/>
+
+				<SimplePluralInput
+					dialogTitle="大きさ・容量等を追加"
+					dialogDescription="資料の大きさ・容量等を追加します"
+					placeholder="大きさ・容量等を入力 (例: &quot;22cm&quot;, &quot;240頁&quot;)"
+					dialogButtonLabel="大きさ・容量等を追加"
+					createNewButtonLabel="大きさ・容量等を追加"
+				/>
 
 				<Button
 					className="p-2"
