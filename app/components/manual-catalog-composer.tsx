@@ -17,6 +17,7 @@ import { AgentInput } from "~/components/agent-input";
 import { TitleInput } from "~/components/titles-input";
 import { SubjectInput } from "~/components/subject-input";
 import { SeriesTitleInput } from "~/components/series-title-input";
+import { LanguagesInput } from "~/components/languages-input";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -121,6 +122,7 @@ export function ManualCatalogComposer({
 				<TitleInput />
 				<SubjectInput />
 				<SeriesTitleInput />
+				<LanguagesInput />
 
 				<Button
 					className="p-2"

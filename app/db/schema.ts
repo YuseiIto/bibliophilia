@@ -142,7 +142,7 @@ export const bibSeriesTitle = sqliteTable("bib_series_title", {
 
 export const bibLanguagesTable = sqliteTable("bib_languages", {
 	id: text().primaryKey(),
-	language: text().notNull(),
+	language: text().notNull(), // IETF BCP47に従う
 });
 
 export const bibOriginalLanguagesTable = sqliteTable("bib_original_languages", {
