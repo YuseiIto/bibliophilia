@@ -14,6 +14,7 @@ import { PreferredVolumeTitleInput } from "~/components/preferred-volume-title-i
 import { WorkDraft, isValidWork } from "~/model/work";
 import { IdentifierInput } from "~/components/identifier-input";
 import { AgentInput } from "~/components/agent-input";
+import { TitleInput } from "~/components/titles-input";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -115,6 +116,7 @@ export function ManualCatalogComposer({
 
 				<IdentifierInput />
 				<AgentInput />
+				<TitleInput />
 				<Button
 					className="p-2"
 					type="submit"
