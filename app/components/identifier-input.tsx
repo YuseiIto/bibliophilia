@@ -45,7 +45,10 @@ export function IdentifierDialog({
 	defaultValue,
 }: IdentifierDialogProps) {
 	const identifierTypeOptions: ComboboxOption<IdentifierType>[] =
-		Object.entries(identifierTypes).map(([value, label]) => ({ value, label }));
+		Object.entries(identifierTypes).map(([value, label]) => ({
+			value: value as IdentifierType,
+			label,
+		}));
 
 	const [identifierType, setIdentifierType] = useState<IdentifierType | null>(
 		defaultValue?.identifierType ?? null,
@@ -148,9 +151,9 @@ function IdentifierRow({ value, onUpdate, onDelete }: IdentifierRowProps) {
 
 export function IdentifierInput() {
 	const [isOpen, setIsOpen] = useState(false);
-	const [identifiers, setIdentifiers] = useState([]);
+	const [identifiers, setIdentifiers] = useState<Identifier[]>([]);
 
-	const onSubmit = ({ identifierType, identifier }) => {
+	const onSubmit = ({ identifierType, identifier }: Identifier) => {
 		setIdentifiers([...identifiers, { identifierType, identifier }]);
 	};
 
