@@ -79,9 +79,9 @@ export function LanguageDialog({
 
 			<div className="flex flex-row p-0 pr-3 gap-1 justify-end hover:underline">
 				{useOptions ? <InfoTriangle size={14} /> : <Undo size={14} />}
-				<span className="text-xs" onClick={() => setUseOptions(!useOptions)}>
+				<button className="text-xs" onClick={() => setUseOptions(!useOptions)}>
 					{useOptions ? "言語が選択肢にないとき" : "リストに戻る"}
-				</span>
+				</button>
 			</div>
 
 			<Button type="button" onClick={onSubmitWrapper} disabled={language == ""}>
