@@ -5,7 +5,6 @@ import { ManualCatalogComposer } from "~/components/manual-catalog-composer";
 import { DefaultLayout } from "~/layouts/default";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import {
-	Card,
 	CardHeader,
 	CardTitle,
 	CardDescription,
