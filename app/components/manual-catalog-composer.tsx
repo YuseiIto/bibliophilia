@@ -15,6 +15,7 @@ import { WorkDraft, isValidWork } from "~/model/work";
 import { IdentifierInput } from "~/components/identifier-input";
 import { AgentInput } from "~/components/agent-input";
 import { TitleInput } from "~/components/titles-input";
+import { SubjectInput } from "~/components/subject-input";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -117,6 +118,8 @@ export function ManualCatalogComposer({
 				<IdentifierInput />
 				<AgentInput />
 				<TitleInput />
+				<SubjectInput />
+
 				<Button
 					className="p-2"
 					type="submit"
