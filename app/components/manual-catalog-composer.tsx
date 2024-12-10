@@ -87,6 +87,7 @@ export function ManualCatalogComposer({
 	const [seriesTitles, setSeriesTitles] = useState(value?.seriesTitles ?? []);
 	const [languages, setLanguages] = useState(value?.languages ?? []);
 	const [prices, setPrices] = useState(value?.prices ?? []);
+	const [extents, setExtents] = useState(value?.extents ?? []);
 
 	const composeBibRecord = (): BibRecordDraft => {
 		return {
@@ -98,7 +99,7 @@ export function ManualCatalogComposer({
 			seriesTitles,
 			languages,
 			prices,
-			extents: [],
+			extents,
 			abstracts: [],
 			descriptions: [],
 			dates: [],
@@ -171,6 +172,8 @@ export function ManualCatalogComposer({
 				/>
 
 				<SimplePluralInput
+					value={extents}
+					onChange={setExtents}
 					dialogTitle="大きさ・容量等を追加"
 					dialogDescription="資料の大きさ・容量等を追加します"
 					placeholder="大きさ・容量等を入力 (例: &quot;22cm&quot;, &quot;240頁&quot;)"
