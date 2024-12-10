@@ -137,6 +137,8 @@ export function LongPluralItem({
 }
 
 interface LongPluralInputProps {
+	value?: string[];
+	onChange?: (value: string[]) => void;
 	dialogTitle?: string;
 	dialogDescription?: string;
 	placeholder?: string;
@@ -145,6 +147,8 @@ interface LongPluralInputProps {
 }
 
 export function LongPluralInput({
+	value,
+	onChange,
 	dialogTitle,
 	dialogDescription,
 	placeholder,
@@ -152,22 +156,26 @@ export function LongPluralInput({
 	createNewButtonLabel,
 }: LongPluralInputProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [values, setValues] = useState<string[]>([]);
+	const [values, setValues] = useState<string[]>(value ?? []);
 
 	const appendValues = (value: string) => {
-		setValues([...values, value]);
+		const newValues = [...values, value];
+		setValues(newValues);
+		if (onChange) onChange(newValues);
 	};
 
 	const removeValue = (index: number) => {
 		const newValues = [...values];
 		newValues.splice(index, 1);
 		setValues(newValues);
+		if (onChange) onChange(newValues);
 	};
 
 	const updateRow = (value: string, index: number) => {
 		const newValues = [...values];
 		newValues[index] = value;
 		setValues(newValues);
+		if (onChange) onChange(newValues);
 	};
 
 	return (

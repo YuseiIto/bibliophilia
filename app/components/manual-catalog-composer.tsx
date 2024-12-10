@@ -88,6 +88,7 @@ export function ManualCatalogComposer({
 	const [languages, setLanguages] = useState(value?.languages ?? []);
 	const [prices, setPrices] = useState(value?.prices ?? []);
 	const [extents, setExtents] = useState(value?.extents ?? []);
+	const [abstracts, setAbstracts] = useState(value?.abstracts ?? []);
 
 	const composeBibRecord = (): BibRecordDraft => {
 		return {
@@ -100,7 +101,7 @@ export function ManualCatalogComposer({
 			languages,
 			prices,
 			extents,
-			abstracts: [],
+			abstracts,
 			descriptions: [],
 			dates: [],
 		};
@@ -182,6 +183,8 @@ export function ManualCatalogComposer({
 				/>
 
 				<LongPluralInput
+					value={abstracts}
+					onChange={setAbstracts}
 					dialogTitle="要約・抄録を追加"
 					dialogDescription="要約・抄録を追加します"
 					placeholder="要約・抄録を入力"
