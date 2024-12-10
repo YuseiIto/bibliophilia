@@ -53,7 +53,6 @@ export interface WorkDraft {
 }
 
 export const isValidWork = (value: WorkDraft) => {
-	console.log(value);
 	if (!value.preferred_title) return false;
 	if (!isCatalogSourceType(value.catalog_source_type)) return false;
 	if (value.catalog_source_type === "manual:original") {
