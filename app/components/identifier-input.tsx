@@ -149,12 +149,19 @@ function IdentifierRow({ value, onUpdate, onDelete }: IdentifierRowProps) {
 	);
 }
 
-export function IdentifierInput() {
+interface IdentifierInputProps {
+	value?: Identifier[];
+	onChange?: (value: Identifier[]) => void;
+}
+
+export function IdentifierInput({ value, onChange }: IdentifierInputProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [identifiers, setIdentifiers] = useState<Identifier[]>([]);
+	const [identifiers, setIdentifiers] = useState<Identifier[]>(value ?? []);
 
 	const onSubmit = ({ identifierType, identifier }: Identifier) => {
-		setIdentifiers([...identifiers, { identifierType, identifier }]);
+		const newIdentifiers = [...identifiers, { identifierType, identifier }];
+		setIdentifiers(newIdentifiers);
+		if (onChange) onChange(newIdentifiers);
 	};
 
 	const onUpdateRow = (
@@ -164,12 +171,14 @@ export function IdentifierInput() {
 		const newIdentifiers = [...identifiers];
 		newIdentifiers[index] = { identifier, identifierType };
 		setIdentifiers(newIdentifiers);
+		if (onChange) onChange(newIdentifiers);
 	};
 
 	const onDeleteRow = (index: number) => {
 		const newIdentifiers = [...identifiers];
 		newIdentifiers.splice(index, 1);
 		setIdentifiers(newIdentifiers);
+		if (onChange) onChange(newIdentifiers);
 	};
 
 	return (
