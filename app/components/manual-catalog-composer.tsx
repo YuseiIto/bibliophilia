@@ -90,6 +90,7 @@ export function ManualCatalogComposer({
 	const [extents, setExtents] = useState(value?.extents ?? []);
 	const [abstracts, setAbstracts] = useState(value?.abstracts ?? []);
 	const [descriptions, setDescriptions] = useState(value?.descriptions ?? []);
+	const [dates, setDates] = useState(value?.dates ?? []);
 
 	const composeBibRecord = (): BibRecordDraft => {
 		return {
@@ -104,7 +105,7 @@ export function ManualCatalogComposer({
 			extents,
 			abstracts,
 			descriptions,
-			dates: [],
+			dates,
 		};
 	};
 
@@ -204,6 +205,8 @@ export function ManualCatalogComposer({
 				/>
 
 				<SimplePluralInput
+					value={dates}
+					onChange={setDates}
 					dialogTitle="日付を追加"
 					dialogDescription="刊行日などの日付を表す情報を追加します。原資料の記述に応じて、月や日を省略しても構いません。"
 					placeholder="日付を入力 (例: &quot;2021-01-01&quot;, &quot; 平成14年10月&quot;)"
