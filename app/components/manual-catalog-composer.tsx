@@ -83,6 +83,7 @@ export function ManualCatalogComposer({
 	);
 	const [agents, setAgents] = useState<AgentDraft[]>(value?.agents ?? []);
 	const [titles, setTitles] = useState<TitleDraft[]>(value?.titles ?? []);
+	const [subjects, setSubjects] = useState(value?.subjects ?? []);
 
 	const composeBibRecord = (): BibRecordDraft => {
 		return {
@@ -90,7 +91,7 @@ export function ManualCatalogComposer({
 			identifiers,
 			agents,
 			titles,
-			subjects: [],
+			subjects,
 			seriesTitles: [],
 			languages: [],
 			prices: [],
@@ -152,7 +153,7 @@ export function ManualCatalogComposer({
 				<IdentifierInput value={identifiers} onChange={setIdentifiers} />
 				<AgentInput value={agents} onChange={setAgents} />
 				<TitleInput value={titles} onChange={setTitles} />
-				<SubjectInput />
+				<SubjectInput value={subjects} onChange={setSubjects} />
 				<SeriesTitleInput />
 				<LanguagesInput />
 

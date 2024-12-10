@@ -162,19 +162,26 @@ function SubjectRow({ value, onUpdate, onDelete }: SubjectRowProps) {
 	);
 }
 
-export function SubjectInput() {
+interface SubjectInputProps {
+	value?: SubjectDraft[];
+	onChange?: (subjects: SubjectDraft[]) => void;
+}
+
+export function SubjectInput({ value, onChange }: SubjectInputProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [subjects, setSubjects] = useState<SubjectDraft[]>([]);
+	const [subjects, setSubjects] = useState<SubjectDraft[]>(value ?? []);
 
 	const onSubmit = ({
 		subject_type,
 		preferred_label,
 		preferred_label_transcription,
 	}: SubjectDraft) => {
-		setSubjects([
+		const newSubjects = [
 			...subjects,
 			{ subject_type, preferred_label, preferred_label_transcription },
-		]);
+		];
+		setSubjects(newSubjects);
+		if (onChange) onChange(newSubjects);
 	};
 
 	const onUpdateRow = (
@@ -192,12 +199,14 @@ export function SubjectInput() {
 			preferred_label_transcription,
 		};
 		setSubjects(newSubjects);
+		if (onChange) onChange(newSubjects);
 	};
 
 	const onDeleteRow = (index: number) => {
 		const newSubjects = [...subjects];
 		newSubjects.splice(index, 1);
 		setSubjects(newSubjects);
+		if (onChange) onChange(newSubjects);
 	};
 
 	return (
