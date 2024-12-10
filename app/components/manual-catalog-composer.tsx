@@ -12,9 +12,12 @@ import { PreferredVolumeInput } from "~/components/preferred-volume-input";
 import { PreferredVolumeTitleInput } from "~/components/preferred-volume-title-input";
 
 import { isValidWork } from "~/model/work";
+
 import type { BibRecordDraft } from "~/model/bib-record";
 import type { WorkDraft } from "~/model/work";
 import type { Identifier } from "~/model/identifier";
+import type { AgentDraft } from "~/model/agent";
+
 import { IdentifierInput } from "~/components/identifier-input";
 import { AgentInput } from "~/components/agent-input";
 import { TitleInput } from "~/components/titles-input";
@@ -77,12 +80,13 @@ export function ManualCatalogComposer({
 	const [identifiers, setIdentifiers] = useState<Identifier[]>(
 		value?.identifiers ?? [],
 	);
+	const [agents, setAgents] = useState<AgentDraft[]>(value?.agents ?? []);
 
 	const composeBibRecord = (): BibRecordDraft => {
 		return {
 			work: composeWork(),
 			identifiers,
-			agents: [],
+			agents,
 			titles: [],
 			subjects: [],
 			seriesTitles: [],
@@ -144,7 +148,7 @@ export function ManualCatalogComposer({
 				/>
 
 				<IdentifierInput value={identifiers} onChange={setIdentifiers} />
-				<AgentInput />
+				<AgentInput value={agents} onChange={setAgents} />
 				<TitleInput />
 				<SubjectInput />
 				<SeriesTitleInput />

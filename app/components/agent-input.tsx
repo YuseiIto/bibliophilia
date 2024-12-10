@@ -216,24 +216,33 @@ function AgentRow({ value, onUpdate, onDelete }: AgentRowProps) {
 	);
 }
 
-export function AgentInput() {
+interface AgentInputProps {
+	value?: AgentDraft[];
+	onChange?: (agents: AgentDraft[]) => void;
+}
+
+export function AgentInput({ value, onChange }: AgentInputProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [agents, setAgents] = useState<AgentDraft[]>([]);
+	const [agents, setAgents] = useState<AgentDraft[]>(value ?? []);
 
 	const onSubmit = (agent: AgentDraft) => {
-		setAgents([...agents, agent]);
+		const newAgents = [...agents, agent];
+		setAgents(newAgents);
+		if (onChange) onChange(newAgents);
 	};
 
 	const onUpdateRow = (agent: AgentDraft, index: number) => {
 		const newAgents = [...agents];
 		newAgents[index] = agent;
 		setAgents(newAgents);
+		if (onChange) onChange(newAgents);
 	};
 
 	const onDeleteRow = (index: number) => {
 		const newAgents = [...agents];
 		newAgents.splice(index, 1);
 		setAgents(newAgents);
+		if (onChange) onChange(newAgents);
 	};
 
 	return (
