@@ -85,6 +85,7 @@ export function ManualCatalogComposer({
 	const [titles, setTitles] = useState<TitleDraft[]>(value?.titles ?? []);
 	const [subjects, setSubjects] = useState(value?.subjects ?? []);
 	const [seriesTitles, setSeriesTitles] = useState(value?.seriesTitles ?? []);
+	const [languages, setLanguages] = useState(value?.languages ?? []);
 
 	const composeBibRecord = (): BibRecordDraft => {
 		return {
@@ -94,7 +95,7 @@ export function ManualCatalogComposer({
 			titles,
 			subjects,
 			seriesTitles,
-			languages: [],
+			languages,
 			prices: [],
 			extents: [],
 			abstracts: [],
@@ -156,7 +157,7 @@ export function ManualCatalogComposer({
 				<TitleInput value={titles} onChange={setTitles} />
 				<SubjectInput value={subjects} onChange={setSubjects} />
 				<SeriesTitleInput value={seriesTitles} onChange={setSeriesTitles} />
-				<LanguagesInput />
+				<LanguagesInput value={languages} onChange={setLanguages} />
 
 				<SimplePluralInput
 					dialogTitle="価格を追加"

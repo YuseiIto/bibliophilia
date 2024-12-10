@@ -114,18 +114,28 @@ export function LanguageItem({ language, onRemove }: LanguageItemProps) {
 	);
 }
 
-export function LanguagesInput() {
+interface LanguagesInputProps {
+	value: (KnownLanguage | string)[];
+	onChange: (value: (KnownLanguage | string)[]) => void;
+}
+
+export function LanguagesInput({ value, onChange }: LanguagesInputProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [languages, setLanguages] = useState<(KnownLanguage | string)[]>([]);
+	const [languages, setLanguages] = useState<(KnownLanguage | string)[]>(
+		value ?? [],
+	);
 
 	const appendLanguage = (language: KnownLanguage | string) => {
-		setLanguages([...languages, language]);
+		const newLanguages = [...languages, language];
+		setLanguages(newLanguages);
+		if (onChange) onChange(newLanguages);
 	};
 
 	const removeLanguage = (index: number) => {
 		const newLanguages = [...languages];
 		newLanguages.splice(index, 1);
 		setLanguages(newLanguages);
+		if (onChange) onChange(newLanguages);
 	};
 
 	return (
