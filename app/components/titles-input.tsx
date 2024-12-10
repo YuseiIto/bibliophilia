@@ -139,24 +139,33 @@ function TitleRow({ value, onUpdate, onDelete }: TitleProps) {
 	);
 }
 
-export function TitleInput() {
+interface TitleInputProps {
+	value?: TitleDraft[];
+	onChange?: (titles: TitleDraft[]) => void;
+}
+
+export function TitleInput({ value, onChange }: TitleInputProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [titles, setTitles] = useState<TitleDraft[]>([]);
+	const [titles, setTitles] = useState<TitleDraft[]>(value ?? []);
 
 	const onSubmit = ({ title, transcription }: TitleDraft) => {
-		setTitles([...titles, { title, transcription }]);
+		const newTitles = [...titles, { title, transcription }];
+		setTitles(newTitles);
+		if (onChange) onChange(newTitles);
 	};
 
 	const onUpdateRow = ({ title, transcription }: TitleDraft, index: number) => {
 		const newTitles = [...titles];
 		newTitles[index] = { title, transcription };
 		setTitles(newTitles);
+		if (onChange) onChange(newTitles);
 	};
 
 	const onDeleteRow = (index: number) => {
 		const newTitles = [...titles];
 		newTitles.splice(index, 1);
 		setTitles(newTitles);
+		if (onChange) onChange(newTitles);
 	};
 
 	return (

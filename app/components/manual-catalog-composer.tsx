@@ -17,6 +17,7 @@ import type { BibRecordDraft } from "~/model/bib-record";
 import type { WorkDraft } from "~/model/work";
 import type { Identifier } from "~/model/identifier";
 import type { AgentDraft } from "~/model/agent";
+import type { TitleDraft } from "~/model/title";
 
 import { IdentifierInput } from "~/components/identifier-input";
 import { AgentInput } from "~/components/agent-input";
@@ -81,13 +82,14 @@ export function ManualCatalogComposer({
 		value?.identifiers ?? [],
 	);
 	const [agents, setAgents] = useState<AgentDraft[]>(value?.agents ?? []);
+	const [titles, setTitles] = useState<TitleDraft[]>(value?.titles ?? []);
 
 	const composeBibRecord = (): BibRecordDraft => {
 		return {
 			work: composeWork(),
 			identifiers,
 			agents,
-			titles: [],
+			titles,
 			subjects: [],
 			seriesTitles: [],
 			languages: [],
@@ -149,7 +151,7 @@ export function ManualCatalogComposer({
 
 				<IdentifierInput value={identifiers} onChange={setIdentifiers} />
 				<AgentInput value={agents} onChange={setAgents} />
-				<TitleInput />
+				<TitleInput value={titles} onChange={setTitles} />
 				<SubjectInput />
 				<SeriesTitleInput />
 				<LanguagesInput />
