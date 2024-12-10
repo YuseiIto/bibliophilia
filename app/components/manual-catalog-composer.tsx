@@ -11,7 +11,9 @@ import { CatalogSourceInput } from "~/components/catalog-source-input";
 import { PreferredVolumeInput } from "~/components/preferred-volume-input";
 import { PreferredVolumeTitleInput } from "~/components/preferred-volume-title-input";
 
-import { WorkDraft, isValidWork } from "~/model/work";
+import { isValidWork } from "~/model/work";
+import type { BibRecordDraft } from "~/model/bib-record";
+import type { WorkDraft } from "~/model/work";
 import { IdentifierInput } from "~/components/identifier-input";
 import { AgentInput } from "~/components/agent-input";
 import { TitleInput } from "~/components/titles-input";
@@ -24,39 +26,39 @@ import { LongPluralInput } from "~/components/long-plural-input";
 import { v4 as uuidv4 } from "uuid";
 
 interface ManualCatalogComposerProps {
-	value?: WorkDraft;
-	onSubmit?: (data: WorkDraft) => void;
+	value?: BibRecordDraft;
+	onSubmit?: (data: BibRecordDraft) => void;
 }
 
 export function ManualCatalogComposer({
 	onSubmit,
 	value,
 }: ManualCatalogComposerProps) {
-	const [id] = useState(value?.id ?? uuidv4());
+	const [id] = useState(value?.work.id ?? uuidv4());
 	const [preferredTitle, setPreferredTitle] = useState(
-		value?.preferred_title ?? "",
+		value?.work.preferred_title ?? "",
 	);
 	const [preferredTitleTranscription, setPreferredTitleTranscription] =
-		useState(value?.preferred_title_transcription ?? "");
+		useState(value?.work.preferred_title_transcription ?? "");
 	const [sourceType, setSourceType] = useState(
-		value?.catalog_source_type ?? null,
+		value?.work.catalog_source_type ?? null,
 	);
-	const [source, setSource] = useState(value?.catalog_source ?? "");
+	const [source, setSource] = useState(value?.work.catalog_source ?? "");
 	const [preferredVolume, setPreferredVolume] = useState(
-		value?.preferred_volume ?? "",
+		value?.work.preferred_volume ?? "",
 	);
 	const [catalogingRule, setCatalogingRule] = useState(
-		value?.cataloging_rule ?? null,
+		value?.work.cataloging_rule ?? null,
 	);
 	const [preferredVolumeTitle, setPreferredVolumeTitle] = useState(
-		value?.preferred_volume_title ?? "",
+		value?.work.preferred_volume_title ?? "",
 	);
 	const [
 		preferredVolumeTitleTranscription,
 		setPreferredVolumeTitleTranscription,
-	] = useState(value?.preferred_title_transcription ?? "");
+	] = useState(value?.work.preferred_title_transcription ?? "");
 
-	const composeValues = () => {
+	const composeWork = (): WorkDraft => {
 		return {
 			id,
 			preferred_title: preferredTitle,
@@ -71,9 +73,26 @@ export function ManualCatalogComposer({
 		};
 	};
 
+	const composeBibRecord = (): BibRecordDraft => {
+		return {
+			work: composeWork(),
+			identifiers,
+			agents: [],
+			titles: [],
+			subjects: [],
+			seriesTitles: [],
+			languages: [],
+			prices: [],
+			extents: [],
+			abstracts: [],
+			descriptions: [],
+			dates: [],
+		};
+	};
+
 	const onSubmitWrapper = (e: FormEvent) => {
 		e.preventDefault();
-		if (onSubmit) onSubmit(composeValues());
+		if (onSubmit) onSubmit(composeBibRecord());
 	};
 
 	return (
@@ -169,7 +188,7 @@ export function ManualCatalogComposer({
 				<Button
 					className="p-2"
 					type="submit"
-					disabled={!isValidWork(composeValues())}
+					disabled={!isValidWork(composeWork())}
 				>
 					<Save /> 保存
 				</Button>

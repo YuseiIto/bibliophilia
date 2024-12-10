@@ -38,7 +38,7 @@ import {
 } from "~/components/ui/dialog";
 
 import { useToast } from "~/hooks/use-toast";
-import type { WorkDraft } from "~/model/work";
+import type { BibRecordDraft } from "~/model/bib-record";
 
 import {
 	ResizablePanelGroup,
@@ -74,7 +74,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function Index() {
 	const fetcher = useFetcher();
 
-	const [candidates, setCandidates] = useState<WorkDraft[]>([]);
+	const [candidates, setCandidates] = useState<BibRecordDraft[]>([]);
 
 	const { toast } = useToast();
 
@@ -85,7 +85,7 @@ export default function Index() {
 
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-	const onManualInputSubmit = (data: WorkDraft) => {
+	const onManualInputSubmit = (data: BibRecordDraft) => {
 		setCandidates((candidates) => [...candidates, data]);
 		toast({
 			title: "下書きを追加しました",
@@ -95,7 +95,10 @@ export default function Index() {
 
 	useEffect(() => {
 		if (!fetcher.data) return;
-		setCandidates((candidates) => [...candidates, fetcher.data as WorkDraft]);
+		setCandidates((candidates) => [
+			...candidates,
+			fetcher.data as BibRecordDraft,
+		]);
 	}, [fetcher.data]);
 
 	const deleteRow = (index: number) => {
@@ -106,7 +109,7 @@ export default function Index() {
 		});
 	};
 
-	const onRowSubmit = (index: number, work: WorkDraft) => {
+	const onRowSubmit = (index: number, work: BibRecordDraft) => {
 		setCandidates((candidates) => {
 			const newCandidates = [...candidates];
 			newCandidates[index] = work;
@@ -194,7 +197,7 @@ export default function Index() {
 															<Checkbox />
 														</TableCell>
 														<TableCell>ここにISBNが入る</TableCell>
-														<TableCell>{item.preferred_title}</TableCell>
+														<TableCell>{item.work.preferred_title}</TableCell>
 														<TableCell>ここに著者が入る</TableCell>
 														<TableCell>ここに日付が入る</TableCell>
 													</TableRow>
@@ -224,7 +227,7 @@ export default function Index() {
 												<div className="p-3">
 													<ManualCatalogComposer
 														value={item}
-														onSubmit={(work) => onRowSubmit(i, work)}
+														onSubmit={(bibRecord) => onRowSubmit(i, bibRecord)}
 													/>
 												</div>
 											</DialogContent>
