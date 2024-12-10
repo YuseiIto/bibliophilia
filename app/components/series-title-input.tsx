@@ -139,12 +139,21 @@ function SeriesTitleRow({ value, onUpdate, onDelete }: SeriesTitleProps) {
 	);
 }
 
-export function SeriesTitleInput() {
+interface SeriesTitleInputProps {
+	value?: SeriesTitleDraft[];
+	onChange?: (titles: SeriesTitleDraft[]) => void;
+}
+
+export function SeriesTitleInput({ value, onChange }: SeriesTitleInputProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [seriesTitles, setSeriesTitles] = useState<SeriesTitleDraft[]>([]);
+	const [seriesTitles, setSeriesTitles] = useState<SeriesTitleDraft[]>(
+		value ?? [],
+	);
 
 	const onSubmit = ({ title, transcription }: SeriesTitleDraft) => {
-		setSeriesTitles([...seriesTitles, { title, transcription }]);
+		const newSeriesTitles = [...seriesTitles, { title, transcription }];
+		setSeriesTitles(newSeriesTitles);
+		if (onChange) onChange(newSeriesTitles);
 	};
 
 	const onUpdateRow = (
@@ -154,12 +163,14 @@ export function SeriesTitleInput() {
 		const newSeriesTitles = [...seriesTitles];
 		newSeriesTitles[index] = { title, transcription };
 		setSeriesTitles(newSeriesTitles);
+		if (onChange) onChange(newSeriesTitles);
 	};
 
 	const onDeleteRow = (index: number) => {
 		const newSeriesTitles = [...seriesTitles];
 		newSeriesTitles.splice(index, 1);
 		setSeriesTitles(newSeriesTitles);
+		if (onChange) onChange(newSeriesTitles);
 	};
 
 	return (
