@@ -86,6 +86,8 @@ export function SimplePluralItem({ value, onRemove }: SimplePluralItemProps) {
 }
 
 interface SimplePluralInputProps {
+	value?: string[];
+	onChange?: (value: string[]) => void;
 	dialogTitle?: string;
 	dialogDescription?: string;
 	placeholder?: string;
@@ -99,18 +101,23 @@ export function SimplePluralInput({
 	placeholder,
 	dialogButtonLabel,
 	createNewButtonLabel,
+	value,
+	onChange,
 }: SimplePluralInputProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [values, setValues] = useState<string[]>([]);
+	const [values, setValues] = useState<string[]>(value ?? []);
 
 	const appendValue = (value: string) => {
-		setValues([...values, value]);
+		const newValues = [...values, value];
+		setValues(newValues);
+		if (onChange) onChange(newValues);
 	};
 
 	const removeValue = (index: number) => {
 		const newValues = [...values];
 		newValues.splice(index, 1);
 		setValues(newValues);
+		if (onChange) onChange(newValues);
 	};
 
 	return (
