@@ -36,7 +36,6 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "~/components/ui/dialog";
-import { ScrollArea } from "~/components/ui/scroll-area";
 
 import { useToast } from "~/hooks/use-toast";
 import type { BibRecordDraft } from "~/model/bib-record";
@@ -175,77 +174,81 @@ export default function Index() {
 					<ResizableHandle />
 
 					<ResizablePanel className="p-3" defaultSize={70}>
-						<Table>
-							<TableHeader>
-								<TableRow>
-									<TableHead>
-										<Checkbox></Checkbox>
-									</TableHead>
-									<TableHead>ISBN</TableHead>
-									<TableHead>タイトル</TableHead>
-									<TableHead>著編者</TableHead>
-									<TableHead>出版年月</TableHead>
-								</TableRow>
-							</TableHeader>
-							<TableBody>
-								{candidates.map(function (item, i) {
-									return (
-										<Dialog
-											key={i}
-											open={isDialogOpen}
-											onOpenChange={setIsDialogOpen}
-										>
-											<ContextMenu>
-												<ContextMenuTrigger key={i} asChild>
-													<TableRow>
-														<TableCell max-width="1">
-															<Checkbox />
-														</TableCell>
-														<TableCell>ここにISBNが入る</TableCell>
-														<TableCell>{item.work.preferred_title}</TableCell>
-														<TableCell>ここに著者が入る</TableCell>
-														<TableCell>ここに日付が入る</TableCell>
-													</TableRow>
-												</ContextMenuTrigger>
-												<ContextMenuContent>
-													<DialogTrigger asChild>
-														<ContextMenuItem>
-															<span className="flex flex-row items-center gap-3">
-																<Edit size={15} />
-																編集
+						<div className="overflow-y-auto h-full">
+							<Table>
+								<TableHeader>
+									<TableRow>
+										<TableHead>
+											<Checkbox></Checkbox>
+										</TableHead>
+										<TableHead>ISBN</TableHead>
+										<TableHead>タイトル</TableHead>
+										<TableHead>著編者</TableHead>
+										<TableHead>出版年月</TableHead>
+									</TableRow>
+								</TableHeader>
+								<TableBody>
+									{candidates.map(function (item, i) {
+										return (
+											<Dialog
+												key={i}
+												open={isDialogOpen}
+												onOpenChange={setIsDialogOpen}
+											>
+												<ContextMenu>
+													<ContextMenuTrigger key={i} asChild>
+														<TableRow>
+															<TableCell max-width="1">
+																<Checkbox />
+															</TableCell>
+															<TableCell>ここにISBNが入る</TableCell>
+															<TableCell>{item.work.preferred_title}</TableCell>
+															<TableCell>ここに著者が入る</TableCell>
+															<TableCell>ここに日付が入る</TableCell>
+														</TableRow>
+													</ContextMenuTrigger>
+													<ContextMenuContent>
+														<DialogTrigger asChild>
+															<ContextMenuItem>
+																<span className="flex flex-row items-center gap-3">
+																	<Edit size={15} />
+																	編集
+																</span>
+															</ContextMenuItem>
+														</DialogTrigger>
+														<ContextMenuItem onClick={() => deleteRow(i)}>
+															<span className="flex flex-row items-center gap-3 text-destructive">
+																<Trash size={15} />
+																削除
 															</span>
 														</ContextMenuItem>
-													</DialogTrigger>
-													<ContextMenuItem onClick={() => deleteRow(i)}>
-														<span className="flex flex-row items-center gap-3 text-destructive">
-															<Trash size={15} />
-															削除
-														</span>
-													</ContextMenuItem>
-												</ContextMenuContent>
-											</ContextMenu>
+													</ContextMenuContent>
+												</ContextMenu>
 
-											<DialogContent className="h-[80vh]">
-												<DialogHeader className="max-h-[2rem]">
-													<DialogTitle>目録情報の編集</DialogTitle>
-												</DialogHeader>
-												<div className="p-3 h-[calc(75vh-2rem)]">
-													<ManualCatalogComposer
-														value={item}
-														onSubmit={(bibRecord) => onRowSubmit(i, bibRecord)}
-													/>
-												</div>
-											</DialogContent>
-										</Dialog>
-									);
-								})}
-							</TableBody>
-						</Table>
+												<DialogContent className="h-[80vh]">
+													<DialogHeader className="max-h-[2rem]">
+														<DialogTitle>目録情報の編集</DialogTitle>
+													</DialogHeader>
+													<div className="p-3 h-[calc(75vh-2rem)]">
+														<ManualCatalogComposer
+															value={item}
+															onSubmit={(bibRecord) =>
+																onRowSubmit(i, bibRecord)
+															}
+														/>
+													</div>
+												</DialogContent>
+											</Dialog>
+										);
+									})}
+								</TableBody>
+							</Table>
 
-						<div className="flex flex-row justify-center">
-							<Button>
-								<FilePlus /> 選択中の資料を登録
-							</Button>
+							<div className="flex flex-row justify-center">
+								<Button>
+									<FilePlus /> 選択中の資料を登録
+								</Button>
+							</div>
 						</div>
 					</ResizablePanel>
 				</ResizablePanelGroup>
