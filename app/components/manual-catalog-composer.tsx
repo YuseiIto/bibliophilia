@@ -30,6 +30,8 @@ import { LongPluralInput } from "~/components/long-plural-input";
 
 import { v4 as uuidv4 } from "uuid";
 
+import { ScrollArea } from "~/components/ui/scroll-area";
+
 interface ManualCatalogComposerProps {
 	value?: BibRecordDraft;
 	onSubmit?: (data: BibRecordDraft) => void;
@@ -115,107 +117,113 @@ export function ManualCatalogComposer({
 	};
 
 	return (
-		<Form onSubmit={onSubmitWrapper}>
-			<div className="flex flex-col gap-3">
-				<PreferredTitleInput
-					value={preferredTitle}
-					onChange={setPreferredTitle}
-				/>
-				<Input
-					placeholder="優先タイトルの読み"
-					name="preferred_title_transcription"
-					value={preferredTitleTranscription}
-					onChange={(e) => setPreferredTitleTranscription(e.target.value)}
-				></Input>
+		<Form onSubmit={onSubmitWrapper} className="h-full">
+			{/* 2.5 rem is the height of the submit button (h-10), and 1em is the height of padding */}
+			<ScrollArea className="h-[calc(100%-2.5rem-1em)]">
+				<div className="flex flex-col gap-3 p-1">
+					<PreferredTitleInput
+						value={preferredTitle}
+						onChange={setPreferredTitle}
+					/>
+					<Input
+						placeholder="優先タイトルの読み"
+						name="preferred_title_transcription"
+						value={preferredTitleTranscription}
+						onChange={(e) => setPreferredTitleTranscription(e.target.value)}
+					></Input>
 
-				<CatalogSourceInput
-					sourceType={sourceType}
-					onSourceTypeChange={setSourceType}
-					source={source}
-					onSourceChange={setSource}
-				/>
+					<CatalogSourceInput
+						sourceType={sourceType}
+						onSourceTypeChange={setSourceType}
+						source={source}
+						onSourceChange={setSource}
+					/>
 
-				<PreferredVolumeInput
-					value={preferredVolume}
-					onChange={setPreferredVolume}
-				/>
+					<PreferredVolumeInput
+						value={preferredVolume}
+						onChange={setPreferredVolume}
+					/>
 
-				<PreferredVolumeTitleInput
-					value={preferredVolumeTitle}
-					onChange={setPreferredVolumeTitle}
-				/>
+					<PreferredVolumeTitleInput
+						value={preferredVolumeTitle}
+						onChange={setPreferredVolumeTitle}
+					/>
 
-				<Input
-					placeholder="優先巻号タイトルの読み"
-					name="preferred_volume_title_transcription"
-					value={preferredVolumeTitleTranscription}
-					onChange={(e) => setPreferredVolumeTitleTranscription(e.target.value)}
-				></Input>
+					<Input
+						placeholder="優先巻号タイトルの読み"
+						name="preferred_volume_title_transcription"
+						value={preferredVolumeTitleTranscription}
+						onChange={(e) =>
+							setPreferredVolumeTitleTranscription(e.target.value)
+						}
+					></Input>
 
-				<CatalogingRuleInput
-					value={catalogingRule}
-					onChange={setCatalogingRule}
-				/>
+					<CatalogingRuleInput
+						value={catalogingRule}
+						onChange={setCatalogingRule}
+					/>
 
-				<IdentifierInput value={identifiers} onChange={setIdentifiers} />
-				<AgentInput value={agents} onChange={setAgents} />
-				<TitleInput value={titles} onChange={setTitles} />
-				<SubjectInput value={subjects} onChange={setSubjects} />
-				<SeriesTitleInput value={seriesTitles} onChange={setSeriesTitles} />
-				<LanguagesInput value={languages} onChange={setLanguages} />
+					<IdentifierInput value={identifiers} onChange={setIdentifiers} />
+					<AgentInput value={agents} onChange={setAgents} />
+					<TitleInput value={titles} onChange={setTitles} />
+					<SubjectInput value={subjects} onChange={setSubjects} />
+					<SeriesTitleInput value={seriesTitles} onChange={setSeriesTitles} />
+					<LanguagesInput value={languages} onChange={setLanguages} />
 
-				<SimplePluralInput
-					value={prices}
-					onChange={setPrices}
-					dialogTitle="価格を追加"
-					dialogDescription="資料の入手価格を追加します"
-					placeholder="価格を入力"
-					dialogButtonLabel="価格を追加"
-					createNewButtonLabel="価格を追加"
-				/>
+					<SimplePluralInput
+						value={prices}
+						onChange={setPrices}
+						dialogTitle="価格を追加"
+						dialogDescription="資料の入手価格を追加します"
+						placeholder="価格を入力"
+						dialogButtonLabel="価格を追加"
+						createNewButtonLabel="価格を追加"
+					/>
 
-				<SimplePluralInput
-					value={extents}
-					onChange={setExtents}
-					dialogTitle="大きさ・容量等を追加"
-					dialogDescription="資料の大きさ・容量等を追加します"
-					placeholder="大きさ・容量等を入力 (例: &quot;22cm&quot;, &quot;240頁&quot;)"
-					dialogButtonLabel="大きさ・容量等を追加"
-					createNewButtonLabel="大きさ・容量等を追加"
-				/>
+					<SimplePluralInput
+						value={extents}
+						onChange={setExtents}
+						dialogTitle="大きさ・容量等を追加"
+						dialogDescription="資料の大きさ・容量等を追加します"
+						placeholder="大きさ・容量等を入力 (例: &quot;22cm&quot;, &quot;240頁&quot;)"
+						dialogButtonLabel="大きさ・容量等を追加"
+						createNewButtonLabel="大きさ・容量等を追加"
+					/>
 
-				<LongPluralInput
-					value={abstracts}
-					onChange={setAbstracts}
-					dialogTitle="要約・抄録を追加"
-					dialogDescription="要約・抄録を追加します"
-					placeholder="要約・抄録を入力"
-					dialogButtonLabel="要約・抄録を追加"
-					createNewButtonLabel="要約・抄録を追加"
-				/>
+					<LongPluralInput
+						value={abstracts}
+						onChange={setAbstracts}
+						dialogTitle="要約・抄録を追加"
+						dialogDescription="要約・抄録を追加します"
+						placeholder="要約・抄録を入力"
+						dialogButtonLabel="要約・抄録を追加"
+						createNewButtonLabel="要約・抄録を追加"
+					/>
 
-				<LongPluralInput
-					value={descriptions}
-					onChange={setDescriptions}
-					dialogTitle="注記を追加"
-					dialogDescription="注記を追加します"
-					placeholder="注記を入力"
-					dialogButtonLabel="注記を追加"
-					createNewButtonLabel="注記を追加"
-				/>
+					<LongPluralInput
+						value={descriptions}
+						onChange={setDescriptions}
+						dialogTitle="注記を追加"
+						dialogDescription="注記を追加します"
+						placeholder="注記を入力"
+						dialogButtonLabel="注記を追加"
+						createNewButtonLabel="注記を追加"
+					/>
 
-				<SimplePluralInput
-					value={dates}
-					onChange={setDates}
-					dialogTitle="日付を追加"
-					dialogDescription="刊行日などの日付を表す情報を追加します。原資料の記述に応じて、月や日を省略しても構いません。"
-					placeholder="日付を入力 (例: &quot;2021-01-01&quot;, &quot; 平成14年10月&quot;)"
-					dialogButtonLabel="日付を追加"
-					createNewButtonLabel="日付を追加"
-				/>
-
+					<SimplePluralInput
+						value={dates}
+						onChange={setDates}
+						dialogTitle="日付を追加"
+						dialogDescription="刊行日などの日付を表す情報を追加します。原資料の記述に応じて、月や日を省略しても構いません。"
+						placeholder="日付を入力 (例: &quot;2021-01-01&quot;, &quot; 平成14年10月&quot;)"
+						dialogButtonLabel="日付を追加"
+						createNewButtonLabel="日付を追加"
+					/>
+				</div>
+			</ScrollArea>
+			<div className="w-full mt-[1em]">
 				<Button
-					className="p-2"
+					className="w-full"
 					type="submit"
 					disabled={!isValidWork(composeWork())}
 				>

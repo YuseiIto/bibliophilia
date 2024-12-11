@@ -36,6 +36,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "~/components/ui/dialog";
+import { ScrollArea } from "~/components/ui/scroll-area";
 
 import { useToast } from "~/hooks/use-toast";
 import type { BibRecordDraft } from "~/model/bib-record";
@@ -123,13 +124,13 @@ export default function Index() {
 			<div className="container mx-auto py-3 h-full">
 				<ResizablePanelGroup direction="horizontal" className="h-full">
 					<ResizablePanel className="p-3" defaultSize={30}>
-						<Tabs defaultValue="isbn">
+						<Tabs defaultValue="isbn" className="h-full">
 							<TabsList className="grid w-full grid-cols-2">
 								<TabsTrigger value="isbn">ISBN</TabsTrigger>
 								<TabsTrigger value="manually">直接入力</TabsTrigger>
 							</TabsList>
 
-							<TabsContent value="isbn">
+							<TabsContent value="isbn" className="m-0">
 								<CardHeader>
 									<CardTitle>ISBNから登録 </CardTitle>
 									<CardDescription>
@@ -154,16 +155,20 @@ export default function Index() {
 								</CardContent>
 							</TabsContent>
 
-							<TabsContent value="manually">
-								<CardHeader>
-									<CardTitle>直接入力して登録</CardTitle>
-									<CardDescription>
+							<TabsContent
+								value="manually"
+								className="flex flex-col m-0 h-[calc(100%-2.5rem)]"
+							>
+								{/* 2.5rem is the height of the tabs (h-10) */}
+								<header className="flex flex-col space-y-1.5 p-6 max-h-1/5">
+									<h3 className="font-bold text-2xl">直接入力して登録</h3>
+									<p className="text-sm text-muted-foreground">
 										書誌事項を直接入力して資料を登録します。
-									</CardDescription>
-								</CardHeader>
-								<CardContent className="space-y-2">
+									</p>
+								</header>
+								<div className="grow h-4/5">
 									<ManualCatalogComposer onSubmit={onManualInputSubmit} />
-								</CardContent>
+								</div>
 							</TabsContent>
 						</Tabs>
 					</ResizablePanel>
@@ -220,11 +225,11 @@ export default function Index() {
 												</ContextMenuContent>
 											</ContextMenu>
 
-											<DialogContent>
-												<DialogHeader>
+											<DialogContent className="h-[80vh]">
+												<DialogHeader className="max-h-[2rem]">
 													<DialogTitle>目録情報の編集</DialogTitle>
 												</DialogHeader>
-												<div className="p-3">
+												<div className="p-3 h-[calc(75vh-2rem)]">
 													<ManualCatalogComposer
 														value={item}
 														onSubmit={(bibRecord) => onRowSubmit(i, bibRecord)}
