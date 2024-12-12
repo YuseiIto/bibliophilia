@@ -14,7 +14,9 @@ export type AgentRole =
 	| "出版者"
 	| "編集者"
 	| "監訳者"
-	| "原著者";
+	| "原著者"
+	| "版著者"
+	| "シリーズ著者";
 
 export interface Agent {
 	id: string;
