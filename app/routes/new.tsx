@@ -64,7 +64,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	switch (action_type) {
 		case "lookup_by_isbn": {
 			const isbn = req.get("isbn")!;
-			return await lookupByIsbn(isbn.toString());
+			const data = await lookupByIsbn(isbn.toString());
+			return data;
 		}
 		default:
 			return new Response("Invalid action_type", { status: 400 });
