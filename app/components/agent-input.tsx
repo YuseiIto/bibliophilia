@@ -29,22 +29,12 @@ import {
 
 import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
+import { agentRoles } from "~/model/agent";
 import type { AgentDraft, AgentKind, AgentRole } from "~/model/agent";
 
-const agentRoleOptions: ComboboxOption<AgentRole>[] = [
-	{ value: "著者", label: "著者" },
-	{ value: "作者", label: "作者" },
-	{ value: "出版者", label: "出版者" },
-	{ value: "監修者", label: "編集者" },
-	{ value: "監訳者", label: "監訳者" },
-	{ value: "原著者", label: "原著者" },
-	{ value: "貢献者", label: "貢献者" },
-	{ value: "編者", label: "編者" },
-	{ value: "絵", label: "絵" },
-	{ value: "解説者", label: "解説者" },
-	{ value: "写真", label: "写真" },
-	{ value: "その他", label: "その他" },
-];
+const agentRoleOptions: ComboboxOption<AgentRole>[] = agentRoles.map((x) => {
+	return { value: x, label: x };
+});
 
 interface AgentDialogProps {
 	defaultValue?: AgentDraft;
