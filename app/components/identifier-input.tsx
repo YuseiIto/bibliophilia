@@ -37,12 +37,14 @@ interface IdentifierDialogProps {
 	defaultValue?: Identifier;
 	onOpenChange?: (isOpen: boolean) => void;
 	onSubmit?: (identifier: Identifier) => void;
+	clearOnSubmit?: boolean;
 }
 
 export function IdentifierDialog({
 	onOpenChange,
 	onSubmit,
 	defaultValue,
+	clearOnSubmit,
 }: IdentifierDialogProps) {
 	const identifierTypeOptions: ComboboxOption<IdentifierType>[] =
 		Object.entries(identifierTypes).map(([value, label]) => ({
@@ -68,6 +70,10 @@ export function IdentifierDialog({
 		}
 
 		if (onOpenChange) onOpenChange(false);
+		if (clearOnSubmit) {
+			setIdentifierType(null);
+			setIdentifier("");
+		}
 	};
 
 	return (
@@ -206,7 +212,11 @@ export function IdentifierInput({ value, onChange }: IdentifierInputProps) {
 					<Plus /> 識別子を追加
 				</Button>
 			</DialogTrigger>
-			<IdentifierDialog onOpenChange={setIsOpen} onSubmit={onSubmit} />
+			<IdentifierDialog
+				onOpenChange={setIsOpen}
+				onSubmit={onSubmit}
+				clearOnSubmit
+			/>
 		</Dialog>
 	);
 }
