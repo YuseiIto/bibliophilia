@@ -1,15 +1,5 @@
-export type SubjectType =
-	| "http://ndl.go.jp/dcndl/terms/NDC8"
-	| "http://ndl.go.jp/dcndl/terms/NDC"
-	| "http://ndl.go.jp/dcndl/terms/LCC"
-	| "http://ndl.go.jp/dcndl/terms/UDC"
-	| "http://ndl.go.jp/dcndl/terms/GHQSCAP"
-	| "http://ndl.go.jp/dcndl/terms/USCAR"
-	| "http://ndl.go.jp/dcndl/terms/MCJ"
-	| "http://purl.org/dc/terms/DDC"
-	| "other";
 
-export const subjectTypes: { [K in SubjectType]: string } = {
+export const subjectTypes = {
 	"http://ndl.go.jp/dcndl/terms/NDC8": "日本十進分類法第8版 (NDC8)",
 	"http://ndl.go.jp/dcndl/terms/NDC": "日本十進分類法 (NDC)",
 	"http://ndl.go.jp/dcndl/terms/LCC": "米国国会図書館分類法 (LCC)",
@@ -20,6 +10,8 @@ export const subjectTypes: { [K in SubjectType]: string } = {
 	"http://purl.org/dc/terms/DDC": "ディーイ十進分類法",
 	other: "その他",
 };
+
+export type SubjectType = keyof typeof subjectTypes;
 
 export interface SubjectDraft {
 	subject_type: SubjectType;
