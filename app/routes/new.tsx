@@ -182,7 +182,6 @@ export default function Index() {
 										<TableHead>
 											<Checkbox></Checkbox>
 										</TableHead>
-										<TableHead>ISBN</TableHead>
 										<TableHead>タイトル</TableHead>
 										<TableHead>著編者</TableHead>
 										<TableHead>出版年月</TableHead>
@@ -202,10 +201,9 @@ export default function Index() {
 															<TableCell max-width="1">
 																<Checkbox />
 															</TableCell>
-															<TableCell>ここにISBNが入る</TableCell>
 															<TableCell>{item.work.preferred_title}</TableCell>
-															<TableCell>ここに著者が入る</TableCell>
-															<TableCell>ここに日付が入る</TableCell>
+															<TableCell>{item.agents.map((x)=>x.preferredName).join()}</TableCell>
+															<TableCell>{item.dates.join()}</TableCell>
 														</TableRow>
 													</ContextMenuTrigger>
 													<ContextMenuContent>
