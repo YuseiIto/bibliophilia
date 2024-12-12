@@ -202,7 +202,9 @@ export default function Index() {
 																<Checkbox />
 															</TableCell>
 															<TableCell>{item.work.preferred_title}</TableCell>
-															<TableCell>{item.agents.map((x)=>x.preferredName).join()}</TableCell>
+															<TableCell>
+																{item.agents.map((x) => x.preferredName).join()}
+															</TableCell>
 															<TableCell>{item.dates.join()}</TableCell>
 														</TableRow>
 													</ContextMenuTrigger>
