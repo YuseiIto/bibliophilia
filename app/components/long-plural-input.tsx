@@ -21,10 +21,12 @@ import { Textarea } from "~/components/ui/textarea";
 
 import { Table, TableBody, TableCell, TableRow } from "~/components/ui/table";
 
+import type { TextWithId } from "~/model/text-with-id";
+
 interface LongPluralDialogProps {
-	defaultValue?: string;
+	defaultValue?: TextWithId;
 	onOpenChange?: (isOpen: boolean) => void;
-	onSubmit?: (value: string) => void;
+	onSubmit?: (value: TextWithId) => void;
 	clearOnSubmit?: boolean;
 	dialogTitle?: string;
 	dialogDescription?: string;
@@ -42,16 +44,20 @@ export function LongPluralDialog({
 	placeholder,
 	buttonLabel,
 }: LongPluralDialogProps) {
-	const [value, setValue] = useState(defaultValue ?? "");
+	const [id, setId] = useState(defaultValue?.id ?? null);
+	const [value, setValue] = useState(defaultValue?.value ?? "");
 	const onSubmitWrapper = (event: React.FormEvent) => {
 		event.preventDefault();
 		if (value == "") return; // UIでボタンがDisableされているのでこのケースは考えないことにする
 		if (onSubmit) {
-			onSubmit(value);
+			onSubmit({ id, value });
 		}
 
 		if (onOpenChange) onOpenChange(false);
-		if (clearOnSubmit) setValue(defaultValue ?? "");
+		if (clearOnSubmit) {
+			setId(defaultValue?.id ?? null);
+			setValue(defaultValue?.value ?? "");
+		}
 	};
 
 	return (
@@ -74,8 +80,8 @@ export function LongPluralDialog({
 }
 
 interface LongPluralItemProps {
-	value: string;
-	onUpdate?: (value: string) => void;
+	value: TextWithId;
+	onUpdate?: (value: TextWithId) => void;
 	onRemove?: () => void;
 	dialogTitle?: string;
 	dialogDescription?: string;
@@ -94,7 +100,7 @@ export function LongPluralItem({
 }: LongPluralItemProps) {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const onUpdateWrapper = (value: string) => {
+	const onUpdateWrapper = (value: TextWithId) => {
 		if (onUpdate) onUpdate(value);
 		setIsOpen(false);
 	};
@@ -104,7 +110,7 @@ export function LongPluralItem({
 			<ContextMenu>
 				<ContextMenuTrigger asChild>
 					<TableRow>
-						<TableCell>{value}</TableCell>
+						<TableCell>{value.value}</TableCell>
 					</TableRow>
 				</ContextMenuTrigger>
 				<ContextMenuContent>
@@ -137,8 +143,8 @@ export function LongPluralItem({
 }
 
 interface LongPluralInputProps {
-	value?: string[];
-	onChange?: (value: string[]) => void;
+	value?: TextWithId[];
+	onChange?: (value: TextWithId[]) => void;
 	dialogTitle?: string;
 	dialogDescription?: string;
 	placeholder?: string;
@@ -156,10 +162,10 @@ export function LongPluralInput({
 	createNewButtonLabel,
 }: LongPluralInputProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [values, setValues] = useState<string[]>(value ?? []);
+	const [values, setValues] = useState<TextWithId[]>(value ?? []);
 
-	const appendValues = (value: string) => {
-		const newValues = [...values, value];
+	const appendValues = ({ id, value }: TextWithId) => {
+		const newValues = [...values, { id, value }];
 		setValues(newValues);
 		if (onChange) onChange(newValues);
 	};
@@ -171,9 +177,9 @@ export function LongPluralInput({
 		if (onChange) onChange(newValues);
 	};
 
-	const updateRow = (value: string, index: number) => {
+	const updateRow = (value: TextWithId, index: number) => {
 		const newValues = [...values];
-		newValues[index] = value;
+		newValues[index] = { id: value.id, value: value.value };
 		setValues(newValues);
 		if (onChange) onChange(newValues);
 	};

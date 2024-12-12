@@ -146,8 +146,14 @@ export async function lookupByIsbn(isbn: string): Promise<BibRecordDraft> {
 		id: null,
 		value,
 	}));
-	const abstracts = parser.dctermsAbstract;
-	const descriptions = parser.dctermsDescription;
+	const abstracts = parser.dctermsAbstract.map((value: string) => ({
+		id: null,
+		value,
+	}));
+	const descriptions = parser.dctermsDescription.map((value: string) => ({
+		id: null,
+		value,
+	}));
 	const dates = parser.dctermsDate.map((value: string) => ({
 		id: null,
 		value,
