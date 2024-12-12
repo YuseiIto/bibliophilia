@@ -33,7 +33,6 @@ function OtherError() {
 
 export function ErrorPage() {
 	const error = useRouteError();
-	console.error(error);
 
 	return (
 		<main className="flex flex-col p-8 h-screen justify-center">
