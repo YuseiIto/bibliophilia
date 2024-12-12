@@ -41,6 +41,7 @@ export function SeriesTitleDialog({
 	defaultValue,
 	clearOnSubmit,
 }: SeriesTitleDialogProps) {
+	const [id, setId] = useState(defaultValue?.id ?? null);
 	const [title, setTitle] = useState<string>(defaultValue?.title ?? "");
 	const [transcription, setTranscription] = useState<string>(
 		defaultValue?.transcription ?? "",
@@ -51,6 +52,7 @@ export function SeriesTitleDialog({
 		if (title == null) return; // UIでボタンがDisableされているのでこのケースは考えないことにする
 		if (onSubmit) {
 			onSubmit({
+				id,
 				title,
 				transcription,
 			});
@@ -58,6 +60,7 @@ export function SeriesTitleDialog({
 
 		if (onOpenChange) onOpenChange(false);
 		if (clearOnSubmit) {
+			setId(defaultValue?.id ?? null);
 			setTitle(defaultValue?.title ?? "");
 			setTranscription(defaultValue?.transcription ?? "");
 		}
@@ -150,18 +153,18 @@ export function SeriesTitleInput({ value, onChange }: SeriesTitleInputProps) {
 		value ?? [],
 	);
 
-	const onSubmit = ({ title, transcription }: SeriesTitleDraft) => {
-		const newSeriesTitles = [...seriesTitles, { title, transcription }];
+	const onSubmit = ({ id, title, transcription }: SeriesTitleDraft) => {
+		const newSeriesTitles = [...seriesTitles, { id, title, transcription }];
 		setSeriesTitles(newSeriesTitles);
 		if (onChange) onChange(newSeriesTitles);
 	};
 
 	const onUpdateRow = (
-		{ title, transcription }: SeriesTitleDraft,
+		{ id, title, transcription }: SeriesTitleDraft,
 		index: number,
 	) => {
 		const newSeriesTitles = [...seriesTitles];
-		newSeriesTitles[index] = { title, transcription };
+		newSeriesTitles[index] = { id, title, transcription };
 		setSeriesTitles(newSeriesTitles);
 		if (onChange) onChange(newSeriesTitles);
 	};

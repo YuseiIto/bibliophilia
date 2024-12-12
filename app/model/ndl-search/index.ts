@@ -7,6 +7,7 @@ import type { WorkDraft } from "~/model/work";
 import type { IdentifierDraft } from "~/model/identifier";
 import type { AgentDraft, AgentRole } from "~/model/agent";
 import type { SubjectDraft } from "~/model/subject";
+import type { SeriesTitleDraft } from "~/model/series-title";
 
 import { bcp47Normalize } from "bcp-47-normalize";
 
@@ -127,7 +128,7 @@ export async function lookupByIsbn(isbn: string): Promise<BibRecordDraft> {
 
 	const subjects = [...dctermsSubjects, ...dcSubjects];
 
-	const seriesTitles = parser.seriesTitle.map((x: any) => ({
+	const seriesTitles: SeriesTitleDraft[] = parser.seriesTitle.map((x: any) => ({
 		title: x.value,
 		transcription: x.transcription ?? null,
 	}));
