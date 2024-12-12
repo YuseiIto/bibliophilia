@@ -83,6 +83,7 @@ export async function lookupByIsbn(isbn: string): Promise<BibRecordDraft> {
 	];
 
 	const otherTitles = parser.dcTitle.map((x: any) => ({
+		id: null,
 		title: x.value,
 		transcription: x.transcription,
 	}));

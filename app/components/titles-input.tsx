@@ -41,6 +41,7 @@ export function TitleDialog({
 	defaultValue,
 	clearOnSubmit,
 }: TitleDialogProps) {
+	const [id, setId] = useState(defaultValue?.id ?? null);
 	const [title, setTitle] = useState<string>(defaultValue?.title ?? "");
 	const [transcription, setTranscription] = useState<string>(
 		defaultValue?.transcription ?? "",
@@ -51,6 +52,7 @@ export function TitleDialog({
 		if (title == null) return; // UIでボタンがDisableされているのでこのケースは考えないことにする
 		if (onSubmit) {
 			onSubmit({
+				id,
 				title,
 				transcription,
 			});
@@ -58,6 +60,7 @@ export function TitleDialog({
 
 		if (onOpenChange) onOpenChange(false);
 		if (clearOnSubmit) {
+			setId(defaultValue?.id ?? null);
 			setTitle(defaultValue?.title ?? "");
 			setTranscription(defaultValue?.transcription ?? "");
 		}
@@ -148,15 +151,18 @@ export function TitleInput({ value, onChange }: TitleInputProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [titles, setTitles] = useState<TitleDraft[]>(value ?? []);
 
-	const onSubmit = ({ title, transcription }: TitleDraft) => {
-		const newTitles = [...titles, { title, transcription }];
+	const onSubmit = ({ id, title, transcription }: TitleDraft) => {
+		const newTitles = [...titles, { id, title, transcription }];
 		setTitles(newTitles);
 		if (onChange) onChange(newTitles);
 	};
 
-	const onUpdateRow = ({ title, transcription }: TitleDraft, index: number) => {
+	const onUpdateRow = (
+		{ id, title, transcription }: TitleDraft,
+		index: number,
+	) => {
 		const newTitles = [...titles];
-		newTitles[index] = { title, transcription };
+		newTitles[index] = { id, title, transcription };
 		setTitles(newTitles);
 		if (onChange) onChange(newTitles);
 	};
