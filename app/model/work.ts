@@ -40,7 +40,7 @@ export interface Work {
 }
 
 export interface WorkDraft {
-	id: string;
+	id: string | null;
 	preferred_title: string | null;
 	preferred_title_transcription: string | null;
 	catalog_source: string | null;

@@ -28,8 +28,6 @@ import { LanguagesInput } from "~/components/languages-input";
 import { SimplePluralInput } from "~/components/simple-plural-input";
 import { LongPluralInput } from "~/components/long-plural-input";
 
-import { v4 as uuidv4 } from "uuid";
-
 import { ScrollArea } from "~/components/ui/scroll-area";
 
 interface ManualCatalogComposerProps {
@@ -41,7 +39,7 @@ export function ManualCatalogComposer({
 	onSubmit,
 	value,
 }: ManualCatalogComposerProps) {
-	const [id] = useState(value?.work.id ?? uuidv4());
+	const [id] = useState(value?.work.id ?? null);
 	const [preferredTitle, setPreferredTitle] = useState(
 		value?.work.preferred_title ?? "",
 	);
