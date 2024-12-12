@@ -29,6 +29,7 @@ export interface Agent {
 }
 
 export interface AgentDraft {
+	id: string | null;
 	agentKind: AgentKind;
 	preferredName: string;
 	preferredNameTranscription: string;

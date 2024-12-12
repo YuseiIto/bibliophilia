@@ -10,6 +10,7 @@ import type { AgentDraft, AgentRole } from "~/model/agent";
 import { bcp47Normalize } from "bcp-47-normalize";
 
 const foafAgentToAgentDraft = (agent: any, role: AgentRole): AgentDraft => ({
+	id: null,
 	agentKind: "person", // 不明をどう扱うか?
 	preferredName: agent.name,
 	preferredNameTranscription: agent.transcription,

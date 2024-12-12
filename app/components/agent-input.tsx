@@ -49,6 +49,7 @@ export function AgentDialog({
 	defaultValue,
 	clearOnSubmit,
 }: AgentDialogProps) {
+	const [id, setId] = useState(defaultValue?.id ?? null);
 	const [agentKind, setAgentKind] = useState<AgentKind>(
 		defaultValue?.agentKind ?? "person",
 	);
@@ -71,6 +72,7 @@ export function AgentDialog({
 		event.preventDefault();
 		if (onSubmit) {
 			onSubmit({
+				id,
 				agentKind,
 				preferredName,
 				preferredNameTranscription,
@@ -81,6 +83,7 @@ export function AgentDialog({
 
 		if (onOpenChange) onOpenChange(false);
 		if (clearOnSubmit) {
+			setId(defaultValue?.id ?? null);
 			setAgentRole(defaultValue?.role ?? null);
 			setPreferredName(defaultValue?.preferredName ?? "");
 			setPreferredNameTranscription(
