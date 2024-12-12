@@ -14,12 +14,16 @@ import { Badge } from "~/components/ui/badge";
 
 import { Combobox } from "~/components/combobox";
 
-import { KnownLanguage, knownLanguages } from "~/model/language";
+import {
+	KnownLanguage,
+	knownLanguages,
+	BibLanguageDraft,
+} from "~/model/language";
 
 interface LanguageDialogProps {
-	defaultValue?: KnownLanguage | string;
+	defaultValue?: BibLanguageDraft;
 	onOpenChange?: (isOpen: boolean) => void;
-	onSubmit?: (language: KnownLanguage | string) => void;
+	onSubmit?: (value: BibLanguageDraft) => void;
 	clearOnSubmit?: boolean;
 }
 
@@ -29,8 +33,9 @@ export function LanguageDialog({
 	onSubmit,
 	clearOnSubmit,
 }: LanguageDialogProps) {
+	const [id, setId] = useState(defaultValue?.id ?? null);
 	const [language, setLanguage] = useState<KnownLanguage | string>(
-		defaultValue ?? "",
+		defaultValue?.language ?? "",
 	);
 	const [useOptions, setUseOptions] = useState(
 		language in knownLanguages || language == "",
@@ -46,12 +51,16 @@ export function LanguageDialog({
 		event.preventDefault();
 		if (language == "") return; // UIでボタンがDisableされているのでこのケースは考えないことにする
 		if (onSubmit) {
-			onSubmit(language);
+			onSubmit({
+				language,
+				id,
+			});
 		}
 
 		if (onOpenChange) onOpenChange(false);
 		if (clearOnSubmit) {
-			setLanguage(defaultValue ?? "");
+			setId(defaultValue?.id ?? null);
+			setLanguage(defaultValue?.language ?? "");
 			setUseOptions(language in knownLanguages || language == "");
 		}
 	};
@@ -94,13 +103,14 @@ export function LanguageDialog({
 }
 
 interface LanguageItemProps {
-	language: KnownLanguage | string;
+	value: BibLanguageDraft;
 	onRemove: () => void;
 }
 
-export function LanguageItem({ language, onRemove }: LanguageItemProps) {
+export function LanguageItem({ value, onRemove }: LanguageItemProps) {
 	const [showX, setShowX] = useState(false);
-	const label = knownLanguages[language as KnownLanguage] ?? language;
+	const label =
+		knownLanguages[value.language as KnownLanguage] ?? value.language;
 	return (
 		<Badge
 			className="flex flex-row gap-1"
@@ -115,18 +125,16 @@ export function LanguageItem({ language, onRemove }: LanguageItemProps) {
 }
 
 interface LanguagesInputProps {
-	value: (KnownLanguage | string)[];
-	onChange: (value: (KnownLanguage | string)[]) => void;
+	value: BibLanguageDraft[];
+	onChange: (value: BibLanguageDraft[]) => void;
 }
 
 export function LanguagesInput({ value, onChange }: LanguagesInputProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [languages, setLanguages] = useState<(KnownLanguage | string)[]>(
-		value ?? [],
-	);
+	const [languages, setLanguages] = useState<BibLanguageDraft[]>(value ?? []);
 
-	const appendLanguage = (language: KnownLanguage | string) => {
-		const newLanguages = [...languages, language];
+	const appendLanguage = (value: BibLanguageDraft) => {
+		const newLanguages = [...languages, value];
 		setLanguages(newLanguages);
 		if (onChange) onChange(newLanguages);
 	};
@@ -144,7 +152,7 @@ export function LanguagesInput({ value, onChange }: LanguagesInputProps) {
 				{languages.map((language, index) => (
 					<LanguageItem
 						key={index}
-						language={language}
+						value={language}
 						onRemove={() => removeLanguage(index)}
 					/>
 				))}

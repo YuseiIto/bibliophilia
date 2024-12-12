@@ -18,6 +18,7 @@ import type { WorkDraft } from "~/model/work";
 import type { IdentifierDraft } from "~/model/identifier";
 import type { AgentDraft } from "~/model/agent";
 import type { TitleDraft } from "~/model/title";
+import type { BibLanguageDraft } from "~/model/language";
 
 import { IdentifierInput } from "~/components/identifier-input";
 import { AgentInput } from "~/components/agent-input";
@@ -85,7 +86,9 @@ export function ManualCatalogComposer({
 	const [titles, setTitles] = useState<TitleDraft[]>(value?.titles ?? []);
 	const [subjects, setSubjects] = useState(value?.subjects ?? []);
 	const [seriesTitles, setSeriesTitles] = useState(value?.seriesTitles ?? []);
-	const [languages, setLanguages] = useState(value?.languages ?? []);
+	const [languages, setLanguages] = useState<BibLanguageDraft[]>(
+		value?.languages ?? [],
+	);
 	const [prices, setPrices] = useState(value?.prices ?? []);
 	const [extents, setExtents] = useState(value?.extents ?? []);
 	const [abstracts, setAbstracts] = useState(value?.abstracts ?? []);

@@ -127,3 +127,8 @@ export const knownLanguages = {
 };
 
 export type KnownLanguage = keyof typeof knownLanguages;
+
+export interface BibLanguageDraft {
+	id: string | null;
+	language: KnownLanguage | string;
+}

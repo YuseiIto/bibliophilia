@@ -4,7 +4,7 @@ import type { AgentDraft } from "./agent";
 import type { TitleDraft } from "./title";
 import type { SubjectDraft } from "./subject";
 import type { SeriesTitleDraft } from "./series-title";
-import type { KnownLanguage } from "./language";
+import type { BibLanguageDraft } from "./language";
 
 export interface BibRecordDraft {
 	work: WorkDraft;
@@ -13,7 +13,7 @@ export interface BibRecordDraft {
 	titles: TitleDraft[];
 	subjects: SubjectDraft[];
 	seriesTitles: SeriesTitleDraft[];
-	languages: (KnownLanguage | string)[];
+	languages: BibLanguageDraft[];
 	prices: string[];
 	extents: string[];
 	abstracts: string[];

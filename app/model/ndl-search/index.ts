@@ -8,6 +8,7 @@ import type { IdentifierDraft } from "~/model/identifier";
 import type { AgentDraft, AgentRole } from "~/model/agent";
 import type { SubjectDraft } from "~/model/subject";
 import type { SeriesTitleDraft } from "~/model/series-title";
+import type { BibLanguageDraft } from "~/model/language";
 
 import { bcp47Normalize } from "bcp-47-normalize";
 
@@ -133,9 +134,13 @@ export async function lookupByIsbn(isbn: string): Promise<BibRecordDraft> {
 		transcription: x.transcription ?? null,
 	}));
 
-	const languages = parser.dctermsLanguage.map((x: any) =>
-		bcp47Normalize(x.value),
+	const languages: BibLanguageDraft[] = parser.dctermsLanguage.map(
+		(x: any) => ({
+			id: null,
+			language: bcp47Normalize(x.value),
+		}),
 	);
+
 	const prices = parser.price;
 	const extents = parser.dctermsExtent;
 	const abstracts = parser.dctermsAbstract;
