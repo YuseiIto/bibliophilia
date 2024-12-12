@@ -205,7 +205,9 @@ export default function Index() {
 															<TableCell>
 																{item.agents.map((x) => x.preferredName).join()}
 															</TableCell>
-															<TableCell>{item.dates.join()}</TableCell>
+															<TableCell>
+																{item.dates.map((x) => x.value).join()}
+															</TableCell>
 														</TableRow>
 													</ContextMenuTrigger>
 													<ContextMenuContent>

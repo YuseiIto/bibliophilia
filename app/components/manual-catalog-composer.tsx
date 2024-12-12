@@ -19,6 +19,7 @@ import type { IdentifierDraft } from "~/model/identifier";
 import type { AgentDraft } from "~/model/agent";
 import type { TitleDraft } from "~/model/title";
 import type { BibLanguageDraft } from "~/model/language";
+import type { TextWithId } from "~/model/text-with-id";
 
 import { IdentifierInput } from "~/components/identifier-input";
 import { AgentInput } from "~/components/agent-input";
@@ -89,11 +90,15 @@ export function ManualCatalogComposer({
 	const [languages, setLanguages] = useState<BibLanguageDraft[]>(
 		value?.languages ?? [],
 	);
-	const [prices, setPrices] = useState(value?.prices ?? []);
-	const [extents, setExtents] = useState(value?.extents ?? []);
-	const [abstracts, setAbstracts] = useState(value?.abstracts ?? []);
-	const [descriptions, setDescriptions] = useState(value?.descriptions ?? []);
-	const [dates, setDates] = useState(value?.dates ?? []);
+	const [prices, setPrices] = useState<TextWithId[]>(value?.prices ?? []);
+	const [extents, setExtents] = useState<TextWithId[]>(value?.extents ?? []);
+	const [abstracts, setAbstracts] = useState<TextWithId[]>(
+		value?.abstracts ?? [],
+	);
+	const [descriptions, setDescriptions] = useState<TextWithId[]>(
+		value?.descriptions ?? [],
+	);
+	const [dates, setDates] = useState<TextWithId[]>(value?.dates ?? []);
 
 	const composeBibRecord = (): BibRecordDraft => {
 		return {

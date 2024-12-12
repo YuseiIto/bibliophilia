@@ -5,6 +5,7 @@ import type { TitleDraft } from "./title";
 import type { SubjectDraft } from "./subject";
 import type { SeriesTitleDraft } from "./series-title";
 import type { BibLanguageDraft } from "./language";
+import type { TextWithId } from "./text-with-id";
 
 export interface BibRecordDraft {
 	work: WorkDraft;
@@ -14,9 +15,9 @@ export interface BibRecordDraft {
 	subjects: SubjectDraft[];
 	seriesTitles: SeriesTitleDraft[];
 	languages: BibLanguageDraft[];
-	prices: string[];
-	extents: string[];
-	abstracts: string[];
-	descriptions: string[];
-	dates: string[];
+	prices: TextWithId[];
+	extents: TextWithId[];
+	abstracts: TextWithId[];
+	descriptions: TextWithId[];
+	dates: TextWithId[];
 }

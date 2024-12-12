@@ -11,11 +11,12 @@ import {
 	DialogTrigger,
 } from "~/components/ui/dialog";
 import { Badge } from "~/components/ui/badge";
+import type { TextWithId } from "~/model/text-with-id";
 
 interface SimplePluralDialogProps {
-	defaultValue?: string;
+	defaultValue?: TextWithId;
 	onOpenChange?: (isOpen: boolean) => void;
-	onSubmit?: (value: string) => void;
+	onSubmit?: (value: TextWithId) => void;
 	clearOnSubmit?: boolean;
 	dialogTitle?: string;
 	dialogDescription?: string;
@@ -33,16 +34,20 @@ export function SimplePluralDialog({
 	placeholder,
 	buttonLabel,
 }: SimplePluralDialogProps) {
-	const [value, setValue] = useState(defaultValue ?? "");
+	const [id, setId] = useState(defaultValue?.id ?? null);
+	const [value, setValue] = useState(defaultValue?.value ?? "");
 	const onSubmitWrapper = (event: React.FormEvent) => {
 		event.preventDefault();
 		if (value == "") return; // UIでボタンがDisableされているのでこのケースは考えないことにする
 		if (onSubmit) {
-			onSubmit(value);
+			onSubmit({ id, value });
 		}
 
 		if (onOpenChange) onOpenChange(false);
-		if (clearOnSubmit) setValue(defaultValue ?? "");
+		if (clearOnSubmit) {
+			setId(defaultValue?.id ?? null);
+			setValue(defaultValue?.value ?? "");
+		}
 	};
 
 	return (
@@ -65,7 +70,7 @@ export function SimplePluralDialog({
 }
 
 interface SimplePluralItemProps {
-	value: string;
+	value: TextWithId;
 	onRemove: () => void;
 }
 
@@ -79,15 +84,15 @@ export function SimplePluralItem({ value, onRemove }: SimplePluralItemProps) {
 			onMouseLeave={() => setShowX(false)}
 			variant="secondary"
 		>
-			{value}
+			{value.value}
 			{showX ? <X size={15} onClick={onRemove} /> : null}
 		</Badge>
 	);
 }
 
 interface SimplePluralInputProps {
-	value?: string[];
-	onChange?: (value: string[]) => void;
+	value?: TextWithId[];
+	onChange?: (value: TextWithId[]) => void;
 	dialogTitle?: string;
 	dialogDescription?: string;
 	placeholder?: string;
@@ -105,9 +110,9 @@ export function SimplePluralInput({
 	onChange,
 }: SimplePluralInputProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [values, setValues] = useState<string[]>(value ?? []);
+	const [values, setValues] = useState<TextWithId[]>(value ?? []);
 
-	const appendValue = (value: string) => {
+	const appendValue = (value: TextWithId) => {
 		const newValues = [...values, value];
 		setValues(newValues);
 		if (onChange) onChange(newValues);

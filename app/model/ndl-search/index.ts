@@ -141,11 +141,17 @@ export async function lookupByIsbn(isbn: string): Promise<BibRecordDraft> {
 		}),
 	);
 
-	const prices = parser.price;
-	const extents = parser.dctermsExtent;
+	const prices = parser.price.map((value: string) => ({ id: null, value }));
+	const extents = parser.dctermsExtent.map((value: string) => ({
+		id: null,
+		value,
+	}));
 	const abstracts = parser.dctermsAbstract;
 	const descriptions = parser.dctermsDescription;
-	const dates = parser.dctermsDate;
+	const dates = parser.dctermsDate.map((value: string) => ({
+		id: null,
+		value,
+	}));
 
 	return {
 		work,
