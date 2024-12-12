@@ -15,7 +15,7 @@ import { isValidWork } from "~/model/work";
 
 import type { BibRecordDraft } from "~/model/bib-record";
 import type { WorkDraft } from "~/model/work";
-import type { Identifier } from "~/model/identifier";
+import type { IdentifierDraft } from "~/model/identifier";
 import type { AgentDraft } from "~/model/agent";
 import type { TitleDraft } from "~/model/title";
 
@@ -78,7 +78,7 @@ export function ManualCatalogComposer({
 		};
 	};
 
-	const [identifiers, setIdentifiers] = useState<Identifier[]>(
+	const [identifiers, setIdentifiers] = useState<IdentifierDraft[]>(
 		value?.identifiers ?? [],
 	);
 	const [agents, setAgents] = useState<AgentDraft[]>(value?.agents ?? []);

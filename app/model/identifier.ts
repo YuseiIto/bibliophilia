@@ -40,9 +40,9 @@ export const identifierTypes = {
 
 export type IdentifierType = keyof typeof identifierTypes;
 
-export interface WorkIdentifier {
-	id: string;
-	work_id: string;
+export interface IdentifierDraft {
+	id: string | null;
+	work_id: string | null;
 	identifier: string;
 	identifier_type: IdentifierType;
 }

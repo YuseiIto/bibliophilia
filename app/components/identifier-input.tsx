@@ -28,15 +28,15 @@ import {
 } from "~/components/ui/context-menu";
 
 import {
-	Identifier,
+	IdentifierDraft,
 	IdentifierType,
 	identifierTypes,
 } from "~/model/identifier";
 
 interface IdentifierDialogProps {
-	defaultValue?: Identifier;
+	defaultValue?: IdentifierDraft;
 	onOpenChange?: (isOpen: boolean) => void;
-	onSubmit?: (identifier: Identifier) => void;
+	onSubmit?: (identifier: IdentifierDraft) => void;
 	clearOnSubmit?: boolean;
 }
 
@@ -52,8 +52,11 @@ export function IdentifierDialog({
 			label,
 		}));
 
-	const [identifierType, setIdentifierType] = useState<IdentifierType | null>(
-		defaultValue?.identifierType ?? null,
+	const [id, setId] = useState(defaultValue?.id ?? null);
+	const [work_id, setWorkId] = useState(defaultValue?.work_id ?? null);
+
+	const [identifier_type, setIdentifierType] = useState<IdentifierType | null>(
+		defaultValue?.identifier_type ?? null,
 	);
 	const [identifier, setIdentifier] = useState<string>(
 		defaultValue?.identifier ?? "",
@@ -61,10 +64,12 @@ export function IdentifierDialog({
 
 	const onSubmitWrapper = (event: React.FormEvent) => {
 		event.preventDefault();
-		if (identifierType == null) return; // UIでボタンがDisableされているのでこのケースは考えないことにする
+		if (identifier_type == null) return; // UIでボタンがDisableされているのでこのケースは考えないことにする
 		if (onSubmit) {
 			onSubmit({
-				identifierType,
+				id,
+				work_id,
+				identifier_type,
 				identifier,
 			});
 		}
@@ -73,6 +78,8 @@ export function IdentifierDialog({
 		if (clearOnSubmit) {
 			setIdentifierType(null);
 			setIdentifier("");
+			setId(defaultValue?.id ?? null);
+			setWorkId(defaultValue?.work_id ?? null);
 		}
 	};
 
@@ -87,7 +94,7 @@ export function IdentifierDialog({
 			<Combobox
 				label="識別子の種類を選択"
 				options={identifierTypeOptions}
-				value={identifierType}
+				value={identifier_type}
 				onChange={setIdentifierType}
 			/>
 			<div className="flex flex-row">
@@ -101,7 +108,7 @@ export function IdentifierDialog({
 			<Button
 				type="button"
 				onClick={onSubmitWrapper}
-				disabled={identifierType === null || !identifier || identifier === ""}
+				disabled={identifier_type === null || !identifier || identifier === ""}
 			>
 				<Plus /> 識別子を追加
 			</Button>
@@ -110,16 +117,16 @@ export function IdentifierDialog({
 }
 
 interface IdentifierRowProps {
-	onUpdate?: (identifier: Identifier) => void;
+	onUpdate?: (identifier: IdentifierDraft) => void;
 	onDelete?: () => void;
-	value: Identifier;
+	value: IdentifierDraft;
 }
 
 function IdentifierRow({ value, onUpdate, onDelete }: IdentifierRowProps) {
-	const { identifier, identifierType } = value;
+	const { identifier, identifier_type } = value;
 	const [isOpen, setIsOpen] = useState(false);
 
-	const onUpdateWrapper = (identifier: Identifier) => {
+	const onUpdateWrapper = (identifier: IdentifierDraft) => {
 		if (onUpdate) onUpdate(identifier);
 		setIsOpen(false);
 	};
@@ -129,7 +136,7 @@ function IdentifierRow({ value, onUpdate, onDelete }: IdentifierRowProps) {
 			<ContextMenu>
 				<ContextMenuTrigger asChild>
 					<TableRow>
-						<TableCell> {identifierTypes[identifierType]} </TableCell>
+						<TableCell> {identifierTypes[identifier_type]} </TableCell>
 						<TableCell> {identifier} </TableCell>
 					</TableRow>
 				</ContextMenuTrigger>
@@ -156,26 +163,36 @@ function IdentifierRow({ value, onUpdate, onDelete }: IdentifierRowProps) {
 }
 
 interface IdentifierInputProps {
-	value?: Identifier[];
-	onChange?: (value: Identifier[]) => void;
+	value?: IdentifierDraft[];
+	onChange?: (value: IdentifierDraft[]) => void;
 }
 
 export function IdentifierInput({ value, onChange }: IdentifierInputProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [identifiers, setIdentifiers] = useState<Identifier[]>(value ?? []);
+	const [identifiers, setIdentifiers] = useState<IdentifierDraft[]>(
+		value ?? [],
+	);
 
-	const onSubmit = ({ identifierType, identifier }: Identifier) => {
-		const newIdentifiers = [...identifiers, { identifierType, identifier }];
+	const onSubmit = ({
+		id,
+		work_id,
+		identifier_type,
+		identifier,
+	}: IdentifierDraft) => {
+		const newIdentifiers = [
+			...identifiers,
+			{ id, work_id, identifier_type, identifier },
+		];
 		setIdentifiers(newIdentifiers);
 		if (onChange) onChange(newIdentifiers);
 	};
 
 	const onUpdateRow = (
-		{ identifier, identifierType }: Identifier,
+		{ id, work_id, identifier, identifier_type }: IdentifierDraft,
 		index: number,
 	) => {
 		const newIdentifiers = [...identifiers];
-		newIdentifiers[index] = { identifier, identifierType };
+		newIdentifiers[index] = { id, work_id, identifier, identifier_type };
 		setIdentifiers(newIdentifiers);
 		if (onChange) onChange(newIdentifiers);
 	};

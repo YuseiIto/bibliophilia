@@ -4,7 +4,7 @@ import { DcNdlParser } from "./dcndl";
 
 import type { BibRecordDraft } from "~/model/bib-record";
 import type { WorkDraft } from "~/model/work";
-import type { Identifier } from "~/model/identifier";
+import type { IdentifierDraft } from "~/model/identifier";
 import type { AgentDraft, AgentRole } from "~/model/agent";
 
 import { bcp47Normalize } from "bcp-47-normalize";
@@ -39,9 +39,11 @@ export async function lookupByIsbn(isbn: string): Promise<BibRecordDraft> {
 			: null,
 	};
 
-	const identifiers: Identifier[] = parser.dctermsIdentifier.map(
+	const identifiers: IdentifierDraft[] = parser.dctermsIdentifier.map(
 		({ datatype, value }: { datatype: string; value: string }) => ({
-			identifierType: datatype,
+			id: null,
+			work_id: null,
+			identifier_type: datatype,
 			identifier: value,
 		}),
 	);
