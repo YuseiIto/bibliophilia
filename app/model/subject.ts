@@ -16,6 +16,7 @@ export const subjectTypes = {
 export type SubjectType = keyof typeof subjectTypes;
 
 export interface SubjectDraft {
+	id: string | null;
 	subject_type: SubjectType;
 	preferred_label: string;
 	preferred_label_transcription?: string;

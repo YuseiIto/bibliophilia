@@ -6,6 +6,7 @@ import type { BibRecordDraft } from "~/model/bib-record";
 import type { WorkDraft } from "~/model/work";
 import type { IdentifierDraft } from "~/model/identifier";
 import type { AgentDraft, AgentRole } from "~/model/agent";
+import type { SubjectDraft } from "~/model/subject";
 
 import { bcp47Normalize } from "bcp-47-normalize";
 
@@ -95,26 +96,30 @@ export async function lookupByIsbn(isbn: string): Promise<BibRecordDraft> {
 
 	const titles = [...otherTitles, ...alternativeTitles];
 
-	const dctermsSubjects = parser.dctermsSubject.map((x: any) => {
-		if (x.value) {
-			return {
-				preferred_label: x.value,
-				preferred_label_transcription: x.transcription ?? null,
-				subject_type: "other",
-			};
-		} else {
-			// DDCだけ `/分類番号/about` の形式になっているので /about を取り除く
-			const resource = x.resource.replace("/about", "").split("/");
+	const dctermsSubjects: SubjectDraft[] = parser.dctermsSubject.map(
+		(x: any) => {
+			if (x.value) {
+				return {
+					id: null,
+					preferred_label: x.value,
+					preferred_label_transcription: x.transcription ?? null,
+					subject_type: "other",
+				};
+			} else {
+				// DDCだけ `/分類番号/about` の形式になっているので /about を取り除く
+				const resource = x.resource.replace("/about", "").split("/");
 
-			return {
-				preferred_label: resource[resource.length - 1],
-				preferred_label_transcription: null,
-				subject_type: resource.slice(0, -1).join("/"),
-			};
-		}
-	});
+				return {
+					id: null,
+					preferred_label: resource[resource.length - 1],
+					preferred_label_transcription: null,
+					subject_type: resource.slice(0, -1).join("/"),
+				};
+			}
+		},
+	);
 
-	const dcSubjects = parser.dcSubject.map((x: any) => ({
+	const dcSubjects: SubjectDraft[] = parser.dcSubject.map((x: any) => ({
 		preferred_label: x.value,
 		preferred_label_transcription: null,
 		subject_type: x.datatype,

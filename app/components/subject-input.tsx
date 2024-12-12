@@ -42,6 +42,7 @@ export function SubjectDialog({
 	defaultValue,
 	clearOnSubmit,
 }: SubjectDialogProps) {
+	const [id, setId] = useState(defaultValue?.id ?? null);
 	const subjectTypeOptions: ComboboxOption<SubjectType>[] = Object.entries(
 		subjectTypes,
 	).map(([value, label]) => ({ value: value as SubjectType, label }));
@@ -61,6 +62,7 @@ export function SubjectDialog({
 		if (subjectType == null) return; // UIでボタンがDisableされているのでこのケースは考えないことにする
 		if (onSubmit) {
 			onSubmit({
+				id,
 				subject_type: subjectType,
 				preferred_label: preferredLabel,
 				preferred_label_transcription: preferredLabelTranscription,
@@ -69,6 +71,7 @@ export function SubjectDialog({
 
 		if (onOpenChange) onOpenChange(false);
 		if (clearOnSubmit) {
+			setId(defaultValue?.id ?? null);
 			setSubjectType(defaultValue?.subject_type ?? null);
 			setPreferredLabel(defaultValue?.preferred_label ?? "");
 			setPreferredLabelTranscription(
@@ -172,13 +175,14 @@ export function SubjectInput({ value, onChange }: SubjectInputProps) {
 	const [subjects, setSubjects] = useState<SubjectDraft[]>(value ?? []);
 
 	const onSubmit = ({
+		id,
 		subject_type,
 		preferred_label,
 		preferred_label_transcription,
 	}: SubjectDraft) => {
 		const newSubjects = [
 			...subjects,
-			{ subject_type, preferred_label, preferred_label_transcription },
+			{ id, subject_type, preferred_label, preferred_label_transcription },
 		];
 		setSubjects(newSubjects);
 		if (onChange) onChange(newSubjects);
@@ -186,6 +190,7 @@ export function SubjectInput({ value, onChange }: SubjectInputProps) {
 
 	const onUpdateRow = (
 		{
+			id,
 			subject_type,
 			preferred_label,
 			preferred_label_transcription,
@@ -194,6 +199,7 @@ export function SubjectInput({ value, onChange }: SubjectInputProps) {
 	) => {
 		const newSubjects = [...subjects];
 		newSubjects[index] = {
+			id,
 			subject_type,
 			preferred_label,
 			preferred_label_transcription,
