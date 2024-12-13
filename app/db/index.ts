@@ -16,8 +16,8 @@ import {
 	bibDescriptionTable,
 	bibDatesTable,
 	bibItemsTable,
+	bibWorkAgentsTable,
 } from "./schema";
-
 import type { WorkDraft } from "~/model/work";
 import type { IdentifierDraft } from "~/model/identifier";
 import type { AgentDraft } from "~/model/agent";
@@ -120,6 +120,22 @@ export class Repository {
 		}
 
 		return agent.id;
+	}
+
+	async insertWorkAgent(
+		work_id: string,
+		agent_id: string,
+		role: string,
+		raw: string,
+	) {
+		const workAgent = {
+			work_id,
+			agent_id,
+			role,
+			raw,
+		};
+
+		await this._con.insert(bibWorkAgentsTable).values(workAgent);
 	}
 
 	async insertTitles(draft: TitleDraft, work_id: string) {
