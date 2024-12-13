@@ -50,6 +50,13 @@
 			"when": 1734079662232,
 			"tag": "0006_friendly_speed",
 			"breakpoints": true
+		},
+		{
+			"idx": 7,
+			"version": "6",
+			"when": 1734080245620,
+			"tag": "0007_fearless_ender_wiggin",
+			"breakpoints": true
 		}
 	]
 }

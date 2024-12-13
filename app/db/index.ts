@@ -129,6 +129,7 @@ export class Repository {
 
 		await this._con.insert(bibSubjectsTable).values(subject);
 		const workSubjects = {
+			id: uuidv4(),
 			work_id: work_id,
 			subject_id: subject.id,
 		};
