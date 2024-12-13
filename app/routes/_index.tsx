@@ -1,4 +1,4 @@
-import type { MetaFunction } from "@remix-run/cloudflare";
+import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
 import logo from "~/assets/logo.png";
 import { Card } from "~/components/ui/card";
@@ -17,9 +17,11 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export async function loader() {
+export async function loader({ context }: LoaderFunctionArgs) {
+	const db = new Repository(context.cloudflare.env);
+	const data = await db.getAllBibRecords();
 	return {
-		data: Array.from({ length: 3 }).map((_, i) => ({ id: i })),
+		data,
 	};
 }
 

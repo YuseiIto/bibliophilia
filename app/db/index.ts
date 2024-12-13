@@ -307,4 +307,8 @@ export class Repository {
 
 		await this.insertItem(workId);
 	}
+
+	async getAllBibRecords() {
+		return this._con.select().from(bibWorksTable);
+	}
 }
