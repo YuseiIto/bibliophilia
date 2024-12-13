@@ -91,8 +91,19 @@ export default function Index() {
 
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+	const computeHeadChecked = (candidates: BibRecordCandidate[]) => {
+		const checkedCount = candidates.filter((x) => x.checked).length;
+		if (checkedCount === 0) return false;
+		if (checkedCount === candidates.length) return true;
+		return "indeterminate";
+	};
+
 	const onManualInputSubmit = (data: BibRecordDraft) => {
-		setCandidates((candidates) => [...candidates, { ...data, checked: false }]);
+		setCandidates((candidates) => {
+			const newCandidates = [...candidates, { ...data, checked: false }];
+			setHeadChecked(computeHeadChecked(newCandidates));
+			return newCandidates;
+		});
 		toast({
 			title: "下書きを追加しました",
 			description: "書誌レコードの下書きを追加しました",
@@ -101,16 +112,21 @@ export default function Index() {
 
 	useEffect(() => {
 		if (!fetcher.data) return;
-		setCandidates((candidates) => [
-			...candidates,
-			{ ...(fetcher.data as BibRecordDraft), checked: false },
-		]);
+		setCandidates((candidates) => {
+			const newCandidates = [
+				...candidates,
+				{ ...(fetcher.data as BibRecordDraft), checked: false },
+			];
+			setHeadChecked(computeHeadChecked(newCandidates));
+			return newCandidates;
+		});
 	}, [fetcher.data]);
 
 	const deleteRow = (index: number) => {
 		setCandidates((candidates) => {
 			const newCandidates = [...candidates];
 			newCandidates.splice(index, 1);
+			setHeadChecked(computeHeadChecked(newCandidates));
 			return newCandidates;
 		});
 	};
@@ -120,6 +136,7 @@ export default function Index() {
 			const newCandidates = [...candidates];
 			newCandidates[index] = { ...work, checked: false };
 			setIsDialogOpen(false);
+			setHeadChecked(computeHeadChecked(newCandidates));
 			return newCandidates;
 		});
 	};
@@ -129,6 +146,7 @@ export default function Index() {
 			if (checked === "indeterminate") return candidates;
 			const newCandidates = [...candidates];
 			newCandidates[index] = { ...newCandidates[index], checked };
+			setHeadChecked(computeHeadChecked(newCandidates));
 			return newCandidates;
 		});
 	};
