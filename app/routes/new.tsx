@@ -80,6 +80,7 @@ export default function Index() {
 	const fetcher = useFetcher();
 
 	const [candidates, setCandidates] = useState<BibRecordCandidate[]>([]);
+	const [headChecked, setHeadChecked] = useState<CheckedState>(false);
 
 	const { toast } = useToast();
 
@@ -129,6 +130,16 @@ export default function Index() {
 			const newCandidates = [...candidates];
 			newCandidates[index] = { ...newCandidates[index], checked };
 			return newCandidates;
+		});
+	};
+
+	const handleHeadCheckedChange = (checked: CheckedState) => {
+		setHeadChecked(checked);
+		if (checked === "indeterminate") return;
+		setCandidates((candidates) => {
+			return candidates.map((candidate) => {
+				return { ...candidate, checked };
+			});
 		});
 	};
 
@@ -193,7 +204,10 @@ export default function Index() {
 								<TableHeader>
 									<TableRow>
 										<TableHead>
-											<Checkbox></Checkbox>
+											<Checkbox
+												checked={headChecked}
+												onCheckedChange={handleHeadCheckedChange}
+											/>
 										</TableHead>
 										<TableHead>タイトル</TableHead>
 										<TableHead>著編者</TableHead>
