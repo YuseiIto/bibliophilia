@@ -1,8 +1,8 @@
 {
 	"version": "6",
 	"dialect": "sqlite",
-	"id": "f95f7795-fbe8-4093-a8bd-730c0ef2b2b8",
-	"prevId": "5b1a8024-a30a-4175-be45-d0c71a421312",
+	"id": "bc567068-5f35-4b05-9a28-ed8ee5e09433",
+	"prevId": "f95f7795-fbe8-4093-a8bd-730c0ef2b2b8",
 	"tables": {
 		"bib_abstract": {
 			"name": "bib_abstract",
@@ -403,6 +403,13 @@
 					"notNull": true,
 					"autoincrement": false
 				},
+				"work_id": {
+					"name": "work_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
 				"language": {
 					"name": "language",
 					"type": "text",
@@ -412,7 +419,17 @@
 				}
 			},
 			"indexes": {},
-			"foreignKeys": {},
+			"foreignKeys": {
+				"bib_languages_work_id_bib_works_id_fk": {
+					"name": "bib_languages_work_id_bib_works_id_fk",
+					"tableFrom": "bib_languages",
+					"tableTo": "bib_works",
+					"columnsFrom": ["work_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
 			"compositePrimaryKeys": {},
 			"uniqueConstraints": {},
 			"checkConstraints": {}

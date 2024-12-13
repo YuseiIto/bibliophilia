@@ -1,34 +1,41 @@
 {
-  "version": "7",
-  "dialect": "sqlite",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "6",
-      "when": 1733459822338,
-      "tag": "0000_faithful_slipstream",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1733493507808,
-      "tag": "0001_bitter_deathbird",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1733668494715,
-      "tag": "0002_burly_ironclad",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1733726008955,
-      "tag": "0003_equal_oracle",
-      "breakpoints": true
-    }
-  ]
+	"version": "7",
+	"dialect": "sqlite",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "6",
+			"when": 1733459822338,
+			"tag": "0000_faithful_slipstream",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "6",
+			"when": 1733493507808,
+			"tag": "0001_bitter_deathbird",
+			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "6",
+			"when": 1733668494715,
+			"tag": "0002_burly_ironclad",
+			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "6",
+			"when": 1733726008955,
+			"tag": "0003_equal_oracle",
+			"breakpoints": true
+		},
+		{
+			"idx": 4,
+			"version": "6",
+			"when": 1734070963362,
+			"tag": "0004_melodic_bloodstrike",
+			"breakpoints": true
+		}
+	]
 }

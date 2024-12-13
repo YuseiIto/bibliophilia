@@ -1,0 +1,1 @@
+ALTER TABLE `bib_languages` ADD `work_id` text NOT NULL REFERENCES bib_works(id);
