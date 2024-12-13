@@ -43,6 +43,13 @@
 			"when": 1734079546991,
 			"tag": "0005_magical_ulik",
 			"breakpoints": true
+		},
+		{
+			"idx": 6,
+			"version": "6",
+			"when": 1734079662232,
+			"tag": "0006_friendly_speed",
+			"breakpoints": true
 		}
 	]
 }

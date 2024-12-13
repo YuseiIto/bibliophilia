@@ -93,13 +93,13 @@ export const bibCollectiveAgentsTable = sqliteTable("bib_collective_agents", {
 	preferred_name_transcription: text(),
 });
 
-export const bibItemsAgentsTable = sqliteTable("bib_work_agencies", {
-	item_id: text()
+export const bibWorkAgentsTable = sqliteTable("bib_work_agencies", {
+	work_id: text()
 		.notNull()
-		.references(() => bibItemsTable.id),
+		.references(() => bibWorksTable.id),
 	agent_id: text()
 		.notNull()
-		.references(() => bibAgentTable.id),
+		.references(() => bibWorksTable.id),
 	role: text().notNull(), // author,publisher, editor, translator, contributor, supervisor ...
 	raw: text().notNull(), // 根拠となった記述
 });
