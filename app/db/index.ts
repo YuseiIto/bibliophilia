@@ -101,7 +101,7 @@ export class Repository {
 		await this._con.insert(bibAgentTable).values(agent);
 
 		switch (draft.agentKind) {
-			case "person":
+			case "person": {
 				const person = {
 					id: uuidv4(),
 					agent_id: agent.id,
@@ -110,7 +110,8 @@ export class Repository {
 				};
 				await this._con.insert(bibPersonsTable).values(person);
 				break;
-			case "collective_agent":
+			}
+			case "collective_agent": {
 				const collective = {
 					id: uuidv4(),
 					agent_id: agent.id,
@@ -118,6 +119,7 @@ export class Repository {
 					preferred_name_transcription: draft.preferredNameTranscription,
 				};
 				await this._con.insert(bibCollectiveAgentsTable).values(collective);
+			}
 		}
 
 		return agent.id;
