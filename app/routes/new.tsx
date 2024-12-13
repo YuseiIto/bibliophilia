@@ -46,6 +46,8 @@ import {
 	ResizableHandle,
 } from "~/components/ui/resizable";
 
+import type { CheckedState } from "@radix-ui/react-checkbox";
+
 export const meta: MetaFunction = () => {
 	return [
 		{ title: "Bibliophilia" },
@@ -72,10 +74,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	}
 };
 
+type BibRecordCandidate = BibRecordDraft & { checked: boolean };
+
 export default function Index() {
 	const fetcher = useFetcher();
 
-	const [candidates, setCandidates] = useState<BibRecordDraft[]>([]);
+	const [candidates, setCandidates] = useState<BibRecordCandidate[]>([]);
 
 	const { toast } = useToast();
 
@@ -87,7 +91,7 @@ export default function Index() {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 	const onManualInputSubmit = (data: BibRecordDraft) => {
-		setCandidates((candidates) => [...candidates, data]);
+		setCandidates((candidates) => [...candidates, { ...data, checked: false }]);
 		toast({
 			title: "下書きを追加しました",
 			description: "書誌レコードの下書きを追加しました",
@@ -98,7 +102,7 @@ export default function Index() {
 		if (!fetcher.data) return;
 		setCandidates((candidates) => [
 			...candidates,
-			fetcher.data as BibRecordDraft,
+			{ ...(fetcher.data as BibRecordDraft), checked: false },
 		]);
 	}, [fetcher.data]);
 
@@ -113,8 +117,17 @@ export default function Index() {
 	const onRowSubmit = (index: number, work: BibRecordDraft) => {
 		setCandidates((candidates) => {
 			const newCandidates = [...candidates];
-			newCandidates[index] = work;
+			newCandidates[index] = { ...work, checked: false };
 			setIsDialogOpen(false);
+			return newCandidates;
+		});
+	};
+
+	const handleChechedChange = (checked: CheckedState, index: number) => {
+		setCandidates((candidates) => {
+			if (checked === "indeterminate") return candidates;
+			const newCandidates = [...candidates];
+			newCandidates[index] = { ...newCandidates[index], checked };
 			return newCandidates;
 		});
 	};
@@ -199,7 +212,12 @@ export default function Index() {
 													<ContextMenuTrigger key={i} asChild>
 														<TableRow>
 															<TableCell max-width="1">
-																<Checkbox />
+																<Checkbox
+																	checked={item.checked}
+																	onCheckedChange={(checked) =>
+																		handleChechedChange(checked, i)
+																	}
+																/>
 															</TableCell>
 															<TableCell>{item.work.preferred_title}</TableCell>
 															<TableCell>
