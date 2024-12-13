@@ -1,9 +1,11 @@
 import type { MetaFunction } from "@remix-run/cloudflare";
+import { useLoaderData } from "@remix-run/react";
 import logo from "~/assets/logo.png";
 import { Card } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
-import { Skeleton } from "~/components/ui/skeleton";
 import { SidebarOnlyLayout } from "~/layouts/sidebar-only";
+import { BibThumbnailItem } from "~/components/bib-thumbnail-item";
+import { Repository } from "~/db";
 
 export const meta: MetaFunction = () => {
 	return [
@@ -15,7 +17,16 @@ export const meta: MetaFunction = () => {
 	];
 };
 
+export async function loader() {
+	return {
+		data: Array.from({ length: 3 }).map((_, i) => ({ id: i })),
+	};
+}
+
 export default function Index() {
+	const { data } = useLoaderData<typeof loader>();
+	console.log(data);
+
 	return (
 		<SidebarOnlyLayout>
 			<div className="container mx-auto">
@@ -28,8 +39,8 @@ export default function Index() {
 					</Card>
 				</div>
 				<div className="grid grid-cols-8 gap-4">
-					{Array.from({ length: 10 }).map((_, i) => (
-						<Skeleton key={i} className="w-[130px] h-[200px]" />
+					{data.map((item, i) => (
+						<BibThumbnailItem key={i} value={item} />
 					))}
 				</div>
 			</div>
