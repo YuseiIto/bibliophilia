@@ -36,7 +36,7 @@ export class Repository {
 		this._con = drizzle(env.DB);
 	}
 
-	async insertWork(draft: WorkDraft) {
+	async insertWork(draft: WorkDraft): Promise<string> {
 		if (!draft.preferred_title) throw new Error("preferred_title is required");
 		if (!draft.catalog_source) throw new Error("catalog_source is required");
 		if (!draft.catalog_source_type)
@@ -57,6 +57,8 @@ export class Repository {
 		};
 
 		await this._con.insert(bibWorksTable).values(work);
+
+		return work.id;
 	}
 
 	async insertIdentifier(draft: IdentifierDraft) {
