@@ -88,7 +88,7 @@ export class Repository {
 		return identifier.id;
 	}
 
-	async insertAgent(draft: AgentDraft) {
+	async insertAgent(draft: AgentDraft): Promise<string> {
 		if (!draft.preferredName) throw new Error("name is required");
 		const agent = {
 			id: uuidv4(),
@@ -118,6 +118,8 @@ export class Repository {
 				};
 				await this._con.insert(bibCollectiveAgentsTable).values(collective);
 		}
+
+		return agent.id;
 	}
 
 	async insertTitles(draft: TitleDraft, work_id: string) {
