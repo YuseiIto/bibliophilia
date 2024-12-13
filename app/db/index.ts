@@ -1,4 +1,5 @@
 import { drizzle } from "drizzle-orm/d1";
+import * as schema from "./schema";
 import {
 	bibWorksTable,
 	bibIdentifiersTable,
@@ -18,15 +19,15 @@ import {
 	bibItemsTable,
 	bibWorkAgentsTable,
 } from "./schema";
-import type { WorkDraft } from "~/model/work";
-import type { IdentifierDraft } from "~/model/identifier";
+import type { WorkDraft, Work } from "~/model/work";
+import type { IdentifierDraft, Identifier } from "~/model/identifier";
 import type { AgentDraft } from "~/model/agent";
 import type { TitleDraft } from "~/model/title";
 import type { SubjectDraft } from "~/model/subject";
 import type { SeriesTitleDraft } from "~/model/series-title";
 import type { BibLanguageDraft } from "~/model/language";
 import type { TextWithId } from "~/model/text-with-id";
-import type { BibRecordDraft } from "~/model/bib-record";
+import type { BibRecordDraft, BibRecord } from "~/model/bib-record";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -35,7 +36,7 @@ export class Repository {
 
 	constructor(env: Env) {
 		if (!env.DB) throw new Error("DB is not defined");
-		this._con = drizzle(env.DB);
+		this._con = drizzle(env.DB, { schema });
 	}
 
 	async insertItem(workId: string): Promise<string> {
@@ -308,7 +309,11 @@ export class Repository {
 		await this.insertItem(workId);
 	}
 
-	async getAllBibRecords() {
-		return this._con.select().from(bibWorksTable);
+	async getAllBibRecords(): Promise<BibRecord[]> {
+		return await this._con.query.bibWorksTable.findMany({
+			with: {
+				identifiers: true,
+			},
+		});
 	}
 }

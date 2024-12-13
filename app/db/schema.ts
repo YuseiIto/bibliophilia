@@ -1,4 +1,5 @@
 import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { relations } from "drizzle-orm";
 
 /*
  * DBスキーマの定義.
@@ -32,6 +33,10 @@ export const bibWorksTable = sqliteTable("bib_works", {
 	preferred_volume_title_transcription: text(),
 });
 
+export const bibWorksRelations = relations(bibWorksTable, ({ many }) => ({
+	identifiers: many(bibIdentifiersTable),
+}));
+
 export const bibIdentifiersTable = sqliteTable("bib_identifiers", {
 	id: text().primaryKey(),
 	work_id: text()
@@ -40,6 +45,16 @@ export const bibIdentifiersTable = sqliteTable("bib_identifiers", {
 	identifier: text().notNull(),
 	identifier_type: text().notNull(), // ISBN, ISSN, JPNO, etc.
 });
+
+export const bibIdentifiersRelations = relations(
+	bibIdentifiersTable,
+	({ one }) => ({
+		work: one(bibWorksTable, {
+			fields: [bibIdentifiersTable.work_id],
+			references: [bibWorksTable.id],
+		}),
+	}),
+);
 
 /*
  * Item: 個別資料

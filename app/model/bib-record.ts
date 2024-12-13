@@ -1,5 +1,5 @@
-import type { WorkDraft } from "./work";
-import type { IdentifierDraft } from "./identifier";
+import type { WorkDraft, CatalogSourceType, CatalogingRule } from "./work";
+import type { IdentifierDraft, Identifier } from "./identifier";
 import type { AgentDraft } from "./agent";
 import type { TitleDraft } from "./title";
 import type { SubjectDraft } from "./subject";
@@ -20,4 +20,18 @@ export interface BibRecordDraft {
 	abstracts: TextWithId[];
 	descriptions: TextWithId[];
 	dates: TextWithId[];
+}
+
+export interface BibRecord {
+	id: string;
+	preferred_title: string;
+	preferred_title_transcription: string | null;
+	catalog_source: string;
+	catalog_source_type: string; // CatalogSourceTypeにしたい
+	cataloging_rule: string | null; // CatalogingRuleにしたい
+	thumbnail_url: string | null;
+	preferred_volume: string | null;
+	preferred_volume_title: string | null;
+	preferred_volume_title_transcription: string | null;
+	identifiers: Identifier[];
 }

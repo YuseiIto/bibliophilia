@@ -48,6 +48,8 @@ export interface IdentifierDraft {
 }
 
 export interface Identifier {
-	identifierType: IdentifierType;
+	id: string;
+	work_id: string;
 	identifier: string;
+	identifier_type: IdentifierType;
 }
