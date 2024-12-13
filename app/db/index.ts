@@ -61,19 +61,20 @@ export class Repository {
 		return work.id;
 	}
 
-	async insertIdentifier(draft: IdentifierDraft) {
+	async insertIdentifier(draft: IdentifierDraft, work_id: string) {
 		if (!draft.identifier) throw new Error("identifier is required");
 		if (!draft.identifier_type) throw new Error("identifier_type is required");
-		if (!draft.work_id) throw new Error("work_id is required");
+		if (!work_id) throw new Error("work_id is required");
 
 		const identifier = {
 			id: uuidv4(),
-			work_id: draft.work_id,
+			work_id: work_id,
 			identifier: draft.identifier,
 			identifier_type: draft.identifier_type,
 		};
 
 		await this._con.insert(bibIdentifiersTable).values(identifier);
+		return identifier.id;
 	}
 
 	async insertAgent(draft: AgentDraft) {
