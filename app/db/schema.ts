@@ -99,7 +99,7 @@ export const bibWorkAgentsTable = sqliteTable("bib_work_agencies", {
 		.references(() => bibWorksTable.id),
 	agent_id: text()
 		.notNull()
-		.references(() => bibWorksTable.id),
+		.references(() => bibAgentTable.id),
 	role: text().notNull(), // author,publisher, editor, translator, contributor, supervisor ...
 	raw: text().notNull(), // 根拠となった記述
 });
