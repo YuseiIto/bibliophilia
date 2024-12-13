@@ -15,6 +15,7 @@ import {
 	bibAbstractTable,
 	bibDescriptionTable,
 	bibDatesTable,
+	bibItemsTable,
 } from "./schema";
 
 import type { WorkDraft } from "~/model/work";
@@ -34,6 +35,16 @@ export class Repository {
 	constructor(env: Env) {
 		if (!env.DB) throw new Error("DB is not defined");
 		this._con = drizzle(env.DB);
+	}
+
+	async insertItem(workId: string): Promise<string> {
+		const item = {
+			id: uuidv4(),
+			work_id: workId,
+		};
+
+		await this._con.insert(bibItemsTable).values(item);
+		return item.id;
 	}
 
 	async insertWork(draft: WorkDraft): Promise<string> {
