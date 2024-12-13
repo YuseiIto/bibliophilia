@@ -93,7 +93,7 @@ export const bibCollectiveAgentsTable = sqliteTable("bib_collective_agents", {
 	preferred_name_transcription: text(),
 });
 
-export const bibItemsAgentsTable = sqliteTable("bib_items_agencies", {
+export const bibItemsAgentsTable = sqliteTable("bib_work_agencies", {
 	item_id: text()
 		.notNull()
 		.references(() => bibItemsTable.id),
