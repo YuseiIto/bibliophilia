@@ -26,6 +26,7 @@ import type { SubjectDraft } from "~/model/subject";
 import type { SeriesTitleDraft } from "~/model/series-title";
 import type { BibLanguageDraft } from "~/model/language";
 import type { TextWithId } from "~/model/text-with-id";
+import type { BibRecordDraft } from "~/model/bib-record";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -238,5 +239,70 @@ export class Repository {
 		};
 
 		await this._con.insert(bibDatesTable).values(date);
+	}
+
+	async insertBibRecord(draft: BibRecordDraft) {
+		const {
+			work,
+			identifiers,
+			agents,
+			titles,
+			subjects,
+			seriesTitles,
+			languages,
+			prices,
+			extents,
+			abstracts,
+			descriptions,
+			dates,
+		} = draft;
+
+		const workId = await this.insertWork(work);
+		for (const identifier of identifiers) {
+			await this.insertIdentifier(identifier, workId);
+		}
+
+		for (const agent of agents) {
+			const agentId = await this.insertAgent(agent);
+			await this.insertWorkAgent(workId, agentId, agent.role, agent.raw);
+		}
+
+		for (const title of titles) {
+			await this.insertTitles(title, workId);
+		}
+
+		for (const subject of subjects) {
+			await this.insertSubject(subject, workId);
+		}
+
+		for (const seriesTitle of seriesTitles) {
+			await this.insertSeriesTitle(seriesTitle, workId);
+		}
+
+		for (const language of languages) {
+			await this.insertLanguage(language, workId);
+		}
+
+		for (const price of prices) {
+			await this.insertPrice(price, workId);
+		}
+
+		for (const extent of extents) {
+			await this.insertExtent(extent, workId);
+		}
+
+		for (const abstract of abstracts) {
+			await this.insertAbstract(abstract, workId);
+		}
+
+		for (const description of descriptions) {
+			await this.insertDescription(description, workId);
+		}
+
+		for (const date of dates) {
+			await this.insertDate(date, workId);
+		}
+
+		await this.insertItem(workId);
 	}
 }

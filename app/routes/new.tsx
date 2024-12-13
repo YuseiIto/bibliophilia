@@ -47,6 +47,7 @@ import {
 } from "~/components/ui/resizable";
 
 import type { CheckedState } from "@radix-ui/react-checkbox";
+import { Repository } from "~/db";
 
 export const meta: MetaFunction = () => {
 	return [
@@ -58,16 +59,24 @@ export const meta: MetaFunction = () => {
 	];
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
 	const req = await request.formData();
 	const action_type = req.get("action_type");
 
-	console.log("action called. action_type: ", action_type);
 	switch (action_type) {
 		case "lookup_by_isbn": {
 			const isbn = req.get("isbn")!;
 			const data = await lookupByIsbn(isbn.toString());
-			return data;
+			return { draft: data, kind: "draft" };
+		}
+		case "save": {
+			const data = JSON.parse(req.get("data")?.toString() ?? "[]"); // TODO: Validate!!
+			for (const item of data) {
+				const db = new Repository(context.cloudflare.env);
+				await db.insertBibRecord(item);
+			}
+			console.log("Insert success!");
+			return new Response("saved", { status: 200 });
 		}
 		default:
 			return new Response("Invalid action_type", { status: 400 });
@@ -112,10 +121,13 @@ export default function Index() {
 
 	useEffect(() => {
 		if (!fetcher.data) return;
+		const data: { draft: BibRecordDraft; kind: string } = fetcher.data as any;
+		if (data.kind !== "draft") return;
+
 		setCandidates((candidates) => {
 			const newCandidates = [
 				...candidates,
-				{ ...(fetcher.data as BibRecordDraft), checked: false },
+				{ ...(data.draft as BibRecordDraft), checked: false },
 			];
 			setHeadChecked(computeHeadChecked(newCandidates));
 			return newCandidates;
@@ -159,6 +171,15 @@ export default function Index() {
 				return { ...candidate, checked };
 			});
 		});
+	};
+
+	const saveSelected = async () => {
+		console.log("saving...");
+		const formData = new FormData();
+		formData.append("action_type", "save");
+		const selectedCandidates = candidates.filter((x) => x.checked);
+		formData.append("data", JSON.stringify(selectedCandidates));
+		fetcher.submit(formData, { method: "post" });
 	};
 
 	return (
@@ -298,7 +319,7 @@ export default function Index() {
 							</Table>
 
 							<div className="flex flex-row justify-center">
-								<Button>
+								<Button type="button" onClick={saveSelected}>
 									<FilePlus /> 選択中の資料を登録
 								</Button>
 							</div>
