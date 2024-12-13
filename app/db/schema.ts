@@ -131,7 +131,7 @@ export const bibWorksSubjectsTable = sqliteTable("bib_works_subjects", {
 		.references(() => bibSubjectsTable.id),
 });
 
-export const bibSeriesTitle = sqliteTable("bib_series_title", {
+export const bibSeriesTitleTable = sqliteTable("bib_series_title", {
 	id: text().primaryKey(),
 	work_id: text()
 		.notNull()
