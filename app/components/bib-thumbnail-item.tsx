@@ -22,7 +22,7 @@ export function BibThumbnailItem({ value }: BibThumbnailItemProps) {
 	return (
 		<div className="flex flex-col items-center gap-1">
 			{ndlThumbnail ? (
-				<img src={ndlThumbnail} />
+				<img src={ndlThumbnail} alt="" />
 			) : (
 				<Skeleton className="h-[200px] w-[130px]" />
 			)}
