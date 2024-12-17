@@ -1,4 +1,4 @@
-import type { WorkDraft, CatalogSourceType, CatalogingRule } from "./work";
+import type { WorkDraft } from "./work";
 import type { IdentifierDraft, Identifier } from "./identifier";
 import type { AgentDraft } from "./agent";
 import type { TitleDraft } from "./title";

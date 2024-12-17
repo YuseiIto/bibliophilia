@@ -19,8 +19,8 @@ import {
 	bibItemsTable,
 	bibWorkAgentsTable,
 } from "./schema";
-import type { WorkDraft, Work } from "~/model/work";
-import type { IdentifierDraft, Identifier } from "~/model/identifier";
+import type { WorkDraft } from "~/model/work";
+import type { IdentifierDraft } from "~/model/identifier";
 import type { AgentDraft } from "~/model/agent";
 import type { TitleDraft } from "~/model/title";
 import type { SubjectDraft } from "~/model/subject";
