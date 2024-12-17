@@ -310,10 +310,10 @@ export class Repository {
 	}
 
 	async getAllBibRecords(): Promise<BibRecord[]> {
-		return await this._con.query.bibWorksTable.findMany({
+		return (await this._con.query.bibWorksTable.findMany({
 			with: {
 				identifiers: true,
 			},
-		});
+		})) as BibRecord[];
 	}
 }
