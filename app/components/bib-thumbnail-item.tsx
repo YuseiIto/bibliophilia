@@ -9,10 +9,10 @@ export function BibThumbnailItem({ value }: BibThumbnailItemProps) {
 
 	const isbn = value.identifiers
 		.filter(
-			({ identifier_type }) =>
+			({ identifier_type }: any) =>
 				identifier_type === "http://ndl.go.jp/dcndl/terms/ISBN",
 		)
-		.map(({ identifier }) => identifier)[0]
+		.map(({ identifier }: any) => identifier)[0]
 		.replaceAll("-", "");
 
 	const ndlThumbnail = isbn
