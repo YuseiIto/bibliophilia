@@ -7,7 +7,7 @@
 		"build": "remix vite:build",
 		"deploy": "wrangler pages deploy ./build/client",
 		"dev": "remix vite:dev",
-		"lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+		"lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
 		"format": "biome format --write",
 		"format:ci": "biome ci",
 		"start": "wrangler pages dev ./build/client",
