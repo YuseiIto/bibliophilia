@@ -8,7 +8,7 @@ on:
 
 
 jobs:
-  build:
+  build_and_lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,18 +18,11 @@ jobs:
         with:
           node-version-file: '.node-version'
       - run: npm ci
+      # `functions/[[path]].ts` などで `../build/server`をimportする時に、
+      # `../build/server`が見つからないとLint Errorを起こすので、Lint前にbuildしている
+      # 本当は [[path]].ts で `eslint-disable no-unresolved` を使うべきな気がするけど、その場合は
+      # build済みのもののある環境でlintしたときに「Unused eslint-disable directiveがある」とwarningが起きてしまうので微妙.
       - run: npm run build
+      - run: npm run lint       
       - run: npm test
       - run: npm run typecheck
-
-  lint:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.node-version'
-      - run: npm ci
-      - run: npm run lint
