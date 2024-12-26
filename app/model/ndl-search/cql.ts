@@ -21,6 +21,8 @@ export function All<T>(value: T[]): CqlAll<T> {
 }
 
 // 「Anyで接続される複数の値」または「単一の値」をキーとして許容するフィールド
+// 関数としてのAnyと同名のためeslintが怒るが、同名の方が便利なので無視する
+// eslint-disable-next-line no-redeclare
 type Any<T> = T | CqlAny<T>;
 
 // 「Any、またはAllで接続される複数の値」または「単一の値」をキーとして許容するフィールド
