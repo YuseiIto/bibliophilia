@@ -1,3 +1,4 @@
+import type { FormEvent } from "react";
 import { useState } from "react";
 import { Input } from "~/components/ui/input";
 import { Combobox, ComboboxOption } from "~/components/combobox";
@@ -57,7 +58,7 @@ export function SubjectDialog({
 	const [preferredLabelTranscription, setPreferredLabelTranscription] =
 		useState<string>(defaultValue?.preferred_label_transcription ?? "");
 
-	const onSubmitWrapper = (event: React.FormEvent) => {
+	const onSubmitWrapper = (event: FormEvent) => {
 		event.preventDefault();
 		if (subjectType == null) return; // UIでボタンがDisableされているのでこのケースは考えないことにする
 		if (onSubmit) {

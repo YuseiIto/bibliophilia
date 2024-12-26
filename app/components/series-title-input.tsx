@@ -1,3 +1,4 @@
+import type { FormEvent } from "react";
 import { useState } from "react";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -47,7 +48,7 @@ export function SeriesTitleDialog({
 		defaultValue?.transcription ?? "",
 	);
 
-	const onSubmitWrapper = (event: React.FormEvent) => {
+	const onSubmitWrapper = (event: FormEvent) => {
 		event.preventDefault();
 		if (title == null) return; // UIでボタンがDisableされているのでこのケースは考えないことにする
 		if (onSubmit) {

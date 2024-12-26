@@ -1,3 +1,4 @@
+import type { FormEvent } from "react";
 import { useState } from "react";
 import { Input } from "~/components/ui/input";
 import { Combobox, ComboboxOption } from "~/components/combobox";
@@ -67,7 +68,7 @@ export function AgentDialog({
 
 	const [rawDescription, setRawDescription] = useState(defaultValue?.raw ?? "");
 
-	const onSubmitWrapper = (event: React.FormEvent) => {
+	const onSubmitWrapper = (event: FormEvent) => {
 		if (!agentRole) return; // このケースではボタンが	disabledになっているはずなので通常はunreachable
 		event.preventDefault();
 		if (onSubmit) {

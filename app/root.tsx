@@ -1,4 +1,5 @@
 import type { LinksFunction } from "@remix-run/cloudflare";
+import type { ReactNode } from "react";
 import {
 	Links,
 	Meta,
@@ -33,7 +34,7 @@ export function ErrorBoundary() {
 	);
 }
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en">
 			<head>

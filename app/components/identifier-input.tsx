@@ -1,3 +1,4 @@
+import type { FormEvent } from "react";
 import { useState } from "react";
 import { Input } from "~/components/ui/input";
 import { Combobox, ComboboxOption } from "~/components/combobox";
@@ -62,7 +63,7 @@ export function IdentifierDialog({
 		defaultValue?.identifier ?? "",
 	);
 
-	const onSubmitWrapper = (event: React.FormEvent) => {
+	const onSubmitWrapper = (event: FormEvent) => {
 		event.preventDefault();
 		if (identifier_type == null) return; // UIでボタンがDisableされているのでこのケースは考えないことにする
 		if (onSubmit) {

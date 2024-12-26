@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import {
 	SidebarProvider,
 	SidebarTrigger,
@@ -6,7 +7,7 @@ import {
 import { AppSidebar } from "~/components/app-sidebar";
 import { Separator } from "~/components/ui/separator";
 
-export function DefaultLayout({ children }: { children: React.ReactNode }) {
+export function DefaultLayout({ children }: { children: ReactNode }) {
 	return (
 		<SidebarProvider>
 			<AppSidebar />

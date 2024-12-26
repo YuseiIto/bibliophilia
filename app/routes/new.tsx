@@ -1,5 +1,6 @@
 import type { MetaFunction, ActionFunctionArgs } from "@remix-run/cloudflare";
 import { useFetcher, Link } from "@remix-run/react";
+import type { KeyboardEvent } from "react";
 import { useState, useEffect } from "react";
 import { ManualCatalogComposer } from "~/components/manual-catalog-composer";
 import { DefaultLayout } from "~/layouts/default";
@@ -93,7 +94,7 @@ export default function Index() {
 
 	const { toast } = useToast();
 
-	const onIsbnKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+	const onIsbnKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
 		if (e.key != "Enter") return; // Ignore if not Enter key
 		fetcher.submit(e.currentTarget.form, { method: "post" });
 	};

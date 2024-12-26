@@ -9,7 +9,7 @@ export function HeadWord({ children }: HeadWordProps) {
 }
 
 interface VocabularyTooltipContentProps {
-	children: [ReactElement<React.ReactElement<HeadWordProps>>, ReactNode];
+	children: [ReactElement<ReactElement<HeadWordProps>>, ReactNode];
 }
 
 export function VocabularyTooltipContent({

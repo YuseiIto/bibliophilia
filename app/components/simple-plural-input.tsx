@@ -1,3 +1,4 @@
+import type { FormEvent } from "react";
 import { useState } from "react";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -36,7 +37,7 @@ export function SimplePluralDialog({
 }: SimplePluralDialogProps) {
 	const [id, setId] = useState(defaultValue?.id ?? null);
 	const [value, setValue] = useState(defaultValue?.value ?? "");
-	const onSubmitWrapper = (event: React.FormEvent) => {
+	const onSubmitWrapper = (event: FormEvent) => {
 		event.preventDefault();
 		if (value == "") return; // UIでボタンがDisableされているのでこのケースは考えないことにする
 		if (onSubmit) {

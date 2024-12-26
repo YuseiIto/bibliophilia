@@ -1,4 +1,5 @@
-import { ReactNode, useState } from "react";
+import type { ChangeEvent, ReactNode } from "react";
+import { useState } from "react";
 import { Input } from "~/components/ui/input";
 import {
 	TooltipProvider,
@@ -25,12 +26,12 @@ export function InputWithTooltip({
 	validator,
 	value,
 }: InputWithTooltipProps) {
-	const onChangeWrapper = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const onChangeWrapper = (e: ChangeEvent<HTMLInputElement>) => {
 		if (onChange) onChange(e.target.value);
 	};
 
 	const [errorMessage, setErrorMessage] = useState<string | null>("");
-	const onBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
 		const data = e.target.value;
 		if (validator) {
 			const msg = validator(data);

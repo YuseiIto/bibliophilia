@@ -1,3 +1,4 @@
+import type { FormEvent } from "react";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Plus, Edit, Trash } from "@mynaui/icons-react";
@@ -46,7 +47,7 @@ export function LongPluralDialog({
 }: LongPluralDialogProps) {
 	const [id, setId] = useState(defaultValue?.id ?? null);
 	const [value, setValue] = useState(defaultValue?.value ?? "");
-	const onSubmitWrapper = (event: React.FormEvent) => {
+	const onSubmitWrapper = (event: FormEvent) => {
 		event.preventDefault();
 		if (value == "") return; // UIでボタンがDisableされているのでこのケースは考えないことにする
 		if (onSubmit) {
