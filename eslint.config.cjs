@@ -6,8 +6,13 @@ const storybook = require("eslint-plugin-storybook");
 const typescript = require("@typescript-eslint/eslint-plugin");
 const typescriptParser = require("@typescript-eslint/parser");
 const importPlugin = require("eslint-plugin-import");
+const { includeIgnoreFile } = require("@eslint/compat");
+const path = require("node:path");
+const globals = require("globals");
+const gitignorePath = path.resolve(__dirname, ".gitignore");
 
 module.exports = [
+	includeIgnoreFile(gitignorePath),
 	// Base config
 	{
 		files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
@@ -16,12 +21,10 @@ module.exports = [
 			sourceType: "module",
 			parserOptions: { ecmaFeatures: { jsx: true } },
 			globals: {
-				browser: true,
-				commonjs: true,
-				es6: true,
+				...globals.browser,
+				...globals.node,
 			},
 		},
-		ignores: ["!**/.server", "!**/.client", "app/components/ui"], // TODO: Remove "app/components/ui" when it's ready
 		plugins: {
 			react,
 			"jsx-a11y": jsxA11y,
@@ -84,7 +87,15 @@ module.exports = [
 	{
 		files: [".eslintrc.cjs"],
 		languageOptions: {
-			globals: { node: true },
+			globals: { ...globals.node },
 		},
+	},
+	{
+		ignores: [
+			"**/.server",
+			"**/.client",
+			"worker-configuration.d.ts", // Auto-generated file
+			"app/components/ui", // TODO: Remove "app/components/ui" when it's ready
+		],
 	},
 ];
