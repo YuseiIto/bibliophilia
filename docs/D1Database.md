@@ -17,6 +17,9 @@ sh ./scripts/init-db.sh
 7. D1 EditのpermissionのついたAPI Tokenを作成
 ![](./images/account-api-token.png)
 8. `.env` にAPI Tokenを設定
+9. [Cloudflare pages functionsのドキュメント](https://developers.cloudflare.com/pages/functions/bindings/)に従って、bindingsを設定 (作成したDBが`DB`という名前で使えるようにする)
+  - Cloudflare pages functionsは`wrangler.toml` を参照しないので、手動でGUIから設定する必要がある
+  - TODO: terraformとかでなんとかしたい
 
 ## Migrationを生成
 
