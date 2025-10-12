@@ -59,7 +59,7 @@
 		"uuid": "^11.0.3"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
+		"@biomejs/biome": "2.2.5",
 		"@chromatic-com/storybook": "^3.2.2",
 		"@cloudflare/workers-types": "^4.20240512.0",
 		"@remix-run/dev": "^2.13.1",
