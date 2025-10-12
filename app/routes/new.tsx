@@ -1,7 +1,7 @@
 import type { MetaFunction, ActionFunctionArgs } from "@remix-run/cloudflare";
 import { useFetcher, Link } from "@remix-run/react";
 import type { KeyboardEvent } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { ManualCatalogComposer } from "~/components/manual-catalog-composer";
 import { DefaultLayout } from "~/layouts/default";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
@@ -86,12 +86,63 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
 
 type BibRecordCandidate = BibRecordDraft & { checked: boolean };
 
+type ReducerAction =
+	| { type: "add"; payload: BibRecordDraft }
+	| { type: "delete"; payload: number }
+	| { type: "update"; payload: { index: number; work: BibRecordDraft } }
+	| {
+			type: "toggle_checked";
+			payload: { index: number; checked: CheckedState };
+	  }
+	| { type: "toggle_all"; payload: CheckedState }
+	| { type: "clear" };
+
+function candidatesReducer(
+	state: BibRecordCandidate[],
+	action: ReducerAction,
+): BibRecordCandidate[] {
+	switch (action.type) {
+		case "add": {
+			return [...state, { ...action.payload, checked: false }];
+		}
+		case "delete": {
+			const newState = [...state];
+			newState.splice(action.payload, 1);
+			return newState;
+		}
+		case "update": {
+			const newState = [...state];
+			newState[action.payload.index] = {
+				...action.payload.work,
+				checked: false,
+			};
+			return newState;
+		}
+		case "toggle_checked": {
+			if (action.payload.checked === "indeterminate") return state;
+			const newState = [...state];
+			newState[action.payload.index] = {
+				...newState[action.payload.index],
+				checked: action.payload.checked as boolean,
+			};
+			return newState;
+		}
+		case "toggle_all": {
+			if (action.payload === "indeterminate") return state;
+			return state.map((c) => ({ ...c, checked: action.payload as boolean }));
+		}
+		case "clear": {
+			return [];
+		}
+		default:
+			throw new Error("Unhandled action type");
+	}
+}
+
 export default function Index() {
 	const fetcher = useFetcher();
 
-	const [candidates, setCandidates] = useState<BibRecordCandidate[]>([]);
-	const [headChecked, setHeadChecked] = useState<CheckedState>(false);
-
+	const [candidates, dispatch] = useReducer(candidatesReducer, []);
 	const { toast } = useToast();
 
 	const onIsbnKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
@@ -108,12 +159,10 @@ export default function Index() {
 		return "indeterminate";
 	};
 
+	const headChecked = computeHeadChecked(candidates);
+
 	const onManualInputSubmit = (data: BibRecordDraft) => {
-		setCandidates((candidates) => {
-			const newCandidates = [...candidates, { ...data, checked: false }];
-			setHeadChecked(computeHeadChecked(newCandidates));
-			return newCandidates;
-		});
+		dispatch({ type: "add", payload: data });
 		toast({
 			title: "下書きを追加しました",
 			description: "書誌レコードの下書きを追加しました",
@@ -125,53 +174,24 @@ export default function Index() {
 		const data: { draft: BibRecordDraft; kind: string } = fetcher.data as any;
 		if (data.kind !== "draft") return;
 
-		setCandidates((candidates) => {
-			const newCandidates = [
-				...candidates,
-				{ ...(data.draft as BibRecordDraft), checked: false },
-			];
-			setHeadChecked(computeHeadChecked(newCandidates));
-			return newCandidates;
-		});
+		dispatch({ type: "add", payload: data.draft });
 	}, [fetcher.data]);
 
 	const deleteRow = (index: number) => {
-		setCandidates((candidates) => {
-			const newCandidates = [...candidates];
-			newCandidates.splice(index, 1);
-			setHeadChecked(computeHeadChecked(newCandidates));
-			return newCandidates;
-		});
+		dispatch({ type: "delete", payload: index });
 	};
 
 	const onRowSubmit = (index: number, work: BibRecordDraft) => {
-		setCandidates((candidates) => {
-			const newCandidates = [...candidates];
-			newCandidates[index] = { ...work, checked: false };
-			setIsDialogOpen(false);
-			setHeadChecked(computeHeadChecked(newCandidates));
-			return newCandidates;
-		});
+		dispatch({ type: "update", payload: { index, work } });
+		setIsDialogOpen(false);
 	};
 
 	const handleChechedChange = (checked: CheckedState, index: number) => {
-		setCandidates((candidates) => {
-			if (checked === "indeterminate") return candidates;
-			const newCandidates = [...candidates];
-			newCandidates[index] = { ...newCandidates[index], checked };
-			setHeadChecked(computeHeadChecked(newCandidates));
-			return newCandidates;
-		});
+		dispatch({ type: "toggle_checked", payload: { index, checked } });
 	};
 
 	const handleHeadCheckedChange = (checked: CheckedState) => {
-		setHeadChecked(checked);
-		if (checked === "indeterminate") return;
-		setCandidates((candidates) => {
-			return candidates.map((candidate) => {
-				return { ...candidate, checked };
-			});
-		});
+		dispatch({ type: "toggle_all", payload: checked });
 	};
 
 	const saveSelected = async () => {
@@ -180,8 +200,7 @@ export default function Index() {
 		const selectedCandidates = candidates.filter((x) => x.checked);
 		formData.append("data", JSON.stringify(selectedCandidates));
 		fetcher.submit(formData, { method: "post" });
-		setCandidates([]);
-		setHeadChecked(computeHeadChecked([]));
+		dispatch({ type: "clear" });
 	};
 
 	return (

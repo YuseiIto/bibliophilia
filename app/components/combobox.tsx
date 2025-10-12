@@ -48,25 +48,22 @@ export function Combobox<T extends string>({
 	if (!options) throw new Error("Options are required.");
 
 	const [open, setOpen] = useState(false);
-	const [lastOpen, setLastOpen] = useState(false);
 	const [selectedValue, setSelectedValue] = useState(value ?? null);
 
 	useEffect(() => {
 		if (onChange) onChange(selectedValue);
 	}, [selectedValue, onChange]);
 
-	useEffect(() => {
-		if (open == false && lastOpen == true) {
-			setLastOpen(false);
-		} else if (open == true && lastOpen == false) {
-			setLastOpen(true);
-		}
-
-		if (open == false && lastOpen == true && onBlur) onBlur(selectedValue);
-	}, [open, lastOpen, onBlur, selectedValue]);
-
 	return (
-		<Popover open={open} onOpenChange={setOpen}>
+		<Popover
+			open={open}
+			onOpenChange={(newOpen) => {
+				if (!newOpen) {
+					onBlur?.(selectedValue);
+				}
+				setOpen(newOpen);
+			}}
+		>
 			<input type="hidden" name={name} value={selectedValue ?? ""} />
 			<PopoverTrigger asChild>
 				<Button
