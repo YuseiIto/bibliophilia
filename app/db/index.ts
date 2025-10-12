@@ -36,8 +36,11 @@ export class Repository {
 	private _con;
 
 	constructor(env: Env) {
-		if (!env.DB) throw new Error("DB is not defined while creating Repository instance.\
-																 Did you perhaps forget to configure the function binding in the GUI? (Refer to docs/D1Database.md)");
+		if (!env.DB)
+			throw new Error(
+				"DB is not defined while creating Repository instance.\
+																 Did you perhaps forget to configure the function binding in the GUI? (Refer to docs/D1Database.md)",
+			);
 		this._con = drizzle(env.DB, { schema });
 	}
 
