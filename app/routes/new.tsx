@@ -175,12 +175,13 @@ export default function Index() {
 	};
 
 	const saveSelected = async () => {
-		console.log("saving...");
 		const formData = new FormData();
 		formData.append("action_type", "save");
 		const selectedCandidates = candidates.filter((x) => x.checked);
 		formData.append("data", JSON.stringify(selectedCandidates));
 		fetcher.submit(formData, { method: "post" });
+		setCandidates([]);
+		setHeadChecked(computeHeadChecked([]));
 	};
 
 	return (
