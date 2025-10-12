@@ -23,7 +23,7 @@ const SidebarLogoButton = () => {
 		<SidebarMenuButton size="lg" asChild>
 			<NavLink to="/">
 				<div className="flex aspect-square size-8 items-center justify-center rounded-none">
-					<img src={LogoIcon} alt="Bibliophilia" className="w-[100%] max-w-9" />
+					<img src={LogoIcon} alt="Bibliophilia" className="w-full max-w-9" />
 				</div>
 				<LogoType />
 			</NavLink>

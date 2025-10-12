@@ -302,7 +302,7 @@ export default function Index() {
 												</ContextMenu>
 
 												<DialogContent className="h-[80vh]">
-													<DialogHeader className="max-h-[2rem]">
+													<DialogHeader className="max-h-8">
 														<DialogTitle>目録情報の編集</DialogTitle>
 													</DialogHeader>
 													<div className="p-3 h-[calc(75vh-2rem)]">

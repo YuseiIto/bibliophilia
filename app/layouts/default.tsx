@@ -12,7 +12,7 @@ export function DefaultLayout({ children }: { children: ReactNode }) {
 		<SidebarProvider>
 			<AppSidebar />
 			<SidebarInset>
-				<header className="flex h-[2rem] shrink-0 items-center gap-2 border-b px-4 fixed top-0 w-full bg-white z-50">
+				<header className="flex h-8 shrink-0 items-center gap-2 border-b px-4 fixed top-0 w-full bg-white z-50">
 					<SidebarTrigger />
 					<Separator orientation="vertical" className="mr-2 h-4" />
 				</header>
