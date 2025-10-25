@@ -85,7 +85,7 @@
 		"vite": "^5.1.0",
 		"vite-tsconfig-paths": "^5.0.0",
 		"vitest": "^4.0.0",
-		"wrangler": "^3.92.0",
+		"wrangler": "^4.0.0",
 		"@storybook/addon-docs": "^9.1.10"
 	},
 	"engines": {
