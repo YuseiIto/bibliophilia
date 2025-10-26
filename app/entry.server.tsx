@@ -28,7 +28,6 @@ export default async function handleRequest(
 		<ServerRouter
 			context={reactRouterContext}
 			url={request.url}
-			abortDelay={ABORT_DELAY}
 		/>,
 		{
 			signal: controller.signal,
