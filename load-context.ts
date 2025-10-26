@@ -8,8 +8,10 @@ import type { Env } from "~/cloudflare";
 
 type Cloudflare = Omit<PlatformProxy<Env>, "dispose">;
 
-declare module "@remix-run/cloudflare" {
+declare module "react-router" {
 	interface AppLoadContext {
 		cloudflare: Cloudflare;
 	}
 }
+
+export {}; // necessary for TS to treat this as a module

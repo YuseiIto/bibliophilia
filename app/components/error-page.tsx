@@ -1,4 +1,4 @@
-import { NavLink, useRouteError, isRouteErrorResponse } from "@remix-run/react";
+import { NavLink, useRouteError, isRouteErrorResponse } from "react-router";
 import logo from "~/assets/logo.png";
 
 function RouteError() {

@@ -1,12 +1,6 @@
-import type { LinksFunction } from "@remix-run/cloudflare";
+import type { LinksFunction } from "react-router";
 import type { ReactNode } from "react";
-import {
-	Links,
-	Meta,
-	Outlet,
-	Scripts,
-	ScrollRestoration,
-} from "@remix-run/react";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import { ErrorPage } from "~/components/error-page";
 import { Toaster } from "~/components/ui/toaster";
 import stylesheet from "~/tailwind.css?url";
