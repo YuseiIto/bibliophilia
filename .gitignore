@@ -14,3 +14,6 @@ prisma/dev.db-journal
 storybook-static
 
 wrangler.toml
+
+ # react-router typegen artifacts
+.react-router
