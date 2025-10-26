@@ -1,4 +1,4 @@
-import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/cloudflare";
+import type { MetaFunction, LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "@remix-run/react";
 import logo from "~/assets/logo.png";
 import { Card } from "~/components/ui/card";
