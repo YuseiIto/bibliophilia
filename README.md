@@ -11,9 +11,9 @@
 
 This project uses the following technologies:
 
-- [Remix](https://remix.run/)
+- [React Router](https://reactrouter.com/home)
 - [Cloudflare Workers](https://workers.cloudflare.com/)
-    - 📖 [Remix Cloudflare docs](https://remix.run/guides/vite#cloudflare)
+    - 📖 [Remix Cloudflare docs](https://developers.cloudflare.com/workers/framework-guides/web-apps/react-router/)
 - [Prisma](https://www.prisma.io/)
 - [Storybook](https://storybook.js.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
