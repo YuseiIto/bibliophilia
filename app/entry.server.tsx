@@ -25,10 +25,7 @@ export default async function handleRequest(
 	const timeoutId = setTimeout(() => controller.abort(), ABORT_DELAY);
 
 	const body = await renderToReadableStream(
-		<ServerRouter
-			context={reactRouterContext}
-			url={request.url}
-		/>,
+		<ServerRouter context={reactRouterContext} url={request.url} />,
 		{
 			signal: controller.signal,
 			onError(error: unknown) {
