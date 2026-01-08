@@ -47,7 +47,7 @@
 		"dotenv": "^17.2.3",
 		"drizzle-orm": "^0.45.0",
 		"fast-xml-parser": "^5.3.0",
-		"globals": "^16.4.0",
+		"globals": "^17.0.0",
 		"isbot": "^5.1.31",
 		"lucide-react": "^0.562.0",
 		"react": "^19.0.0",
