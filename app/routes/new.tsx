@@ -206,8 +206,8 @@ export default function Index() {
 	return (
 		<DefaultLayout>
 			<div className="container mx-auto py-3 h-full">
-				<ResizablePanelGroup direction="horizontal" className="h-full">
-					<ResizablePanel className="p-3" defaultSize={30}>
+				<ResizablePanelGroup orientation="horizontal" className="h-full">
+					<ResizablePanel className="p-3" defaultSize="30">
 						<Tabs defaultValue="isbn" className="h-full">
 							<TabsList className="grid w-full grid-cols-2">
 								<TabsTrigger value="isbn">ISBN</TabsTrigger>
@@ -258,7 +258,7 @@ export default function Index() {
 					</ResizablePanel>
 					<ResizableHandle />
 
-					<ResizablePanel className="p-3" defaultSize={70}>
+					<ResizablePanel className="p-3" defaultSize="70">
 						<div className="overflow-y-auto h-full">
 							<Table>
 								<TableHeader>
