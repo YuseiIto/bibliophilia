@@ -35,3 +35,42 @@ describe("getAllBibRecordSummaries", () => {
 		expect(titles).toEqual(["A の本", "B の本"]);
 	});
 });
+
+describe("simpleSearchBibRecords", () => {
+	beforeEach(clearTestDatabase);
+
+	test("タイトル部分一致でヒット", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(sampleBibRecordDraft({ title: "プログラミングTypeScript", isbn: "1" }));
+		await repo.insertBibRecord(sampleBibRecordDraft({ title: "吾輩は猫である", isbn: "2", authorName: "夏目漱石", subjectLabel: "小説" }));
+		const hits = await repo.simpleSearchBibRecords("TypeScript");
+		expect(hits.map((h) => h.preferred_title)).toEqual(["プログラミングTypeScript"]);
+	});
+
+	test("関与者名でヒット", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(sampleBibRecordDraft({ title: "吾輩は猫である", isbn: "1", authorName: "夏目漱石", subjectLabel: "小説" }));
+		const hits = await repo.simpleSearchBibRecords("漱石");
+		expect(hits.map((h) => h.preferred_title)).toEqual(["吾輩は猫である"]);
+	});
+
+	test("件名でヒット", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(sampleBibRecordDraft({ title: "何かの本", isbn: "1", subjectLabel: "情報科学" }));
+		const hits = await repo.simpleSearchBibRecords("情報科学");
+		expect(hits).toHaveLength(1);
+	});
+
+	test("ヒット 0 件では []", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(sampleBibRecordDraft());
+		expect(await repo.simpleSearchBibRecords("該当なしのはず")).toEqual([]);
+	});
+
+	test("複数フィールドに一致しても 1 件に重複排除される", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(sampleBibRecordDraft({ title: "テスト駆動開発", isbn: "1", subjectLabel: "テスト" }));
+		const hits = await repo.simpleSearchBibRecords("テスト");
+		expect(hits).toHaveLength(1);
+	});
+});

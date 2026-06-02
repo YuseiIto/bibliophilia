@@ -1,5 +1,5 @@
 import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
-import { eq } from "drizzle-orm";
+import { eq, or, like } from "drizzle-orm";
 import * as schema from "./schema";
 import type { Env } from "~/cloudflare";
 import {
@@ -377,6 +377,33 @@ export class Repository {
 		const works = await this._con
 			.select()
 			.from(bibWorksTable)
+			.orderBy(bibWorksTable.preferred_title);
+		return this.buildSummaries(works);
+	}
+
+	async simpleSearchBibRecords(q: string): Promise<BibRecordSummary[]> {
+		const pattern = `%${q}%`;
+		const works = await this._con
+			.selectDistinct({
+				id: bibWorksTable.id,
+				preferred_title: bibWorksTable.preferred_title,
+				preferred_title_transcription: bibWorksTable.preferred_title_transcription,
+				thumbnail_url: bibWorksTable.thumbnail_url,
+			})
+			.from(bibWorksTable)
+			.leftJoin(bibWorkAgentsTable, eq(bibWorkAgentsTable.work_id, bibWorksTable.id))
+			.leftJoin(bibAgentTable, eq(bibWorkAgentsTable.agent_id, bibAgentTable.id))
+			.leftJoin(bibWorksSubjectsTable, eq(bibWorksSubjectsTable.work_id, bibWorksTable.id))
+			.leftJoin(bibSubjectsTable, eq(bibWorksSubjectsTable.subject_id, bibSubjectsTable.id))
+			.leftJoin(bibSeriesTitleTable, eq(bibSeriesTitleTable.work_id, bibWorksTable.id))
+			.where(
+				or(
+					like(bibWorksTable.preferred_title, pattern),
+					like(bibAgentTable.preferred_name, pattern),
+					like(bibSubjectsTable.preferred_label, pattern),
+					like(bibSeriesTitleTable.title, pattern),
+				),
+			)
 			.orderBy(bibWorksTable.preferred_title);
 		return this.buildSummaries(works);
 	}
