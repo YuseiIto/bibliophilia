@@ -3,6 +3,12 @@
 	"private": true,
 	"sideEffects": false,
 	"type": "module",
+	"overrides": {
+		"@vitest/pretty-format": "4.1.8",
+		"@vitest/utils": "4.1.8",
+		"@vitest/expect": "4.1.8",
+		"@vitest/spy": "4.1.8"
+	},
 	"scripts": {
 		"build": "react-router build",
 		"deploy": "wrangler pages deploy ./build/client",
@@ -61,6 +67,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.4.16",
 		"@chromatic-com/storybook": "^5.0.0",
+		"@cloudflare/vitest-pool-workers": "^0.16.11",
 		"@cloudflare/workers-types": "^4.20251011.0",
 		"@react-router/dev": "^7.0.0",
 		"@storybook/addon-docs": "^10.0.0",
@@ -85,7 +92,7 @@
 		"typescript": "^5.1.6",
 		"vite": "^7.0.0",
 		"vite-tsconfig-paths": "^6.0.0",
-		"vitest": "^4.0.0",
+		"vitest": "^4.1.8",
 		"wrangler": "^4.0.0"
 	},
 	"engines": {

@@ -67,6 +67,8 @@ module.exports = [
 		},
 		settings: {
 			"import/internal-regex": "^~/",
+			// Workers runtime virtual modules have no on-disk entry for the resolver.
+			"import/core-modules": ["cloudflare:test", "cloudflare:workers"],
 			"import/resolver": {
 				node: {
 					extensions: [".ts", ".tsx"],
@@ -80,6 +82,18 @@ module.exports = [
 			...importPlugin.configs.typescript.rules,
 			"@typescript-eslint/no-explicit-any": "off", // TODO: Remove this rule when it's ready
 			"no-mixed-spaces-and-tabs": "off",
+		},
+	},
+
+	// Ambient declaration files: the triple-slash reference is required to pull in
+	// `cloudflare:test`'s module types (the package's `types` export does not cover
+	// it), and Workers runtime types (D1Database, D1Migration) are ambient globals
+	// the no-undef rule cannot see.
+	{
+		files: ["**/*.d.ts"],
+		rules: {
+			"@typescript-eslint/triple-slash-reference": "off",
+			"no-undef": "off",
 		},
 	},
 
