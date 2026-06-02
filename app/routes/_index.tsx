@@ -18,7 +18,7 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader({ context }: LoaderFunctionArgs) {
-	const db = new Repository(context.cloudflare.env);
+	const db = Repository.fromEnv(context.cloudflare.env);
 	const data = await db.getAllBibRecords();
 	return {
 		data,

@@ -1,4 +1,4 @@
-import { drizzle } from "drizzle-orm/d1";
+import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
 import * as schema from "./schema";
 import type { Env } from "~/cloudflare";
 import {
@@ -33,15 +33,19 @@ import type { BibRecordDraft, BibRecord } from "~/model/bib-record";
 import { v4 as uuidv4 } from "uuid";
 
 export class Repository {
-	private _con;
+	private _con: DrizzleD1Database<typeof schema>;
 
-	constructor(env: Env) {
+	constructor(db: DrizzleD1Database<typeof schema>) {
+		this._con = db;
+	}
+
+	static fromEnv(env: Env): Repository {
 		if (!env.DB)
 			throw new Error(
 				"DB is not defined while creating Repository instance.\
 																 Did you perhaps forget to configure the function binding in the GUI? (Refer to docs/D1Database.md)",
 			);
-		this._con = drizzle(env.DB, { schema });
+		return new Repository(drizzle(env.DB, { schema }));
 	}
 
 	async insertItem(workId: string): Promise<string> {

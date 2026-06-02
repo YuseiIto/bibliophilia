@@ -73,7 +73,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
 		case "save": {
 			const data = JSON.parse(req.get("data")?.toString() ?? "[]"); // TODO: Validate!!
 			for (const item of data) {
-				const db = new Repository(context.cloudflare.env);
+				const db = Repository.fromEnv(context.cloudflare.env);
 				await db.insertBibRecord(item);
 			}
 			console.log("Insert success!");
