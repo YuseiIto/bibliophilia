@@ -1,4 +1,4 @@
-const ISBN_IDENTIFIER_TYPE = "http://ndl.go.jp/dcndl/terms/ISBN";
+export const ISBN_IDENTIFIER_TYPE = "http://ndl.go.jp/dcndl/terms/ISBN";
 
 export function coverUrlFromIdentifiers(
 	identifiers: { identifier: string; identifier_type: string }[],

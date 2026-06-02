@@ -1,10 +1,10 @@
 import { Link } from "react-router";
 import { Skeleton } from "~/components/ui/skeleton";
-import { coverUrlFromIdentifiers } from "~/lib/cover";
+import { coverUrlFromIdentifiers, ISBN_IDENTIFIER_TYPE } from "~/lib/cover";
+import type { AgentRole } from "~/model/agent";
 import type { BibRecordSummary } from "~/model/bib-record";
 
-const PUBLISHER_ROLE = "出版者";
-const ISBN_TYPE = "http://ndl.go.jp/dcndl/terms/ISBN";
+const PUBLISHER_ROLE: AgentRole = "出版者";
 
 export function SearchResultList({ records }: { records: BibRecordSummary[] }) {
 	return (
@@ -15,7 +15,7 @@ export function SearchResultList({ records }: { records: BibRecordSummary[] }) {
 					.filter((a) => a.role !== PUBLISHER_ROLE)
 					.map((a) => a.preferred_name);
 				const publisher = rec.agents.find((a) => a.role === PUBLISHER_ROLE)?.preferred_name;
-				const isbn = rec.identifiers.find((i) => i.identifier_type === ISBN_TYPE)?.identifier;
+				const isbn = rec.identifiers.find((i) => i.identifier_type === ISBN_IDENTIFIER_TYPE)?.identifier;
 				const year = rec.dates[0];
 				return (
 					<li key={rec.id} className="py-3">
