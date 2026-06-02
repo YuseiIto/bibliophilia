@@ -31,7 +31,6 @@ import type { BibLanguageDraft } from "~/model/language";
 import type { TextWithId } from "~/model/text-with-id";
 import type {
 	BibRecordDraft,
-	BibRecord,
 	BibRecordSummary,
 	BibRecordDetail,
 } from "~/model/bib-record";
@@ -322,14 +321,6 @@ export class Repository {
 		}
 
 		await this.insertItem(workId);
-	}
-
-	async getAllBibRecords(): Promise<BibRecord[]> {
-		return (await this._con.query.bibWorksTable.findMany({
-			with: {
-				identifiers: true,
-			},
-		})) as BibRecord[];
 	}
 
 	private async buildSummaries(
