@@ -73,4 +73,11 @@ describe("simpleSearchBibRecords", () => {
 		const hits = await repo.simpleSearchBibRecords("テスト");
 		expect(hits).toHaveLength(1);
 	});
+
+	test("シリーズタイトルでヒット", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(sampleBibRecordDraft({ title: "第1巻", isbn: "1", seriesTitle: "大河シリーズ" }));
+		const hits = await repo.simpleSearchBibRecords("大河");
+		expect(hits.map((h) => h.preferred_title)).toEqual(["第1巻"]);
+	});
 });
