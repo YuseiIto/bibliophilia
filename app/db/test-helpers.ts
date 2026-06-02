@@ -13,6 +13,9 @@ export function createTestRepository(): Repository {
 // (The old defineWorkersConfig `isolatedStorage` per-test savepoints are not
 // exposed by this plugin API.) So tests must reset state explicitly.
 export async function clearTestDatabase(): Promise<void> {
+	// MAINTENANCE: keep this in sync with schema.ts. A migration that adds a new
+	// table must add it here (child-before-parent FK order), or tests will bleed
+	// state across cases silently.
 	const tables = [
 		"bib_works_subjects",
 		"bib_work_agencies",
