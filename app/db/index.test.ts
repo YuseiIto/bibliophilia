@@ -81,3 +81,32 @@ describe("simpleSearchBibRecords", () => {
 		expect(hits.map((h) => h.preferred_title)).toEqual(["第1巻"]);
 	});
 });
+
+describe("getBibRecordDetail", () => {
+	beforeEach(clearTestDatabase);
+
+	test("存在しない id では null", async () => {
+		const repo = createTestRepository();
+		expect(await repo.getBibRecordDetail("nope")).toBeNull();
+	});
+
+	test("登録レコードの全関連を取得", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(sampleBibRecordDraft({ seriesTitle: "オライリーの本" }));
+		const id = (await repo.getAllBibRecordSummaries())[0].id;
+
+		const d = await repo.getBibRecordDetail(id);
+		expect(d).not.toBeNull();
+		if (!d) return;
+		expect(d.preferred_title).toBe("プログラミングTypeScript");
+		expect(d.catalog_source_type).toBe("auto:ndl");
+		expect(d.identifiers[0].identifier).toBe("978-4-87311-911-3");
+		expect(d.agents[0]).toMatchObject({ preferred_name: "Boris Cherny", role: "著者", raw: "Boris Cherny 著" });
+		expect(d.subjects[0].preferred_label).toBe("TypeScript");
+		expect(d.seriesTitles[0].title).toBe("オライリーの本");
+		expect(d.languages).toEqual(["ja"]);
+		expect(d.prices).toEqual(["￥3,520"]);
+		expect(d.extents).toEqual(["408p ; 24cm"]);
+		expect(d.dates).toEqual(["2020"]);
+	});
+});

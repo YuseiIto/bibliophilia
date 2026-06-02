@@ -33,6 +33,7 @@ import type {
 	BibRecordDraft,
 	BibRecord,
 	BibRecordSummary,
+	BibRecordDetail,
 } from "~/model/bib-record";
 
 import { v4 as uuidv4 } from "uuid";
@@ -379,6 +380,82 @@ export class Repository {
 			.from(bibWorksTable)
 			.orderBy(bibWorksTable.preferred_title);
 		return this.buildSummaries(works);
+	}
+
+	async getBibRecordDetail(id: string): Promise<BibRecordDetail | null> {
+		const workRows = await this._con.select().from(bibWorksTable).where(eq(bibWorksTable.id, id));
+		const work = workRows[0];
+		if (!work) return null;
+
+		const identifiers = (await this._con
+			.select()
+			.from(bibIdentifiersTable)
+			.where(eq(bibIdentifiersTable.work_id, id))) as Identifier[];
+
+		const agents = await this._con
+			.select({
+				preferred_name: bibAgentTable.preferred_name,
+				preferred_name_transcription: bibAgentTable.preferred_name_transcription,
+				role: bibWorkAgentsTable.role,
+				raw: bibWorkAgentsTable.raw,
+			})
+			.from(bibWorkAgentsTable)
+			.innerJoin(bibAgentTable, eq(bibWorkAgentsTable.agent_id, bibAgentTable.id))
+			.where(eq(bibWorkAgentsTable.work_id, id));
+
+		const titles = await this._con
+			.select({ title: bibWorkTitlesTable.title, transcription: bibWorkTitlesTable.transcription })
+			.from(bibWorkTitlesTable)
+			.where(eq(bibWorkTitlesTable.work_id, id));
+
+		const subjects = await this._con
+			.select({
+				subject_type: bibSubjectsTable.subject_type,
+				preferred_label: bibSubjectsTable.preferred_label,
+				preferred_label_transcription: bibSubjectsTable.preferred_label_transcription,
+			})
+			.from(bibWorksSubjectsTable)
+			.innerJoin(bibSubjectsTable, eq(bibWorksSubjectsTable.subject_id, bibSubjectsTable.id))
+			.where(eq(bibWorksSubjectsTable.work_id, id));
+
+		const seriesTitles = await this._con
+			.select({ title: bibSeriesTitleTable.title, transcription: bibSeriesTitleTable.transcription })
+			.from(bibSeriesTitleTable)
+			.where(eq(bibSeriesTitleTable.work_id, id));
+
+		const languages = (
+			await this._con.select({ v: bibLanguagesTable.language }).from(bibLanguagesTable).where(eq(bibLanguagesTable.work_id, id))
+		).map((r) => r.v);
+		const prices = (
+			await this._con.select({ v: bibPriceTable.price }).from(bibPriceTable).where(eq(bibPriceTable.work_id, id))
+		).map((r) => r.v);
+		const extents = (
+			await this._con.select({ v: bibExtentTable.extent }).from(bibExtentTable).where(eq(bibExtentTable.work_id, id))
+		).map((r) => r.v);
+		const abstracts = (
+			await this._con.select({ v: bibAbstractTable.abstract }).from(bibAbstractTable).where(eq(bibAbstractTable.work_id, id))
+		).map((r) => r.v);
+		const descriptions = (
+			await this._con.select({ v: bibDescriptionTable.description }).from(bibDescriptionTable).where(eq(bibDescriptionTable.work_id, id))
+		).map((r) => r.v);
+		const dates = (
+			await this._con.select({ v: bibDatesTable.date }).from(bibDatesTable).where(eq(bibDatesTable.work_id, id))
+		).map((r) => r.v);
+
+		return {
+			...work,
+			identifiers,
+			agents,
+			titles,
+			subjects,
+			seriesTitles,
+			languages,
+			prices,
+			extents,
+			abstracts,
+			descriptions,
+			dates,
+		};
 	}
 
 	async simpleSearchBibRecords(q: string): Promise<BibRecordSummary[]> {

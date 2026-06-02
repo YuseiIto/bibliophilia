@@ -45,3 +45,45 @@ export interface BibRecordSummary {
 	agents: { preferred_name: string; role: string }[];
 	dates: string[];
 }
+
+export interface BibDetailAgent {
+	preferred_name: string;
+	preferred_name_transcription: string | null;
+	role: string;
+	raw: string;
+}
+
+export interface BibDetailSubject {
+	subject_type: string;
+	preferred_label: string;
+	preferred_label_transcription: string | null;
+}
+
+export interface BibDetailTitle {
+	title: string;
+	transcription: string | null;
+}
+
+export interface BibRecordDetail {
+	id: string;
+	preferred_title: string;
+	preferred_title_transcription: string | null;
+	catalog_source: string;
+	catalog_source_type: string;
+	cataloging_rule: string | null;
+	thumbnail_url: string | null;
+	preferred_volume: string | null;
+	preferred_volume_title: string | null;
+	preferred_volume_title_transcription: string | null;
+	identifiers: Identifier[];
+	agents: BibDetailAgent[];
+	titles: BibDetailTitle[];
+	subjects: BibDetailSubject[];
+	seriesTitles: BibDetailTitle[];
+	languages: string[];
+	prices: string[];
+	extents: string[];
+	abstracts: string[];
+	descriptions: string[];
+	dates: string[];
+}
