@@ -1,6 +1,6 @@
 import { useEffect, useRef, type ChangeEvent } from "react";
 import type { MetaFunction, LoaderFunctionArgs } from "react-router";
-import { useLoaderData, Form, useSubmit, useNavigation } from "react-router";
+import { useLoaderData, Form, useSubmit, useNavigation, Link } from "react-router";
 import logo from "~/assets/logo.png";
 import { Card } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
@@ -28,15 +28,17 @@ export default function Index() {
 	const submit = useSubmit();
 	const navigation = useNavigation();
 	const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const searching =
 		navigation.location &&
 		new URLSearchParams(navigation.location.search).has("q");
 
 	useEffect(() => {
-		const el = document.getElementById("q");
-		if (el instanceof HTMLInputElement) el.value = q;
+		if (inputRef.current) inputRef.current.value = q;
 	}, [q]);
+
+	useEffect(() => () => clearTimeout(timer.current), []);
 
 	function onChange(event: ChangeEvent<HTMLInputElement>) {
 		const form = event.currentTarget.form;
@@ -58,7 +60,7 @@ export default function Index() {
 					<Card className="p-3">
 						<Form method="get" role="search">
 							<Input
-								id="q"
+								ref={inputRef}
 								type="search"
 								name="q"
 								defaultValue={q}
@@ -72,7 +74,7 @@ export default function Index() {
 				{q !== "" && (
 					<div className="pb-3 text-sm text-muted-foreground">
 						「{q}」の検索結果 ・ {data.length} 件 ・{" "}
-						<a href="/" className="text-blue-600 hover:underline">クリア</a>
+						<Link to="/" className="text-blue-600 hover:underline">クリア</Link>
 					</div>
 				)}
 				<BibRecordResults records={data} />
