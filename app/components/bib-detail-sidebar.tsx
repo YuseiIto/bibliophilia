@@ -2,10 +2,8 @@ import type { ReactNode } from "react";
 import { Skeleton } from "~/components/ui/skeleton";
 import { coverUrlFromIdentifiers } from "~/lib/cover";
 import { identifierTypes, type IdentifierType } from "~/model/identifier";
-import type { AgentRole } from "~/model/agent";
+import { PUBLISHER_ROLE } from "~/model/agent";
 import type { BibRecordDetail } from "~/model/bib-record";
-
-const PUBLISHER_ROLE: AgentRole = "出版者";
 
 function SidebarSection({ title, children }: { title: string; children: ReactNode }) {
 	return (

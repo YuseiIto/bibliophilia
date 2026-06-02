@@ -21,6 +21,8 @@ export const agentRoles = [
 
 export type AgentRole = (typeof agentRoles)[number];
 
+export const PUBLISHER_ROLE: AgentRole = "出版者";
+
 export interface Agent {
 	id: string;
 	agentKind: AgentKind;

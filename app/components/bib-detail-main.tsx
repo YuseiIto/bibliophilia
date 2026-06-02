@@ -1,9 +1,7 @@
 import type { ReactNode } from "react";
 import { Badge } from "~/components/ui/badge";
-import type { AgentRole } from "~/model/agent";
+import { PUBLISHER_ROLE } from "~/model/agent";
 import type { BibRecordDetail } from "~/model/bib-record";
-
-const PUBLISHER_ROLE: AgentRole = "出版者";
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
 	return (

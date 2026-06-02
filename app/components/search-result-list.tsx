@@ -1,10 +1,8 @@
 import { Link } from "react-router";
 import { Skeleton } from "~/components/ui/skeleton";
 import { coverUrlFromIdentifiers, ISBN_IDENTIFIER_TYPE } from "~/lib/cover";
-import type { AgentRole } from "~/model/agent";
+import { PUBLISHER_ROLE } from "~/model/agent";
 import type { BibRecordSummary } from "~/model/bib-record";
-
-const PUBLISHER_ROLE: AgentRole = "出版者";
 
 export function SearchResultList({ records }: { records: BibRecordSummary[] }) {
 	return (
