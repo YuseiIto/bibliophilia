@@ -104,6 +104,9 @@ describe("getBibRecordDetail", () => {
 		expect(d.agents[0]).toMatchObject({ preferred_name: "Boris Cherny", role: "著者", raw: "Boris Cherny 著" });
 		expect(d.subjects[0].preferred_label).toBe("TypeScript");
 		expect(d.seriesTitles[0].title).toBe("オライリーの本");
+		expect(d.titles).toEqual([]);
+		expect(d.abstracts).toEqual([]);
+		expect(d.descriptions).toEqual([]);
 		expect(d.languages).toEqual(["ja"]);
 		expect(d.prices).toEqual(["￥3,520"]);
 		expect(d.extents).toEqual(["408p ; 24cm"]);
