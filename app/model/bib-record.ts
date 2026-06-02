@@ -35,3 +35,13 @@ export interface BibRecord {
 	preferred_volume_title_transcription: string | null;
 	identifiers: Identifier[];
 }
+
+export interface BibRecordSummary {
+	id: string;
+	preferred_title: string;
+	preferred_title_transcription: string | null;
+	thumbnail_url: string | null;
+	identifiers: Identifier[];
+	agents: { preferred_name: string; role: string }[];
+	dates: string[];
+}

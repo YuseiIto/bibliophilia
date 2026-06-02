@@ -1,4 +1,5 @@
 import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
+import { eq } from "drizzle-orm";
 import * as schema from "./schema";
 import type { Env } from "~/cloudflare";
 import {
@@ -21,14 +22,18 @@ import {
 	bibWorkAgentsTable,
 } from "./schema";
 import type { WorkDraft } from "~/model/work";
-import type { IdentifierDraft } from "~/model/identifier";
+import type { IdentifierDraft, Identifier } from "~/model/identifier";
 import type { AgentDraft } from "~/model/agent";
 import type { TitleDraft } from "~/model/title";
 import type { SubjectDraft } from "~/model/subject";
 import type { SeriesTitleDraft } from "~/model/series-title";
 import type { BibLanguageDraft } from "~/model/language";
 import type { TextWithId } from "~/model/text-with-id";
-import type { BibRecordDraft, BibRecord } from "~/model/bib-record";
+import type {
+	BibRecordDraft,
+	BibRecord,
+	BibRecordSummary,
+} from "~/model/bib-record";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -324,5 +329,55 @@ export class Repository {
 				identifiers: true,
 			},
 		})) as BibRecord[];
+	}
+
+	private async buildSummaries(
+		workRows: {
+			id: string;
+			preferred_title: string;
+			preferred_title_transcription: string | null;
+			thumbnail_url: string | null;
+		}[],
+	): Promise<BibRecordSummary[]> {
+		return Promise.all(
+			workRows.map(async (w) => {
+				const identifiers = await this._con
+					.select()
+					.from(bibIdentifiersTable)
+					.where(eq(bibIdentifiersTable.work_id, w.id));
+				const agents = await this._con
+					.select({
+						preferred_name: bibAgentTable.preferred_name,
+						role: bibWorkAgentsTable.role,
+					})
+					.from(bibWorkAgentsTable)
+					.innerJoin(
+						bibAgentTable,
+						eq(bibWorkAgentsTable.agent_id, bibAgentTable.id),
+					)
+					.where(eq(bibWorkAgentsTable.work_id, w.id));
+				const dateRows = await this._con
+					.select({ date: bibDatesTable.date })
+					.from(bibDatesTable)
+					.where(eq(bibDatesTable.work_id, w.id));
+				return {
+					id: w.id,
+					preferred_title: w.preferred_title,
+					preferred_title_transcription: w.preferred_title_transcription,
+					thumbnail_url: w.thumbnail_url,
+					identifiers: identifiers as Identifier[],
+					agents,
+					dates: dateRows.map((d) => d.date),
+				};
+			}),
+		);
+	}
+
+	async getAllBibRecordSummaries(): Promise<BibRecordSummary[]> {
+		const works = await this._con
+			.select()
+			.from(bibWorksTable)
+			.orderBy(bibWorksTable.preferred_title);
+		return this.buildSummaries(works);
 	}
 }
