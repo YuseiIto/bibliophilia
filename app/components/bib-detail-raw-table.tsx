@@ -7,8 +7,10 @@ import type { BibRecordDetail } from "~/model/bib-record";
 function Row({ label, children }: { label: string; children: ReactNode }) {
 	return (
 		<TableRow>
-			<TableCell className="w-48 align-top text-muted-foreground font-normal">{label}</TableCell>
-			<TableCell className="align-top">{children}</TableCell>
+			<TableCell className="w-32 py-1.5 align-top whitespace-nowrap text-muted-foreground font-normal">
+				{label}
+			</TableCell>
+			<TableCell className="py-1.5 align-top">{children}</TableCell>
 		</TableRow>
 	);
 }
@@ -16,38 +18,15 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
 export function BibDetailRawTable({ record }: { record: BibRecordDetail }) {
 	return (
 		<section className="mt-8">
-			<h2 className="text-sm font-bold">全項目（生データ）</h2>
-			<p className="text-xs text-muted-foreground">DB に保存している全フィールド。目録の検証用。</p>
-			<Table className="mt-2 text-xs">
+			<h2 className="text-sm font-bold mb-2">全項目</h2>
+			<Table className="text-xs">
 				<TableBody>
-					<Row label="id"><code>{record.id}</code></Row>
-					<Row label="preferred_title">{record.preferred_title}</Row>
-					<Row label="preferred_title_transcription">{record.preferred_title_transcription ?? "—"}</Row>
-					<Row label="preferred_volume">{record.preferred_volume ?? "—"}</Row>
-					<Row label="preferred_volume_title">{record.preferred_volume_title ?? "—"}</Row>
-					<Row label="catalog_source">{record.catalog_source}</Row>
-					<Row label="catalog_source_type">{record.catalog_source_type}</Row>
-					<Row label="cataloging_rule">{record.cataloging_rule ?? "—"}</Row>
-					<Row label="identifiers">
-						{record.identifiers.length === 0
-							? "—"
-							: record.identifiers.map((i, idx) => (
-									<div key={idx}>
-										{identifierTypes[i.identifier_type as IdentifierType] ?? i.identifier_type}: {i.identifier}
-									</div>
-								))}
-					</Row>
-					<Row label="agents">
-						{record.agents.length === 0
-							? "—"
-							: record.agents.map((a, idx) => (
-									<div key={idx}>
-										{a.preferred_name}
-										{a.preferred_name_transcription ? `（${a.preferred_name_transcription}）` : ""} — role: {a.role} / raw: <code>{a.raw}</code>
-									</div>
-								))}
-					</Row>
-					<Row label="titles (別タイトル)">
+					<Row label="優先タイトル">{record.preferred_title}</Row>
+					<Row label="タイトル ヨミ">{record.preferred_title_transcription ?? "—"}</Row>
+					<Row label="巻次">{record.preferred_volume ?? "—"}</Row>
+					<Row label="巻次タイトル">{record.preferred_volume_title ?? "—"}</Row>
+					<Row label="巻次タイトル ヨミ">{record.preferred_volume_title_transcription ?? "—"}</Row>
+					<Row label="別タイトル">
 						{record.titles.length === 0
 							? "—"
 							: record.titles.map((t, idx) => (
@@ -57,19 +36,42 @@ export function BibDetailRawTable({ record }: { record: BibRecordDetail }) {
 									</div>
 								))}
 					</Row>
-					<Row label="subjects">
+					<Row label="関与者">
+						{record.agents.length === 0
+							? "—"
+							: record.agents.map((a, idx) => (
+									<div key={idx}>
+										{a.preferred_name}
+										{a.preferred_name_transcription ? `（${a.preferred_name_transcription}）` : ""}
+										{" ／ "}役割: {a.role}
+										{" ／ "}根拠: 「{a.raw}」
+									</div>
+								))}
+					</Row>
+					<Row label="識別子">
+						{record.identifiers.length === 0
+							? "—"
+							: record.identifiers.map((i, idx) => (
+									<div key={idx}>
+										{identifierTypes[i.identifier_type as IdentifierType] ?? i.identifier_type}: {i.identifier}
+									</div>
+								))}
+					</Row>
+					<Row label="件名">
 						{record.subjects.length === 0
 							? "—"
 							: record.subjects.map((s, idx) => (
 									<div key={idx}>
-										{s.preferred_label}{" "}
+										{s.preferred_label}
+										{s.preferred_label_transcription ? `（${s.preferred_label_transcription}）` : ""}
+										{" "}
 										<span className="text-muted-foreground">
-											({subjectTypes[s.subject_type as SubjectType] ?? s.subject_type})
+											［{subjectTypes[s.subject_type as SubjectType] ?? s.subject_type}］
 										</span>
 									</div>
 								))}
 					</Row>
-					<Row label="series_titles">
+					<Row label="シリーズ">
 						{record.seriesTitles.length === 0
 							? "—"
 							: record.seriesTitles.map((s, idx) => (
@@ -79,12 +81,18 @@ export function BibDetailRawTable({ record }: { record: BibRecordDetail }) {
 									</div>
 								))}
 					</Row>
-					<Row label="languages">{record.languages.length ? record.languages.join(", ") : "—"}</Row>
-					<Row label="prices">{record.prices.length ? record.prices.join(", ") : "—"}</Row>
-					<Row label="extents">{record.extents.length ? record.extents.join(", ") : "—"}</Row>
-					<Row label="abstracts">{record.abstracts.length ? record.abstracts.join(" / ") : "—"}</Row>
-					<Row label="descriptions">{record.descriptions.length ? record.descriptions.join(" / ") : "—"}</Row>
-					<Row label="dates">{record.dates.length ? record.dates.join(", ") : "—"}</Row>
+					<Row label="言語">{record.languages.length ? record.languages.join("、") : "—"}</Row>
+					<Row label="出版日付">{record.dates.length ? record.dates.join("、") : "—"}</Row>
+					<Row label="形態">{record.extents.length ? record.extents.join("、") : "—"}</Row>
+					<Row label="価格">{record.prices.length ? record.prices.join("、") : "—"}</Row>
+					<Row label="抄録">{record.abstracts.length ? record.abstracts.join(" / ") : "—"}</Row>
+					<Row label="注記">{record.descriptions.length ? record.descriptions.join(" / ") : "—"}</Row>
+					<Row label="目録出典">{record.catalog_source}</Row>
+					<Row label="目録出典種別">{record.catalog_source_type}</Row>
+					<Row label="目録規則">{record.cataloging_rule ?? "—"}</Row>
+					<Row label="レコードID">
+						<code className="text-[11px]">{record.id}</code>
+					</Row>
 				</TableBody>
 			</Table>
 		</section>
