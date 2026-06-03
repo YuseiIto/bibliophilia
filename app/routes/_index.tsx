@@ -51,8 +51,8 @@ export default function Index() {
 
 	return (
 		<SidebarOnlyLayout>
-			<div className="container mx-auto">
-				<div className="flex justify-center">
+			<div className="mx-auto max-w-4xl px-4">
+				<div className="flex justify-center mb-8">
 					<img src={logo} alt="Bibliophilia" width="400" />
 				</div>
 				<div className="pb-6">

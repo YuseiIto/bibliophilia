@@ -5,7 +5,7 @@ import type { BibRecordSummary } from "~/model/bib-record";
 
 export function SearchResultGrid({ records }: { records: BibRecordSummary[] }) {
 	return (
-		<div className="grid grid-cols-8 gap-4">
+		<div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-4">
 			{records.map((rec) => {
 				const cover = coverUrlFromIdentifiers(rec.identifiers);
 				return (
@@ -15,9 +15,13 @@ export function SearchResultGrid({ records }: { records: BibRecordSummary[] }) {
 						className="flex flex-col items-center gap-1 hover:opacity-80"
 					>
 						{cover ? (
-							<img src={cover} alt="" className="h-[200px] w-[130px] object-contain" />
+							<img
+								src={cover}
+								alt=""
+								className="max-h-[200px] w-full max-w-[130px] object-contain"
+							/>
 						) : (
-							<Skeleton className="h-[200px] w-[130px]" />
+							<Skeleton className="aspect-[13/20] w-full max-w-[130px]" />
 						)}
 						<span className="font-bold text-xs text-center">{rec.preferred_title}</span>
 					</Link>
