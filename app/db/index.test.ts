@@ -113,3 +113,54 @@ describe("getBibRecordDetail", () => {
 		expect(d.dates).toEqual(["2020"]);
 	});
 });
+
+describe("simpleSearchBibRecords — スペース区切り AND 検索", () => {
+	beforeEach(clearTestDatabase);
+
+	test("スペース区切りは AND（全語一致）", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(
+			sampleBibRecordDraft({ title: "プログラミングTypeScript", isbn: "1", authorName: "Boris Cherny" }),
+		);
+		await repo.insertBibRecord(
+			sampleBibRecordDraft({ title: "実践TypeScript", isbn: "2", authorName: "夏目漱石", subjectLabel: "小説" }),
+		);
+		const hits = await repo.simpleSearchBibRecords("TypeScript Cherny");
+		expect(hits.map((h) => h.preferred_title)).toEqual(["プログラミングTypeScript"]);
+	});
+
+	test("語が別フィールドにまたがっても AND が成立", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(
+			sampleBibRecordDraft({ title: "プログラミング入門", isbn: "1", authorName: "山田太郎", subjectLabel: "TypeScript" }),
+		);
+		const hits = await repo.simpleSearchBibRecords("プログラミング TypeScript");
+		expect(hits).toHaveLength(1);
+	});
+
+	test("全角スペースでも区切る", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(
+			sampleBibRecordDraft({ title: "プログラミングTypeScript", isbn: "1", authorName: "Boris Cherny" }),
+		);
+		await repo.insertBibRecord(
+			sampleBibRecordDraft({ title: "実践TypeScript", isbn: "2", authorName: "夏目漱石", subjectLabel: "小説" }),
+		);
+		const hits = await repo.simpleSearchBibRecords("TypeScript　Cherny");
+		expect(hits.map((h) => h.preferred_title)).toEqual(["プログラミングTypeScript"]);
+	});
+
+	test("前後・連続スペースは無視", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(sampleBibRecordDraft({ title: "プログラミングTypeScript", isbn: "1" }));
+		expect(await repo.simpleSearchBibRecords("  TypeScript   ")).toHaveLength(1);
+	});
+
+	test("片方の語が一致しなければ 0 件", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(
+			sampleBibRecordDraft({ title: "プログラミングTypeScript", isbn: "1", authorName: "Boris Cherny" }),
+		);
+		expect(await repo.simpleSearchBibRecords("TypeScript 存在しない語")).toEqual([]);
+	});
+});

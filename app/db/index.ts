@@ -1,5 +1,5 @@
 import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
-import { eq, or, like } from "drizzle-orm";
+import { eq, or, and, like } from "drizzle-orm";
 import * as schema from "./schema";
 import type { Env } from "~/cloudflare";
 import {
@@ -450,7 +450,21 @@ export class Repository {
 	}
 
 	async simpleSearchBibRecords(q: string): Promise<BibRecordSummary[]> {
-		const pattern = `%${q}%`;
+		// 半角・全角スペース区切りの各語を AND 条件にする。
+		// 1 語は「いずれかのフィールドに部分一致」(OR)、全語が一致した Work を返す。
+		const terms = q.split(/[\s　]+/).filter((t) => t.length > 0);
+		if (terms.length === 0) return [];
+
+		const matchesAnyField = (term: string) => {
+			const pattern = `%${term}%`;
+			return or(
+				like(bibWorksTable.preferred_title, pattern),
+				like(bibAgentTable.preferred_name, pattern),
+				like(bibSubjectsTable.preferred_label, pattern),
+				like(bibSeriesTitleTable.title, pattern),
+			);
+		};
+
 		const works = await this._con
 			.selectDistinct({
 				id: bibWorksTable.id,
@@ -464,14 +478,7 @@ export class Repository {
 			.leftJoin(bibWorksSubjectsTable, eq(bibWorksSubjectsTable.work_id, bibWorksTable.id))
 			.leftJoin(bibSubjectsTable, eq(bibWorksSubjectsTable.subject_id, bibSubjectsTable.id))
 			.leftJoin(bibSeriesTitleTable, eq(bibSeriesTitleTable.work_id, bibWorksTable.id))
-			.where(
-				or(
-					like(bibWorksTable.preferred_title, pattern),
-					like(bibAgentTable.preferred_name, pattern),
-					like(bibSubjectsTable.preferred_label, pattern),
-					like(bibSeriesTitleTable.title, pattern),
-				),
-			)
+			.where(and(...terms.map(matchesAnyField)))
 			.orderBy(bibWorksTable.preferred_title);
 		return this.buildSummaries(works);
 	}
