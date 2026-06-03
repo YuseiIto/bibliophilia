@@ -52,12 +52,12 @@ export function BibDetailMain({ record }: { record: BibRecordDetail }) {
 				</Section>
 			)}
 			<Section title="目録情報">
-				<div className="flex flex-wrap gap-1">
-					<Badge variant="outline">出典 {record.catalog_source}</Badge>
-					{record.cataloging_rule && (
-						<Badge variant="outline">規則 {record.cataloging_rule.toUpperCase()}</Badge>
-					)}
-				</div>
+				<p className="text-muted-foreground">
+					目録出典: {record.catalog_source}
+					{record.cataloging_rule
+						? `　／　目録規則: ${record.cataloging_rule.toUpperCase()}`
+						: ""}
+				</p>
 			</Section>
 		</div>
 	);
