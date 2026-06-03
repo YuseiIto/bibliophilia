@@ -8,10 +8,12 @@ export function BibRecordResults({ records }: { records: BibRecordSummary[] }) {
 	const [view, setView] = useState<"grid" | "list">("grid");
 	return (
 		<Tabs value={view} onValueChange={(v) => setView(v as "grid" | "list")}>
-			<TabsList className="mb-4">
-				<TabsTrigger value="grid">⊞ グリッド</TabsTrigger>
-				<TabsTrigger value="list">☰ リスト</TabsTrigger>
-			</TabsList>
+			<div className="flex justify-end">
+				<TabsList className="mb-4">
+					<TabsTrigger value="grid">⊞ グリッド</TabsTrigger>
+					<TabsTrigger value="list">☰ リスト</TabsTrigger>
+				</TabsList>
+			</div>
 			<TabsContent value="grid">
 				<SearchResultGrid records={records} />
 			</TabsContent>
