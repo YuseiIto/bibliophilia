@@ -11,11 +11,11 @@ export function BibRecordResults({ records }: { records: BibRecordSummary[] }) {
 		<Tabs value={view} onValueChange={(v) => setView(v as "grid" | "list")}>
 			<div className="flex justify-end">
 				<TabsList className="mb-4">
-					<TabsTrigger value="grid">
-						<Grid className="mr-1 h-4 w-4" /> グリッド
+					<TabsTrigger value="grid" aria-label="グリッド表示">
+						<Grid className="h-4 w-4" />
 					</TabsTrigger>
-					<TabsTrigger value="list">
-						<List className="mr-1 h-4 w-4" /> リスト
+					<TabsTrigger value="list" aria-label="リスト表示">
+						<List className="h-4 w-4" />
 					</TabsTrigger>
 				</TabsList>
 			</div>
