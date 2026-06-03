@@ -1,64 +1,74 @@
-import type { ReactNode } from "react";
 import { Badge } from "~/components/ui/badge";
+import { ISBN_IDENTIFIER_TYPE } from "~/lib/cover";
 import { PUBLISHER_ROLE } from "~/model/agent";
 import type { BibRecordDetail } from "~/model/bib-record";
 
-function Section({ title, children }: { title: string; children: ReactNode }) {
-	return (
-		<section className="mt-4">
-			<h2 className="text-xs font-bold uppercase tracking-wide text-muted-foreground border-b pb-0.5 mb-1">
-				{title}
-			</h2>
-			<div className="text-sm">{children}</div>
-		</section>
-	);
-}
-
 export function BibDetailMain({ record }: { record: BibRecordDetail }) {
 	const contributors = record.agents.filter((a) => a.role !== PUBLISHER_ROLE);
+	const publisher = record.agents.find((a) => a.role === PUBLISHER_ROLE)?.preferred_name;
 	const description = [...record.abstracts, ...record.descriptions];
+	const isbn = record.identifiers.find(
+		(i) => i.identifier_type === ISBN_IDENTIFIER_TYPE,
+	)?.identifier;
+
+	const publicationFacts = [
+		publisher,
+		record.dates[0],
+		record.extents[0],
+		record.prices[0],
+	].filter(Boolean);
+
+	const minorFacts = [
+		record.languages.length ? record.languages.join("、") : null,
+		isbn ? `ISBN ${isbn}` : null,
+	].filter(Boolean);
 
 	return (
-		<div>
-			<h1 className="text-xl font-bold">{record.preferred_title}</h1>
+		<div className="flex-1 min-w-0">
+			<h1 className="text-2xl font-bold leading-tight">{record.preferred_title}</h1>
 			{record.preferred_title_transcription && (
-				<p className="text-xs text-muted-foreground">{record.preferred_title_transcription}</p>
+				<p className="text-sm text-muted-foreground">
+					{record.preferred_title_transcription}
+				</p>
 			)}
+
 			{contributors.length > 0 && (
-				<Section title="関与者">
-					{contributors.map((a, idx) => (
-						<div key={idx}>
-							{a.preferred_name}（{a.role}）
-						</div>
-					))}
-				</Section>
+				<p className="mt-2 text-sm">
+					{contributors.map((a) => `${a.preferred_name}（${a.role}）`).join(" ・ ")}
+				</p>
 			)}
+
+			{publicationFacts.length > 0 && (
+				<p className="mt-2 text-sm text-muted-foreground">{publicationFacts.join(" ・ ")}</p>
+			)}
+			{minorFacts.length > 0 && (
+				<p className="mt-1 text-xs text-muted-foreground">{minorFacts.join(" ・ ")}</p>
+			)}
+
 			{record.subjects.length > 0 && (
-				<Section title="件名">
-					<div className="flex flex-wrap gap-1">
-						{record.subjects.map((s, idx) => (
-							<Badge key={idx} variant="secondary">
-								{s.preferred_label}
-							</Badge>
-						))}
-					</div>
-				</Section>
+				<div className="mt-3 flex flex-wrap gap-1">
+					{record.subjects.map((s, idx) => (
+						<Badge key={idx} variant="secondary">
+							{s.preferred_label}
+						</Badge>
+					))}
+				</div>
 			)}
+
 			{description.length > 0 && (
-				<Section title="概要">
+				<div className="mt-3 space-y-1 text-sm">
 					{description.map((d, idx) => (
 						<p key={idx}>{d}</p>
 					))}
-				</Section>
+				</div>
 			)}
-			<Section title="目録情報">
-				<p className="text-muted-foreground">
-					目録出典: {record.catalog_source}
-					{record.cataloging_rule
-						? `　／　目録規則: ${record.cataloging_rule.toUpperCase()}`
-						: ""}
-				</p>
-			</Section>
+
+			<p className="mt-4 text-xs text-muted-foreground">
+				目録出典: {record.catalog_source}
+				{record.cataloging_rule
+					? `　／　目録規則: ${record.cataloging_rule.toUpperCase()}`
+					: ""}
+			</p>
 		</div>
 	);
 }

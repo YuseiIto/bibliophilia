@@ -2,7 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { useLoaderData } from "react-router";
 import { SidebarOnlyLayout } from "~/layouts/sidebar-only";
 import { ErrorPage } from "~/components/error-page";
-import { BibDetailSidebar } from "~/components/bib-detail-sidebar";
+import { BookCover } from "~/components/book-cover";
 import { BibDetailMain } from "~/components/bib-detail-main";
 import { BibDetailRawTable } from "~/components/bib-detail-raw-table";
 import { Repository } from "~/db";
@@ -26,12 +26,13 @@ export default function WorkDetail() {
 		<SidebarOnlyLayout>
 			<div className="mx-auto max-w-4xl px-4 py-6">
 				<div className="flex gap-6 items-start">
-					<BibDetailSidebar record={record} />
-					<div className="flex-1 min-w-0">
-						<BibDetailMain record={record} />
-						<BibDetailRawTable record={record} />
-					</div>
+					<BookCover
+						identifiers={record.identifiers}
+						className="h-[210px] w-[150px] flex-none"
+					/>
+					<BibDetailMain record={record} />
 				</div>
+				<BibDetailRawTable record={record} />
 			</div>
 		</SidebarOnlyLayout>
 	);
