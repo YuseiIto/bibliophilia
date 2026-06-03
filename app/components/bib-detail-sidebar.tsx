@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { Skeleton } from "~/components/ui/skeleton";
-import { coverUrlFromIdentifiers } from "~/lib/cover";
+import { BookCover } from "./book-cover";
 import { identifierTypes, type IdentifierType } from "~/model/identifier";
 import { PUBLISHER_ROLE } from "~/model/agent";
 import type { BibRecordDetail } from "~/model/bib-record";
@@ -17,7 +16,6 @@ function SidebarSection({ title, children }: { title: string; children: ReactNod
 }
 
 export function BibDetailSidebar({ record }: { record: BibRecordDetail }) {
-	const cover = coverUrlFromIdentifiers(record.identifiers);
 	const publisher = record.agents.find((a) => a.role === PUBLISHER_ROLE)?.preferred_name;
 	const hasPublication =
 		Boolean(publisher) ||
@@ -27,11 +25,8 @@ export function BibDetailSidebar({ record }: { record: BibRecordDetail }) {
 
 	return (
 		<aside className="w-[120px] flex-none">
-			{cover ? (
-				<img src={cover} alt="" className="w-[120px] object-contain" />
-			) : (
-				<Skeleton className="h-[168px] w-[120px]" />
-			)}
+			<BookCover identifiers={record.identifiers} className="h-[168px] w-[120px]" />
+
 			{record.identifiers.length > 0 && (
 				<SidebarSection title="識別子">
 					{record.identifiers.map((i, idx) => (
