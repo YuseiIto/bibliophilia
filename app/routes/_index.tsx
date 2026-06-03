@@ -2,7 +2,6 @@ import { useEffect, useRef, type ChangeEvent } from "react";
 import type { MetaFunction, LoaderFunctionArgs } from "react-router";
 import { useLoaderData, Form, useSubmit, useNavigation, Link } from "react-router";
 import logo from "~/assets/logo.png";
-import { Card } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { SidebarOnlyLayout } from "~/layouts/sidebar-only";
 import { BibRecordResults } from "~/components/bib-record-results";
@@ -57,19 +56,17 @@ export default function Index() {
 					<img src={logo} alt="Bibliophilia" width="400" />
 				</div>
 				<div className="pb-6">
-					<Card className="p-3">
-						<Form method="get" role="search">
-							<Input
-								ref={inputRef}
-								type="search"
-								name="q"
-								defaultValue={q}
-								onChange={onChange}
-								placeholder="タイトル・著者・件名で検索"
-								className={searching ? "opacity-50" : ""}
-							/>
-						</Form>
-					</Card>
+					<Form method="get" role="search">
+						<Input
+							ref={inputRef}
+							type="search"
+							name="q"
+							defaultValue={q}
+							onChange={onChange}
+							placeholder="タイトル・著者・件名で検索"
+							className={searching ? "opacity-50" : ""}
+						/>
+					</Form>
 				</div>
 				{q !== "" && (
 					<div className="pb-3 text-sm text-muted-foreground">
