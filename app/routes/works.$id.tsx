@@ -24,7 +24,7 @@ export default function WorkDetail() {
 	const record = useLoaderData<typeof loader>();
 	return (
 		<SidebarOnlyLayout>
-			<div className="container mx-auto py-6">
+			<div className="mx-auto max-w-4xl px-4 py-6">
 				<div className="flex gap-6 items-start">
 					<BibDetailSidebar record={record} />
 					<div className="flex-1 min-w-0">
