@@ -17,8 +17,8 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
 
 export function BibDetailRawTable({ record }: { record: BibRecordDetail }) {
 	return (
-		<section className="mt-8">
-			<h2 className="text-sm font-bold mb-2">全項目</h2>
+		<section className="mt-12 border-t pt-8">
+			<h2 className="text-sm font-bold mb-2">書誌情報</h2>
 			<Table className="text-xs">
 				<TableBody>
 					<Row label="優先タイトル">{record.preferred_title}</Row>

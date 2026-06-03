@@ -33,20 +33,20 @@ export function BibDetailMain({ record }: { record: BibRecordDetail }) {
 			)}
 
 			{contributors.length > 0 && (
-				<p className="mt-2 text-sm">
+				<p className="mt-3 text-sm">
 					{contributors.map((a) => `${a.preferred_name}（${a.role}）`).join(" ・ ")}
 				</p>
 			)}
 
 			{publicationFacts.length > 0 && (
-				<p className="mt-2 text-sm text-muted-foreground">{publicationFacts.join(" ・ ")}</p>
+				<p className="mt-4 text-sm text-muted-foreground">{publicationFacts.join(" ・ ")}</p>
 			)}
 			{minorFacts.length > 0 && (
 				<p className="mt-1 text-xs text-muted-foreground">{minorFacts.join(" ・ ")}</p>
 			)}
 
 			{record.subjects.length > 0 && (
-				<div className="mt-3 flex flex-wrap gap-1">
+				<div className="mt-5 flex flex-wrap gap-1.5">
 					{record.subjects.map((s, idx) => (
 						<Badge key={idx} variant="secondary">
 							{s.preferred_label}
@@ -56,14 +56,14 @@ export function BibDetailMain({ record }: { record: BibRecordDetail }) {
 			)}
 
 			{description.length > 0 && (
-				<div className="mt-3 space-y-1 text-sm">
+				<div className="mt-5 space-y-2 text-sm leading-relaxed">
 					{description.map((d, idx) => (
 						<p key={idx}>{d}</p>
 					))}
 				</div>
 			)}
 
-			<p className="mt-4 text-xs text-muted-foreground">
+			<p className="mt-6 text-xs text-muted-foreground">
 				目録出典: {record.catalog_source}
 				{record.cataloging_rule
 					? `　／　目録規則: ${record.cataloging_rule.toUpperCase()}`
