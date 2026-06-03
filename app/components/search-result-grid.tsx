@@ -9,7 +9,7 @@ export function SearchResultGrid({ records }: { records: BibRecordSummary[] }) {
 				<Link
 					key={rec.id}
 					to={`/works/${rec.id}`}
-					className="flex flex-col items-center gap-1 hover:opacity-80"
+					className="flex flex-col items-center gap-2 hover:opacity-80"
 				>
 					<BookCover
 						identifiers={rec.identifiers}
