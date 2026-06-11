@@ -1,5 +1,8 @@
 export type AgentKind = "person" | "collective_agent";
 
+// as const で literal union を維持する。これが無いと AgentRole が string に広がり、
+// PUBLISHER_ROLE をはじめ role の型が無検査になる (詳細ページの出版者/寄与者の
+// 振り分けがこの定数に依存している)。
 export const agentRoles = [
 	"著者",
 	"作者",
@@ -17,7 +20,7 @@ export const agentRoles = [
 	"原著者",
 	"版著者",
 	"シリーズ著者",
-];
+] as const;
 
 export type AgentRole = (typeof agentRoles)[number];
 
