@@ -1,0 +1,6 @@
+# Cloudflare Workers のランタイム変数 (wrangler/miniflare がローカル開発で読み込む)。
+# このファイルをコピーして `.dev.vars` を作り、値を埋める。`.dev.vars` は gitignore 済み。
+# 本番は `wrangler secret put <NAME>` で設定する。
+
+# 書影取得に使う Google Books Volumes API のキー。
+GOOGLE_BOOKS_API_KEY=<YOUR_GOOGLE_BOOKS_API_KEY>

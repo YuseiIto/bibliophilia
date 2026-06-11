@@ -1,6 +1,9 @@
 name = "biblophilia"
 compatibility_date = "2023-03-01"
 
+# ランタイムの secret/変数 (GOOGLE_BOOKS_API_KEY 等) はこの toml には書かない。
+# ローカルは .dev.vars (.dev.vars.example 参照)、本番は `wrangler secret put` で設定する。
+
 [[d1_databases]]
 binding = "DB"
 database_name = "bibliophilia-db"

@@ -7,5 +7,5 @@ export function coverUrlFromIdentifiers(
 		(i) => i.identifier_type === ISBN_IDENTIFIER_TYPE,
 	)?.identifier;
 	if (!isbn) return null;
-	return `https://ndlsearch.ndl.go.jp/thumbnail/${isbn.replaceAll("-", "")}.jpg`;
+	return `/api/cover?isbn=${isbn.replaceAll("-", "")}`;
 }

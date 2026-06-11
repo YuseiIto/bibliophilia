@@ -4,8 +4,8 @@ import { coverUrlFromIdentifiers } from "~/lib/cover";
 import { cn } from "~/lib/utils";
 import type { Identifier } from "~/model/identifier";
 
-// 書影を表示する。ISBN から NDL サムネイルを引くが、ISBN が無い場合や
-// NDL に書影が無く読み込みに失敗した場合はプレースホルダ（本アイコン）を出す。
+// 書影を表示する。ISBN から Google Books の書影をプロキシ経由で引くが、ISBN が
+// 無い場合や書影が無く読み込みに失敗した場合はプレースホルダ（本アイコン）を出す。
 export function BookCover({
 	identifiers,
 	className,
