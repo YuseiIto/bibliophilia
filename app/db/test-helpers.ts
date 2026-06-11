@@ -8,10 +8,9 @@ export function createTestRepository(): Repository {
 	return new Repository(drizzle(env.DB, { schema }));
 }
 
-// The cloudflareTest plugin (0.16.x) isolates D1 storage per test FILE, not per
-// test: writes from one test remain visible to the next within the same file.
-// (The old defineWorkersConfig `isolatedStorage` per-test savepoints are not
-// exposed by this plugin API.) So tests must reset state explicitly.
+// このプール (cloudflareTest) は D1 を test ファイル単位でしか分離しない。同一ファイル
+// 内では前のテストの書き込みが次のテストにも残る (test 単位の savepoint は無い) ため、
+// 各テストの冒頭で明示的に状態をリセットする。
 export async function clearTestDatabase(): Promise<void> {
 	// MAINTENANCE: keep this in sync with schema.ts. A migration that adds a new
 	// table must add it here (child-before-parent FK order), or tests will bleed
