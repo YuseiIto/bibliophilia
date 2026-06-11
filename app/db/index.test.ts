@@ -20,7 +20,7 @@ describe("getAllBibRecordSummaries", () => {
 		expect(summaries).toHaveLength(1);
 		const s = summaries[0];
 		expect(s.preferred_title).toBe("プログラミングTypeScript");
-		expect(s.identifiers[0].identifier).toBe("978-4-87311-911-3");
+		expect(s.identifiers[0].identifier).toBe("978-4-87311-904-5");
 		expect(s.agents).toEqual([{ preferred_name: "Boris Cherny", role: "著者" }]);
 		expect(s.dates).toEqual(["2020"]);
 	});
@@ -100,7 +100,7 @@ describe("getBibRecordDetail", () => {
 		if (!d) return;
 		expect(d.preferred_title).toBe("プログラミングTypeScript");
 		expect(d.catalog_source_type).toBe("auto:ndl");
-		expect(d.identifiers[0].identifier).toBe("978-4-87311-911-3");
+		expect(d.identifiers[0].identifier).toBe("978-4-87311-904-5");
 		expect(d.agents[0]).toMatchObject({ preferred_name: "Boris Cherny", role: "著者", raw: "Boris Cherny 著" });
 		expect(d.subjects[0].preferred_label).toBe("TypeScript");
 		expect(d.seriesTitles[0].title).toBe("オライリーの本");

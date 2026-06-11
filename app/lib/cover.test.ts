@@ -6,11 +6,11 @@ describe("coverUrlFromIdentifiers", () => {
 		expect(
 			coverUrlFromIdentifiers([
 				{
-					identifier: "978-4-87311-911-3",
+					identifier: "978-4-87311-904-5",
 					identifier_type: "http://ndl.go.jp/dcndl/terms/ISBN",
 				},
 			]),
-		).toBe("/api/cover?isbn=9784873119113");
+		).toBe("/api/cover?isbn=9784873119045");
 	});
 
 	test("ISBN が無ければ null", () => {

@@ -56,7 +56,7 @@ export function sampleBibRecordDraft(
 		title = "プログラミングTypeScript",
 		titleTranscription = "ぷろぐらみんぐTypeScript",
 		authorName = "Boris Cherny",
-		isbn = "978-4-87311-911-3",
+		isbn = "978-4-87311-904-5",
 		subjectLabel = "TypeScript",
 		seriesTitle = "",
 		date = "2020",
