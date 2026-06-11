@@ -46,8 +46,12 @@ export function sampleBibRecordDraft(
 		title: string;
 		titleTranscription: string;
 		authorName: string;
+		// 同一資料に複数著者を持たせたいとき (authorName より優先)。[] で著者なし。
+		authorNames: string[];
 		isbn: string;
 		subjectLabel: string;
+		// 同一資料に複数件名を持たせたいとき (subjectLabel より優先)。[] で件名なし。
+		subjectLabels: string[];
 		seriesTitle: string;
 		date: string;
 	}> = {},
@@ -61,6 +65,8 @@ export function sampleBibRecordDraft(
 		seriesTitle = "",
 		date = "2020",
 	} = overrides;
+	const authorNames = overrides.authorNames ?? [authorName];
+	const subjectLabels = overrides.subjectLabels ?? [subjectLabel];
 	return {
 		work: {
 			id: null,
@@ -82,25 +88,21 @@ export function sampleBibRecordDraft(
 				identifier_type: "http://ndl.go.jp/dcndl/terms/ISBN",
 			},
 		],
-		agents: [
-			{
-				id: null,
-				agentKind: "person",
-				preferredName: authorName,
-				preferredNameTranscription: "",
-				role: "著者",
-				raw: `${authorName} 著`,
-			},
-		],
+		agents: authorNames.map((name) => ({
+			id: null,
+			agentKind: "person",
+			preferredName: name,
+			preferredNameTranscription: "",
+			role: "著者",
+			raw: `${name} 著`,
+		})),
 		titles: [],
-		subjects: [
-			{
-				id: null,
-				subject_type: "http://id.ndl.go.jp/class/ndc10",
-				preferred_label: subjectLabel,
-				preferred_label_transcription: "",
-			},
-		],
+		subjects: subjectLabels.map((label) => ({
+			id: null,
+			subject_type: "http://id.ndl.go.jp/class/ndc10",
+			preferred_label: label,
+			preferred_label_transcription: "",
+		})),
 		seriesTitles: seriesTitle
 			? [{ id: null, title: seriesTitle, transcription: "" }]
 			: [],

@@ -1,5 +1,5 @@
 import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
-import { eq, or, and, like } from "drizzle-orm";
+import { eq, or, and, exists, sql, type AnyColumn } from "drizzle-orm";
 import * as schema from "./schema";
 import type { Env } from "~/cloudflare";
 import {
@@ -36,6 +36,12 @@ import type {
 } from "~/model/bib-record";
 
 import { v4 as uuidv4 } from "uuid";
+
+// LIKE のメタ文字 (% _ \) を含む検索語をリテラルとして扱うためエスケープする。
+// 対になる SQL 側には ESCAPE '\' を必ず付ける。
+function escapeLikePattern(term: string): string {
+	return term.replace(/[\\%_]/g, "\\$&");
+}
 
 export class Repository {
 	private _con: DrizzleD1Database<typeof schema>;
@@ -374,7 +380,10 @@ export class Repository {
 	}
 
 	async getBibRecordDetail(id: string): Promise<BibRecordDetail | null> {
-		const workRows = await this._con.select().from(bibWorksTable).where(eq(bibWorksTable.id, id));
+		const workRows = await this._con
+			.select()
+			.from(bibWorksTable)
+			.where(eq(bibWorksTable.id, id));
 		const work = workRows[0];
 		if (!work) return null;
 
@@ -386,16 +395,23 @@ export class Repository {
 		const agents = await this._con
 			.select({
 				preferred_name: bibAgentTable.preferred_name,
-				preferred_name_transcription: bibAgentTable.preferred_name_transcription,
+				preferred_name_transcription:
+					bibAgentTable.preferred_name_transcription,
 				role: bibWorkAgentsTable.role,
 				raw: bibWorkAgentsTable.raw,
 			})
 			.from(bibWorkAgentsTable)
-			.innerJoin(bibAgentTable, eq(bibWorkAgentsTable.agent_id, bibAgentTable.id))
+			.innerJoin(
+				bibAgentTable,
+				eq(bibWorkAgentsTable.agent_id, bibAgentTable.id),
+			)
 			.where(eq(bibWorkAgentsTable.work_id, id));
 
 		const titles = await this._con
-			.select({ title: bibWorkTitlesTable.title, transcription: bibWorkTitlesTable.transcription })
+			.select({
+				title: bibWorkTitlesTable.title,
+				transcription: bibWorkTitlesTable.transcription,
+			})
 			.from(bibWorkTitlesTable)
 			.where(eq(bibWorkTitlesTable.work_id, id));
 
@@ -403,34 +419,59 @@ export class Repository {
 			.select({
 				subject_type: bibSubjectsTable.subject_type,
 				preferred_label: bibSubjectsTable.preferred_label,
-				preferred_label_transcription: bibSubjectsTable.preferred_label_transcription,
+				preferred_label_transcription:
+					bibSubjectsTable.preferred_label_transcription,
 			})
 			.from(bibWorksSubjectsTable)
-			.innerJoin(bibSubjectsTable, eq(bibWorksSubjectsTable.subject_id, bibSubjectsTable.id))
+			.innerJoin(
+				bibSubjectsTable,
+				eq(bibWorksSubjectsTable.subject_id, bibSubjectsTable.id),
+			)
 			.where(eq(bibWorksSubjectsTable.work_id, id));
 
 		const seriesTitles = await this._con
-			.select({ title: bibSeriesTitleTable.title, transcription: bibSeriesTitleTable.transcription })
+			.select({
+				title: bibSeriesTitleTable.title,
+				transcription: bibSeriesTitleTable.transcription,
+			})
 			.from(bibSeriesTitleTable)
 			.where(eq(bibSeriesTitleTable.work_id, id));
 
 		const languages = (
-			await this._con.select({ v: bibLanguagesTable.language }).from(bibLanguagesTable).where(eq(bibLanguagesTable.work_id, id))
+			await this._con
+				.select({ v: bibLanguagesTable.language })
+				.from(bibLanguagesTable)
+				.where(eq(bibLanguagesTable.work_id, id))
 		).map((r) => r.v);
 		const prices = (
-			await this._con.select({ v: bibPriceTable.price }).from(bibPriceTable).where(eq(bibPriceTable.work_id, id))
+			await this._con
+				.select({ v: bibPriceTable.price })
+				.from(bibPriceTable)
+				.where(eq(bibPriceTable.work_id, id))
 		).map((r) => r.v);
 		const extents = (
-			await this._con.select({ v: bibExtentTable.extent }).from(bibExtentTable).where(eq(bibExtentTable.work_id, id))
+			await this._con
+				.select({ v: bibExtentTable.extent })
+				.from(bibExtentTable)
+				.where(eq(bibExtentTable.work_id, id))
 		).map((r) => r.v);
 		const abstracts = (
-			await this._con.select({ v: bibAbstractTable.abstract }).from(bibAbstractTable).where(eq(bibAbstractTable.work_id, id))
+			await this._con
+				.select({ v: bibAbstractTable.abstract })
+				.from(bibAbstractTable)
+				.where(eq(bibAbstractTable.work_id, id))
 		).map((r) => r.v);
 		const descriptions = (
-			await this._con.select({ v: bibDescriptionTable.description }).from(bibDescriptionTable).where(eq(bibDescriptionTable.work_id, id))
+			await this._con
+				.select({ v: bibDescriptionTable.description })
+				.from(bibDescriptionTable)
+				.where(eq(bibDescriptionTable.work_id, id))
 		).map((r) => r.v);
 		const dates = (
-			await this._con.select({ v: bibDatesTable.date }).from(bibDatesTable).where(eq(bibDatesTable.work_id, id))
+			await this._con
+				.select({ v: bibDatesTable.date })
+				.from(bibDatesTable)
+				.where(eq(bibDatesTable.work_id, id))
 		).map((r) => r.v);
 
 		return {
@@ -450,35 +491,74 @@ export class Repository {
 	}
 
 	async simpleSearchBibRecords(q: string): Promise<BibRecordSummary[]> {
-		// 半角・全角スペース区切りの各語を AND 条件にする。
-		// 1 語は「いずれかのフィールドに部分一致」(OR)、全語が一致した Work を返す。
-		const terms = q.split(/[\s　]+/).filter((t) => t.length > 0);
+		// 半角・全角スペース区切りの各語を AND 条件にする。各語は「資料のいずれかの
+		// フィールド (タイトル / 著者名 / 件名 / シリーズ名) のどこかに部分一致」すれば
+		// 良い。著者・件名は多値なので EXISTS の相関サブクエリで判定する。これにより
+		// 「件名 A と件名 B を別行で持つ資料」を "A B" で検索しても両語が拾える
+		// (フラットな結合では 1 結合行に両値が同居しないとマッチしなかった)。
+		// 全角スペース (U+3000) も区切りに含める。
+		const terms = q.split(/[\s\u3000]+/).filter((t) => t.length > 0);
 		if (terms.length === 0) return [];
 
-		const matchesAnyField = (term: string) => {
-			const pattern = `%${term}%`;
-			return or(
-				like(bibWorksTable.preferred_title, pattern),
-				like(bibAgentTable.preferred_name, pattern),
-				like(bibSubjectsTable.preferred_label, pattern),
-				like(bibSeriesTitleTable.title, pattern),
+		const contains = (col: AnyColumn, term: string) =>
+			sql`${col} LIKE ${`%${escapeLikePattern(term)}%`} ESCAPE '\\'`;
+
+		const matchesTerm = (term: string) =>
+			or(
+				contains(bibWorksTable.preferred_title, term),
+				exists(
+					this._con
+						.select({ one: sql`1` })
+						.from(bibWorkAgentsTable)
+						.innerJoin(
+							bibAgentTable,
+							eq(bibWorkAgentsTable.agent_id, bibAgentTable.id),
+						)
+						.where(
+							and(
+								eq(bibWorkAgentsTable.work_id, bibWorksTable.id),
+								contains(bibAgentTable.preferred_name, term),
+							),
+						),
+				),
+				exists(
+					this._con
+						.select({ one: sql`1` })
+						.from(bibWorksSubjectsTable)
+						.innerJoin(
+							bibSubjectsTable,
+							eq(bibWorksSubjectsTable.subject_id, bibSubjectsTable.id),
+						)
+						.where(
+							and(
+								eq(bibWorksSubjectsTable.work_id, bibWorksTable.id),
+								contains(bibSubjectsTable.preferred_label, term),
+							),
+						),
+				),
+				exists(
+					this._con
+						.select({ one: sql`1` })
+						.from(bibSeriesTitleTable)
+						.where(
+							and(
+								eq(bibSeriesTitleTable.work_id, bibWorksTable.id),
+								contains(bibSeriesTitleTable.title, term),
+							),
+						),
+				),
 			);
-		};
 
 		const works = await this._con
-			.selectDistinct({
+			.select({
 				id: bibWorksTable.id,
 				preferred_title: bibWorksTable.preferred_title,
-				preferred_title_transcription: bibWorksTable.preferred_title_transcription,
+				preferred_title_transcription:
+					bibWorksTable.preferred_title_transcription,
 				thumbnail_url: bibWorksTable.thumbnail_url,
 			})
 			.from(bibWorksTable)
-			.leftJoin(bibWorkAgentsTable, eq(bibWorkAgentsTable.work_id, bibWorksTable.id))
-			.leftJoin(bibAgentTable, eq(bibWorkAgentsTable.agent_id, bibAgentTable.id))
-			.leftJoin(bibWorksSubjectsTable, eq(bibWorksSubjectsTable.work_id, bibWorksTable.id))
-			.leftJoin(bibSubjectsTable, eq(bibWorksSubjectsTable.subject_id, bibSubjectsTable.id))
-			.leftJoin(bibSeriesTitleTable, eq(bibSeriesTitleTable.work_id, bibWorksTable.id))
-			.where(and(...terms.map(matchesAnyField)))
+			.where(and(...terms.map(matchesTerm)))
 			.orderBy(bibWorksTable.preferred_title);
 		return this.buildSummaries(works);
 	}
