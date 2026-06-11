@@ -3,7 +3,7 @@
 // Runtime types generated with workerd@1.20251011.0 2023-03-01 
 declare namespace Cloudflare {
 	interface Env {
-		CLOUDFLARE_ACDCOUNT_ID: string;
+		CLOUDFLARE_ACCOUNT_ID: string;
 		CLOUDFLARE_DATABASE_ID: string;
 		CLOUDFLARE_D1_TOKEN: string;
 		DB: D1Database;
