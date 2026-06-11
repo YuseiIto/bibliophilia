@@ -66,7 +66,7 @@ export function BibDetailMain({ record }: { record: BibRecordDetail }) {
 			<p className="mt-6 text-xs text-muted-foreground">
 				目録出典: {record.catalog_source}
 				{record.cataloging_rule
-					? `　／　目録規則: ${record.cataloging_rule.toUpperCase()}`
+					? `\u3000／\u3000目録規則: ${record.cataloging_rule.toUpperCase()}`
 					: ""}
 			</p>
 		</div>
