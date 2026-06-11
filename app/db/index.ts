@@ -1,5 +1,5 @@
 import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
-import { eq, or, and, exists, sql, type AnyColumn } from "drizzle-orm";
+import { eq, or, and, exists, inArray, sql, type AnyColumn } from "drizzle-orm";
 import * as schema from "./schema";
 import type { Env } from "~/cloudflare";
 import {
@@ -337,38 +337,58 @@ export class Repository {
 			thumbnail_url: string | null;
 		}[],
 	): Promise<BibRecordSummary[]> {
-		return Promise.all(
-			workRows.map(async (w) => {
-				const identifiers = await this._con
-					.select()
-					.from(bibIdentifiersTable)
-					.where(eq(bibIdentifiersTable.work_id, w.id));
-				const agents = await this._con
-					.select({
-						preferred_name: bibAgentTable.preferred_name,
-						role: bibWorkAgentsTable.role,
-					})
-					.from(bibWorkAgentsTable)
-					.innerJoin(
-						bibAgentTable,
-						eq(bibWorkAgentsTable.agent_id, bibAgentTable.id),
-					)
-					.where(eq(bibWorkAgentsTable.work_id, w.id));
-				const dateRows = await this._con
-					.select({ date: bibDatesTable.date })
-					.from(bibDatesTable)
-					.where(eq(bibDatesTable.work_id, w.id));
-				return {
-					id: w.id,
-					preferred_title: w.preferred_title,
-					preferred_title_transcription: w.preferred_title_transcription,
-					thumbnail_url: w.thumbnail_url,
-					identifiers: identifiers as Identifier[],
-					agents,
-					dates: dateRows.map((d) => d.date),
-				};
-			}),
-		);
+		if (workRows.length === 0) return [];
+		const ids = workRows.map((w) => w.id);
+
+		// 多値リレーションを work ごとに引くと N+1 になるため、3 本にまとめて取得し
+		// work_id でグルーピングする。
+		const identifierRows = await this._con
+			.select()
+			.from(bibIdentifiersTable)
+			.where(inArray(bibIdentifiersTable.work_id, ids));
+		const agentRows = await this._con
+			.select({
+				work_id: bibWorkAgentsTable.work_id,
+				preferred_name: bibAgentTable.preferred_name,
+				role: bibWorkAgentsTable.role,
+			})
+			.from(bibWorkAgentsTable)
+			.innerJoin(
+				bibAgentTable,
+				eq(bibWorkAgentsTable.agent_id, bibAgentTable.id),
+			)
+			.where(inArray(bibWorkAgentsTable.work_id, ids));
+		const dateRows = await this._con
+			.select({ work_id: bibDatesTable.work_id, date: bibDatesTable.date })
+			.from(bibDatesTable)
+			.where(inArray(bibDatesTable.work_id, ids));
+
+		const groupByWork = <T extends { work_id: string }>(rows: T[]) => {
+			const map = new Map<string, T[]>();
+			for (const r of rows) {
+				const list = map.get(r.work_id);
+				if (list) list.push(r);
+				else map.set(r.work_id, [r]);
+			}
+			return map;
+		};
+
+		const identifiersByWork = groupByWork(identifierRows);
+		const agentsByWork = groupByWork(agentRows);
+		const datesByWork = groupByWork(dateRows);
+
+		return workRows.map((w) => ({
+			id: w.id,
+			preferred_title: w.preferred_title,
+			preferred_title_transcription: w.preferred_title_transcription,
+			thumbnail_url: w.thumbnail_url,
+			identifiers: (identifiersByWork.get(w.id) ?? []) as Identifier[],
+			agents: (agentsByWork.get(w.id) ?? []).map((a) => ({
+				preferred_name: a.preferred_name,
+				role: a.role,
+			})),
+			dates: (datesByWork.get(w.id) ?? []).map((d) => d.date),
+		}));
 	}
 
 	async getAllBibRecordSummaries(): Promise<BibRecordSummary[]> {

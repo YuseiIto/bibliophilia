@@ -40,6 +40,45 @@ describe("getAllBibRecordSummaries", () => {
 		);
 		expect(titles).toEqual(["A の本", "B の本"]);
 	});
+
+	test("複数 work の関連が取り違えられずグルーピングされる", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(
+			sampleBibRecordDraft({
+				title: "A の本",
+				isbn: "111",
+				authorName: "著者A",
+				date: "2001",
+			}),
+		);
+		await repo.insertBibRecord(
+			sampleBibRecordDraft({
+				title: "B の本",
+				isbn: "222",
+				authorName: "著者B",
+				date: "2002",
+			}),
+		);
+		const summaries = await repo.getAllBibRecordSummaries();
+		const a = summaries.find((s) => s.preferred_title === "A の本");
+		const b = summaries.find((s) => s.preferred_title === "B の本");
+		expect(a?.identifiers.map((i) => i.identifier)).toEqual(["111"]);
+		expect(a?.agents).toEqual([{ preferred_name: "著者A", role: "著者" }]);
+		expect(a?.dates).toEqual(["2001"]);
+		expect(b?.identifiers.map((i) => i.identifier)).toEqual(["222"]);
+		expect(b?.agents).toEqual([{ preferred_name: "著者B", role: "著者" }]);
+		expect(b?.dates).toEqual(["2002"]);
+	});
+
+	test("著者が無い work は agents が空配列", async () => {
+		const repo = createTestRepository();
+		await repo.insertBibRecord(
+			sampleBibRecordDraft({ title: "著者なし", isbn: "1", authorNames: [] }),
+		);
+		const summaries = await repo.getAllBibRecordSummaries();
+		expect(summaries).toHaveLength(1);
+		expect(summaries[0].agents).toEqual([]);
+	});
 });
 
 describe("simpleSearchBibRecords", () => {
