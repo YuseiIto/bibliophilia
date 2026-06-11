@@ -13,10 +13,12 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => [
 
 export async function loader({ context, params }: LoaderFunctionArgs) {
 	const id = params.id;
-	if (!id) throw new Response("Not Found", { status: 404 });
+	if (!id)
+		throw new Response("Not Found", { status: 404, statusText: "Not Found" });
 	const db = Repository.fromEnv(context.cloudflare.env);
 	const record = await db.getBibRecordDetail(id);
-	if (!record) throw new Response("Not Found", { status: 404 });
+	if (!record)
+		throw new Response("Not Found", { status: 404, statusText: "Not Found" });
 	return record;
 }
 

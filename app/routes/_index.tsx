@@ -1,15 +1,25 @@
 import { useEffect, useRef, type ChangeEvent } from "react";
 import type { MetaFunction, LoaderFunctionArgs } from "react-router";
-import { useLoaderData, Form, useSubmit, useNavigation, Link } from "react-router";
+import {
+	useLoaderData,
+	Form,
+	useSubmit,
+	useNavigation,
+	Link,
+} from "react-router";
 import logo from "~/assets/logo.png";
 import { Input } from "~/components/ui/input";
 import { SidebarOnlyLayout } from "~/layouts/sidebar-only";
 import { BibRecordResults } from "~/components/bib-record-results";
+import { ErrorPage } from "~/components/error-page";
 import { Repository } from "~/db";
 
 export const meta: MetaFunction = () => [
 	{ title: "Bibliophilia" },
-	{ name: "description", content: "Yet another information resource manager and more." },
+	{
+		name: "description",
+		content: "Yet another information resource manager and more.",
+	},
 ];
 
 export async function loader({ context, request }: LoaderFunctionArgs) {
@@ -63,7 +73,7 @@ export default function Index() {
 							name="q"
 							defaultValue={q}
 							onChange={onChange}
-							placeholder="タイトル・著者・件名で検索"
+							placeholder="タイトル・著者・件名などで検索"
 							className={searching ? "opacity-50" : ""}
 						/>
 					</Form>
@@ -71,11 +81,17 @@ export default function Index() {
 				{q !== "" && (
 					<div className="pb-3 text-sm text-muted-foreground">
 						「{q}」の検索結果 ・ {data.length} 件 ・{" "}
-						<Link to="/" className="text-blue-600 hover:underline">クリア</Link>
+						<Link to="/" className="text-blue-600 hover:underline">
+							クリア
+						</Link>
 					</div>
 				)}
 				<BibRecordResults records={data} />
 			</div>
 		</SidebarOnlyLayout>
 	);
+}
+
+export function ErrorBoundary() {
+	return <ErrorPage />;
 }

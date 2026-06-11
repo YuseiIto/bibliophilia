@@ -16,6 +16,15 @@ export function BookCover({
 	const url = coverUrlFromIdentifiers(identifiers);
 	const [failed, setFailed] = useState(false);
 
+	// 別の本に差し替わった (url が変わった) ら失敗状態をリセットし、前の本の読み込み
+	// 失敗が新しい本の placeholder に残らないようにする。React 推奨の「描画中に前回値と
+	// 比較して state を調整する」パターン。
+	const [prevUrl, setPrevUrl] = useState(url);
+	if (url !== prevUrl) {
+		setPrevUrl(url);
+		setFailed(false);
+	}
+
 	return (
 		<div
 			className={cn(
