@@ -59,7 +59,7 @@
 		"uuid": "^14.0.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.16",
+		"@biomejs/biome": "2.5.12",
 		"@chromatic-com/storybook": "^5.0.0",
 		"@cloudflare/workers-types": "^4.20251011.0",
 		"@react-router/dev": "^7.0.0",
